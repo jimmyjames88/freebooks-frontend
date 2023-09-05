@@ -31,19 +31,14 @@
 //     const wrapper = mount(Index, {
 //       global: {
 //         plugins: [vuetify],
-//         mocks: {
-//           API: {
-//             clients : {
-//               index: vi.fn()
-//             }
-//           }
-//         }
-//       },
-//       methods: {
-
 //       }
 //     })
 
+//     global.API = {
+//       clients: {
+//         index: vi.fn()
+//       }
+//     }
 //     await nextTick()
 
 //     expect(API.get).toHaveBeenCalledWith('/clients')

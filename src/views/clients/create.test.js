@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import { createVuetify } from "vuetify";
-import { expect, vi, vitest } from 'vitest'
+import { vi } from 'vitest'
 import Create from './Create.vue'
 
 vi.mock('axios')
