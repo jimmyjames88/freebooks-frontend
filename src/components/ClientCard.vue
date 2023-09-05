@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Button } from '@/components'
+import API from '@/api'
 
 export default defineComponent({
   name: 'ClientCard',
@@ -37,7 +38,11 @@ export default defineComponent({
       this.showConfirmDelete = true
     },
     handleDelete() {
-      alert('deleting')
+      API.clients.destroy(this._id).then(() => {
+        this.$emit('delete')
+      }).catch((err: AxiosError) => {
+        console.warn(err)
+      })
       this.showConfirmDelete = false
     }
   }

@@ -19,5 +19,9 @@ export default {
     return axios.post(`${url}`, {
       ...client
     })
+  },
+
+  destroy(clientId: string) {
+    return axios.delete(`${url}/${clientId}`)
   }
 }

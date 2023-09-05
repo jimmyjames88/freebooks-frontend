@@ -9,7 +9,7 @@ export default defineComponent({
   name: 'Clients.Index',
   components: { Button, ClientCard, VSkeletonLoader },
   data: () => ({
-    clients: [],
+    clients: [] as any[],
     loading: true
   }),
   mounted() {
@@ -20,6 +20,12 @@ export default defineComponent({
     }).finally(() => {
       this.loading = false
     })
+  },
+  
+  methods: {
+    deleteClient(clientId: string) {
+      this.clients = this.clients.filter(client => client._id !== clientId)
+    }
   }
 })
 </script>
@@ -40,13 +46,13 @@ export default defineComponent({
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="(client, index) in clients" :key="`client-${index}`" cols="12" md="6" lg="4">
+      <v-col v-for="client in clients" :key="`client-${client._id}`" cols="12" md="6" lg="4">
         <v-skeleton-loader
           v-if="loading"
           class="mx-auto border"
           type="avatar, heading, article"
         />
-        <ClientCard v-else v-bind="client"></ClientCard>
+        <ClientCard v-else v-bind="client" @delete="deleteClient(client._id)"></ClientCard>
       </v-col>
     </v-row>
   </v-container>
