@@ -23,9 +23,12 @@ export default defineComponent({
   }),
   methods: {
     save() {
-      console.log(this)
       const { name, email, phone, website, address } = this
-      API.clients.store({  name, email, phone, website, address })
+      API.clients.store({  name, email, phone, website, address }).then((response: AxiosResponse) => {
+        this.$router.push({ name: 'Clients/Show', params: { clientId: response.data._id } })
+      }).catch((err: AxiosError) => {
+        console.warn(err)
+      })
     },
     cancel() {
       this.$router.go(-1)
