@@ -2,11 +2,11 @@
 import { defineComponent } from 'vue';
 import { AxiosResponse } from 'axios';
 import API from '@/api'
-import { Button } from '@/components'
+import { Button, InvoiceCard } from '@/components'
 
 export default defineComponent({
   name: 'Client.Show',
-  components: { Button },
+  components: { Button, InvoiceCard },
   data: () => ({
     name: '',
     email: '',
@@ -43,11 +43,13 @@ export default defineComponent({
         <Button color="primary">New Estimate</Button>
       </v-col>
     </v-row>
-    <h2>Invoices</h2>
+    <v-divider class="my-4" />
+    <h2>Invoices ({{  invoices.length  }})</h2>
     <v-row>
-      <v-col>
-        
+      <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
+        <InvoiceCard v-bind="invoice" :client="{ name }" />
       </v-col>
     </v-row>
+    <v-divider class="my-4" />
   </v-container>
 </template>

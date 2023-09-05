@@ -35,7 +35,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <GradientContainer bgColor="#72BEE6">
+  <GradientContainer>
     <template #left>
       <h1>New Client</h1>
     </template>
@@ -55,7 +55,7 @@ export default defineComponent({
               <Button @click="cancel" color="transparent">
                 Cancel
               </Button>
-              <Button @click="step++">
+              <Button @click="step++" color="secondary">
                 Next
               </Button>
             </div>
@@ -69,7 +69,7 @@ export default defineComponent({
               <TextField name="postalCode" v-model="address.postalCode" label="Postal Code" />
               <TextField name="country" v-model="address.country" label="Country" />
               <Button color="transparent" @click="step--">Previous</Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit" color="secondary">Save</Button>
             </div>
           </v-window-item>
         </v-window>

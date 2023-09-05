@@ -3,11 +3,11 @@ import { defineComponent } from 'vue'
 import validator from 'validator'
 import { mapActions } from 'pinia'
 import { useAuthStore } from '@/stores/Auth'
-import { Button, GradientContainer, TextField } from '@/components'
+import { Button, GradientContainer, Logo, TextField } from '@/components'
 
 export default defineComponent({
   name: 'Login',
-  components: { Button, GradientContainer, TextField },
+  components: { Button, GradientContainer, Logo, TextField },
   data: (): {
     email: string
     password: string
@@ -49,10 +49,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <GradientContainer bgColor="#ff5151">
+  <GradientContainer bgColor="#56CBF9">
     <template #left>
       <div>
-        <h1>FreeBooks</h1>
+        <Logo />
       </div>
       
     </template>
@@ -60,7 +60,7 @@ export default defineComponent({
       <v-form @submit.prevent="attemptLogin" validate-on="submit">
         <TextField v-model="email" label="Email" :rules="rules.email" />
         <TextField v-model="password" type="password" label="Password" :rules="rules.password" class="my-2" />
-        <Button type="submit" color="primary">
+        <Button type="submit" color="secondary">
           <v-icon>mdi-login</v-icon> Sign in
         </Button>
         <Button color="transparent" to="/">

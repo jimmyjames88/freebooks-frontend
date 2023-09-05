@@ -6,7 +6,7 @@ export default defineComponent({
   props: {
     bgColor: {
       type: String,
-      default: '#ff5151'
+      default: '#FE6D73'
     }
   }
 })
@@ -30,6 +30,10 @@ export default defineComponent({
   color: #FFFFFF; 
   min-height: 100dvh; 
   background-color: v-bind(bgColor);
+
+  :deep(.v-btn.bg-transparent) {
+    color: rgba(var(--v-theme-on-primary)) !important;
+  }
 
   :deep(.right) .v-form {
     max-width: 400px;
