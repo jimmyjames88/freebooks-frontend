@@ -2,11 +2,10 @@
 import { defineComponent } from 'vue'
 import API from '@/api'
 import { Button, InvoiceCard } from '@/components'
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Button, InvoiceCard, VSkeletonLoader },
+  components: { Button, InvoiceCard },
   data: () => ({
     loading: true,
     invoices: [] as { _id: string, total: string }[],
@@ -40,12 +39,7 @@ export default defineComponent({
     </v-row>
     <v-row>
       <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
-        <v-skeleton-loader
-          v-if="loading"
-          class="mx-auto border"
-          type="heading, divider, paragraph"
-        />
-        <InvoiceCard v-else v-bind="invoice" />
+        <InvoiceCard v-bind="invoice" :loading="loading" />
       </v-col>
     </v-row>
   </v-container>

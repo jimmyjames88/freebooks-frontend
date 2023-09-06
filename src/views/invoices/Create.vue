@@ -11,7 +11,7 @@ export default defineComponent({
   components: { Button, LineItems, Select, TextArea, TextField, VueDatePicker },
   data: () => ({
     clients: [],
-    clientId: null,
+    clientId: '',
     ref: '',
     date: undefined,
     lineItems: [
@@ -22,8 +22,10 @@ export default defineComponent({
 
   async mounted() {
     const response = await API.clients.list()
-    if (response.status === 200)
+    if (response.status === 200) {
       this.clients = response.data
+      this.clientId = this.$route.query.clientId
+    }
   },
 
   computed: {
@@ -90,11 +92,13 @@ export default defineComponent({
     <v-form @submit.prevent="submitForm" validate-on="submit">
       <div class="document">
         <v-row>
-          <v-col sm="6" md="4">
-            <Select v-model="clientId" :items="clientList" label="Client" variant="outlined" />
-            <router-link :to="{ name: 'Clients/Create' }">
-              <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
-            </router-link>
+          <v-col sm="8" md="6">
+            <div class="d-flex align-center">
+              <Select v-model="clientId" :items="clientList" label="Client" variant="outlined" />
+              <router-link :to="{ name: 'Clients/Create' }" class="ml-2">
+                <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
+              </router-link>
+            </div>
           </v-col>
         </v-row>
         <v-divider class="my-4" />

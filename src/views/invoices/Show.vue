@@ -70,8 +70,8 @@ export default defineComponent({
         <v-col>
           <h1 class="title">FreeBooks</h1>
         </v-col>
-        <v-col>
-          <h1 class="title">Estimate</h1>
+        <v-col align="end">
+          <h1 class="title">Invoice</h1>
         </v-col>
       </v-row>
       <v-row>
@@ -122,6 +122,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .document {
   background-color: #ffffff;
-  padding: 0.5cm;
+  padding: 0.5in 1in;
 }
 </style>
