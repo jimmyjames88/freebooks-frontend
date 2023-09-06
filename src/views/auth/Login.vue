@@ -20,10 +20,7 @@ export default defineComponent({
     loading: false,
     rules: {
       email: [
-        (value: string) => value ? true : 'You must enter an email address',
-        (value: string) => validator.isEmail(value)
-          ? true
-          : 'Please enter a valid email address'
+        (value: string) => value ? true : 'You must enter an email address'
       ],
       password: [
         (value: string) => {
