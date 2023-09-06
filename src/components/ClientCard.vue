@@ -77,16 +77,16 @@ export default defineComponent({
               <v-list-item to="/">
                   <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
               </v-list-item>
-              <v-list-item to="/">
+              <v-list-item to="/" disabled>
                   <v-icon>mdi-file-document-plus</v-icon> New Estimate
               </v-list-item>
               <v-list-item>
                 <v-list-item-subtitle>Client Actions</v-list-item-subtitle>
               </v-list-item>
-              <v-list-item to="/">
+              <v-list-item :to="{ name: 'Clients/Show', params: { clientId: _id }}">
                   <v-icon>mdi-account-eye</v-icon> View
               </v-list-item>
-              <v-list-item to="/">
+              <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: _id }}">
                   <v-icon>mdi-account-edit</v-icon> Edit
               </v-list-item>
               <v-list-item @click="confirmDelete">

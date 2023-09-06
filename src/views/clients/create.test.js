@@ -52,7 +52,7 @@ describe('Create.vue', () => {
     const line2 = wrapper.find('input[name=line2]').setValue(formData.line2)
     const city = wrapper.find('input[name=city]').setValue(formData.city)
     const province = wrapper.find('input[name=province]').setValue(formData.province)
-    const postalCode = wrapper.find('input[name=postalCode]').setValue(formData.postal)
+    const postal = wrapper.find('input[name=postal]').setValue(formData.postal)
     const country = wrapper.find('input[name=country]').setValue(formData.country)
   
     // submit form

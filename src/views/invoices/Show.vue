@@ -15,7 +15,7 @@ export default defineComponent({
         line2: '',
         city: '',
         province: '',
-        postalCode: '',
+        postal: '',
         country: ''
       },
       phone: '',
@@ -57,10 +57,10 @@ export default defineComponent({
         <h1 class="title">Invoice: #{{ ref }}</h1>
       </v-col>
       <v-col>
-        <Button color="primary">
+        <Button color="primary" disabled>
           <v-icon>mdi-printer</v-icon> Print
         </Button>
-        <Button color="primary">
+        <Button color="primary" disabled>
           <v-icon>mdi-email</v-icon> Send
         </Button>
       </v-col>
@@ -80,7 +80,7 @@ export default defineComponent({
           <p>{{ client.address.line2 }}</p>
           <p>{{ client.address.city }}</p>
           <p>{{ client.address.province }}</p>
-          <p>{{ client.address.postalCode }}</p>
+          <p>{{ client.address.postal }}</p>
           <p>{{ client.address.country }}</p>
         </v-col>
         <v-col>

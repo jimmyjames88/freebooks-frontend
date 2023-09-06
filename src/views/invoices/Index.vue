@@ -24,7 +24,7 @@ export default defineComponent({
         <h1 class="title">Invoices</h1>
       </v-col>
       <v-col align="end">
-        <Button color="transparent">
+        <Button color="transparent" disabled>
           <v-icon>mdi-magnify</v-icon> Search
         </Button>
         <Button :to="{ name: 'Invoices/Create' }" color="primary">

@@ -1,16 +1,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 import { Button, LineItems, Select, TextArea, TextField } from '@/components'
 import API from '@/api'
 
+
 export default defineComponent({
   name: 'Invoices/Create',
-  components: { Button, LineItems, Select, TextArea, TextField },
+  components: { Button, LineItems, Select, TextArea, TextField, VueDatePicker },
   data: () => ({
     clients: [],
     clientId: null,
     ref: '',
-    date: null,
+    date: undefined,
     lineItems: [
       { type: '', description: '', rate: null, quantity: null }
     ],
@@ -54,17 +57,17 @@ export default defineComponent({
 
   methods: {
     async submitForm() {
-      const { clientId, ref, issueDate, lineItems, notes, subtotal, tax, total } = this
+      const { clientId, ref, date, lineItems, notes, subtotal, tax, total } = this
       try {
         await API.invoices.store({
           clientId: clientId,
           ref,
-          issueDate,
+          date,
           lineItems,
           notes,
-          subtotal: parseFloat(subtotal),
-          tax: parseFloat(tax),
-          total: parseFloat(total)
+          subtotal: parseFloat(subtotal).toFixed(2),
+          tax: parseFloat(tax).toFixed(2),
+          total: parseFloat(total).toFixed(2)
         })
         
         this.$router.push({ name: 'Invoices' })
@@ -89,6 +92,9 @@ export default defineComponent({
         <v-row>
           <v-col sm="6" md="4">
             <Select v-model="clientId" :items="clientList" label="Client" variant="outlined" />
+            <router-link :to="{ name: 'Clients/Create' }">
+              <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
+            </router-link>
           </v-col>
         </v-row>
         <v-divider class="my-4" />
@@ -96,8 +102,8 @@ export default defineComponent({
           <v-col cols="12" sm="6" md="4">
             <TextField v-model="ref" label="Ref #" variant="outlined" />
           </v-col>
-          <v-col cols="12" sm="6" md="4">
-            <TextField v-model="date" label="Issue Date" variant="outlined" />
+          <v-col cols="12" sm="6" md="4" class="datepicker-col">
+            <VueDatePicker v-model="date" label="Issue Date" />
           </v-col>
         </v-row>
         <v-divider class="my-4" />
@@ -147,5 +153,11 @@ export default defineComponent({
 .document {
   background-color: #ffffff;
   padding: 0.5cm;
+}
+
+:global(input.db__input) {
+  border-radius: 0 !important;
+  border: 1px solid #9A8F99 !important;
+  height: 56px !important;
 }
 </style>

@@ -17,7 +17,7 @@ export default defineComponent({
       line2: '',
       city: '',
       province: '',
-      postalCode: '',
+      postal: '',
       country: ''
     }
   }),
@@ -69,7 +69,7 @@ export default defineComponent({
               <TextField name="line2" v-model="address.line2" label="Line 2" />
               <TextField name="city" v-model="address.city" label="City" />
               <TextField name="province" v-model="address.province" label="Province" />
-              <TextField name="postalCode" v-model="address.postalCode" label="Postal Code" />
+              <TextField name="postal" v-model="address.postal" label="Postal Code" />
               <TextField name="country" v-model="address.country" label="Country" />
               <Button color="transparent" @click="step--">Previous</Button>
               <Button type="submit" color="secondary">Save</Button>

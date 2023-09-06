@@ -37,7 +37,7 @@ export default defineComponent({
         <h1 class="title">Clients</h1>
       </v-col>
       <v-col align="end">
-        <Button color="transparent">
+        <Button color="transparent" disabled>
           <v-icon>mdi-magnify</v-icon> Search
         </Button>
         <Button color="primary" :to="{ name: 'Clients/Create' }">
