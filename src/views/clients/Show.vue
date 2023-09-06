@@ -10,6 +10,7 @@ export default defineComponent({
   components: { Button, InvoiceCard },
   data: () => ({
     loading: true,
+    _id: '',
     name: '',
     email: '',
     address: '',
@@ -21,7 +22,8 @@ export default defineComponent({
     console.log(this.$route.params.clientId)
     API.clients.show(this.$route.params.clientId)
       .then((response: AxiosResponse) => {
-        const { name, email, address, phone, website, invoices } = response.data
+        const { _id, name, email, address, phone, website, invoices } = response.data
+        this._id = _id
         this.name = name
         this.email = email
         this.address = address
@@ -44,7 +46,7 @@ export default defineComponent({
         <h1 v-text="name" />
       </v-col>
       <v-col align="end">
-        <Button color="primary">
+        <Button color="primary" :to="{ name: 'Invoices/Create', query: { clientId: _id }}">
           <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
         </Button>
         <Button color="primary" disabled>
@@ -54,18 +56,30 @@ export default defineComponent({
     </v-row>
     <v-divider class="my-4" />
     <v-row>
-      <v-col>
+      <v-col cols="12" md="6" lg="4" xl="3">
         <h3>Contact</h3>
-        <v-icon>mdi-email</v-icon> {{ email }}<br />
-        <v-icon>mdi-phone</v-icon> {{ phone }}<br />
-        <v-icon>mdi-link</v-icon> {{ website }}
+        <v-list>
+          <v-list-item>
+            <v-icon>mdi-email</v-icon> {{ email }}
+          </v-list-item>
+          <v-list-item>
+            <v-icon>mdi-phone</v-icon> {{ phone }}
+          </v-list-item>
+          <v-list-item>
+            <v-icon>mdi-link</v-icon> {{ website }}
+          </v-list-item>
+        </v-list>
       </v-col>
-      <v-col>
+      <v-col cols="12" md="6" lg="4" xl="3">
         <h3>Address</h3>
-        {{ address.line1 }}<br />
-        {{ address.line2 }}<br />
-        {{ address.city }}, {{ address.province }}, {{ address.country }}<br />
-        {{ address.postal }}
+        <v-list>
+          <v-list-item>
+            <p>{{ address.line1 }}</p>
+            <p>{{ address.line2 }}</p>
+            <p>{{ address.city }}, {{ address.province }}, {{ address.country }}</p>
+            <p>{{ address.postal }}</p>
+          </v-list-item>
+        </v-list>
       </v-col>
     </v-row>
     <v-divider class="my-4" />
