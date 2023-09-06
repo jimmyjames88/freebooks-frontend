@@ -1,9 +1,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 export default defineComponent({
   name: 'InvoiceCard',
+  components: { VSkeletonLoader },
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
     _id: String,
     client: Object,
     ref: String,
@@ -14,7 +20,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-card variant="flat">
+  <v-skeleton-loader
+    v-if="loading"
+    class="mx-auto"
+    type="heading, divider, paragraph"
+  />
+  <v-card v-else variant="flat">
     <v-card-text>
       <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: _id }}">
         <v-row>
