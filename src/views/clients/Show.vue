@@ -4,10 +4,12 @@ import { AxiosResponse } from 'axios';
 import API from '@/api'
 import { Button, InvoiceCard } from '@/components'
 
+
 export default defineComponent({
   name: 'Client.Show',
   components: { Button, InvoiceCard },
   data: () => ({
+    loading: true,
     name: '',
     email: '',
     address: '',
@@ -28,6 +30,9 @@ export default defineComponent({
         this.invoices = invoices
       })
       .catch((err: Error) => console.warn(err))
+      .finally(() => { 
+        this.loading = false
+      })
   }
 })
 </script>
@@ -39,15 +44,35 @@ export default defineComponent({
         <h1 v-text="name" />
       </v-col>
       <v-col align="end">
-        <Button color="primary">New Invoice</Button>
-        <Button color="primary">New Estimate</Button>
+        <Button color="primary">
+          <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
+        </Button>
+        <Button color="primary" disabled>
+          <v-icon>mdi-file-document-plus</v-icon>New Estimate
+        </Button>
+      </v-col>
+    </v-row>
+    <v-divider class="my-4" />
+    <v-row>
+      <v-col>
+        <h3>Contact</h3>
+        <v-icon>mdi-email</v-icon> {{ email }}<br />
+        <v-icon>mdi-phone</v-icon> {{ phone }}<br />
+        <v-icon>mdi-link</v-icon> {{ website }}
+      </v-col>
+      <v-col>
+        <h3>Address</h3>
+        {{ address.line1 }}<br />
+        {{ address.line2 }}<br />
+        {{ address.city }}, {{ address.province }}, {{ address.country }}<br />
+        {{ address.postal }}
       </v-col>
     </v-row>
     <v-divider class="my-4" />
     <h2>Invoices ({{  invoices.length  }})</h2>
     <v-row>
       <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
-        <InvoiceCard v-bind="invoice" :client="{ name }" />
+        <InvoiceCard v-bind="invoice" :client="{ name }" :loading="loading" />
       </v-col>
     </v-row>
     <v-divider class="my-4" />
