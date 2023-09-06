@@ -10,6 +10,7 @@ export default defineComponent({
   name: 'Invoices/Create',
   components: { Button, LineItems, Select, TextArea, TextField, VueDatePicker },
   data: () => ({
+    loading: true,
     clients: [],
     clientId: '',
     ref: '',
@@ -21,11 +22,14 @@ export default defineComponent({
   }),
 
   async mounted() {
-    const response = await API.clients.list()
-    if (response.status === 200) {
+    await API.clients.list().then((response: AxiosResponse) => {
       this.clients = response.data
-      this.clientId = this.$route.query.clientId
-    }
+      this.clientId = this.$route.query.clientId as string
+    }).catch((err: AxiosError) => {
+      console.warn(err)
+    }).finally(() => {
+      this.loading = false
+    })
   },
 
   computed: {
@@ -89,7 +93,7 @@ export default defineComponent({
         <h1 class="title">New Invoice</h1>
       </v-col>
     </v-row>
-    <v-form @submit.prevent="submitForm" validate-on="submit">
+    <v-form @submit.prevent="submitForm" validate-on="submit" v-if="!loading">
       <div class="document">
         <v-row>
           <v-col sm="8" md="6">

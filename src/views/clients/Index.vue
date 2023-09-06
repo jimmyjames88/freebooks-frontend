@@ -49,7 +49,7 @@ export default defineComponent({
       <v-col v-for="client in clients" :key="`client-${client._id}`" cols="12" md="6" lg="4">
         <v-skeleton-loader
           v-if="loading"
-          class="mx-auto border"
+          class="mx-auto"
           type="avatar, heading, article"
         />
         <ClientCard v-else v-bind="client" @delete="deleteClient(client._id)"></ClientCard>
