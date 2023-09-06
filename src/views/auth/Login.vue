@@ -4,6 +4,7 @@ import validator from 'validator'
 import { mapActions } from 'pinia'
 import { useAuthStore } from '@/stores/Auth'
 import { Button, GradientContainer, Logo, TextField } from '@/components'
+import { RouteLocationRaw } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
@@ -38,7 +39,10 @@ export default defineComponent({
       this.loading = true
       try {
         await this.login(this.email, this.password)
-        this.$router.push({ name: 'Clients/Index' })
+        if (this.$route.query.ref)
+          return window.location.href = this.$route.query.ref
+        return this.$router.push({ name: 'Clients/Index' })
+    
       } catch(err) {
         console.warn(err)
       }
