@@ -2,17 +2,23 @@
 import { defineComponent } from 'vue'
 import API from '@/api'
 import { Button, InvoiceCard } from '@/components'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Button, InvoiceCard },
+  components: { Button, InvoiceCard, VSkeletonLoader },
   data: () => ({
+    loading: true,
     invoices: [] as { _id: string, total: string }[],
   }),
   async mounted() {
-    const response = await API.invoices.index()
-    if (response.status === 200)
+    API.invoices.index().then((response: AxiosResponse) => {
       this.invoices = response.data
+    }).catch((err: AxiosError) => {
+      console.warn(err)
+    }).finally(() => {
+      this.loading = false
+    })
   }
 })
 </script>
@@ -34,7 +40,12 @@ export default defineComponent({
     </v-row>
     <v-row>
       <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
-        <InvoiceCard v-bind="invoice" />
+        <v-skeleton-loader
+          v-if="loading"
+          class="mx-auto border"
+          type="heading, divider, paragraph"
+        />
+        <InvoiceCard v-else v-bind="invoice" />
       </v-col>
     </v-row>
   </v-container>
