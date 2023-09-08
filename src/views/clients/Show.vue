@@ -59,14 +59,17 @@ export default defineComponent({
       <v-col cols="12" md="6" lg="4" xl="3">
         <h3>Contact</h3>
         <v-list>
-          <v-list-item>
-            <v-icon>mdi-email</v-icon> {{ email }}
+          <v-list-item :href="`mailto:${email}`">
+            <v-icon>mdi-email</v-icon>
+            {{ email }}
           </v-list-item>
-          <v-list-item>
-            <v-icon>mdi-phone</v-icon> {{ phone }}
+          <v-list-item :href="`tel:${phone}`">
+            <v-icon>mdi-phone</v-icon>
+            {{ phone }}
           </v-list-item>
-          <v-list-item>
-            <v-icon>mdi-link</v-icon> {{ website }}
+          <v-list-item :href="website" target="_blank">
+            <v-icon>mdi-link</v-icon>
+            {{ website }}
           </v-list-item>
         </v-list>
       </v-col>
