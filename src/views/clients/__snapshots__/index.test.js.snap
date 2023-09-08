@@ -6,7 +6,7 @@ exports[`Index.vue > Renders properly 1`] = `
     <div class=\\"v-col\\">
       <h1 class=\\"title\\">Clients</h1>
     </div>
-    <div class=\\"v-col\\" align=\\"end\\"><button data-v-3c9d0845=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--flat v-theme--light bg-transparent v-btn--density-default v-btn--size-default v-btn--variant-elevated\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+    <div class=\\"v-col\\" align=\\"end\\"><button data-v-3c9d0845=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--flat v-theme--light bg-transparent v-btn--density-default v-btn--size-default v-btn--variant-elevated\\" disabled=\\"\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
         <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-magnify mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> Search </span>
         <!---->
         <!---->
@@ -16,6 +16,21 @@ exports[`Index.vue > Renders properly 1`] = `
         <!---->
       </a></div>
   </div>
-  <div class=\\"v-row\\"></div>
+  <div class=\\"v-row\\">
+    <div class=\\"v-col-md-6 v-col-lg-4 v-col-12\\">
+      <div class=\\"v-skeleton-loader v-theme--light mx-auto\\" aria-busy=\\"true\\" aria-live=\\"polite\\" aria-label=\\"Loading...\\" role=\\"alert\\">
+        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__avatar\\"></div>
+        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__heading\\"></div>
+        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__article\\">
+          <div class=\\"v-skeleton-loader__bone v-skeleton-loader__heading\\"></div>
+          <div class=\\"v-skeleton-loader__bone v-skeleton-loader__paragraph\\">
+            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
+            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
+            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>"
 `;

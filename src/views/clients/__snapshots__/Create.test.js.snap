@@ -196,7 +196,7 @@ exports[`Create.vue > Renders properly 1`] = `
                     <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"> Cancel </span>
                     <!---->
                     <!---->
-                  </button><button data-v-3c9d0845=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--flat v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-elevated\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+                  </button><button data-v-3c9d0845=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--flat v-theme--light bg-secondary v-btn--density-default v-btn--size-default v-btn--variant-elevated\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
                     <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"> Next </span>
                     <!---->
                     <!---->

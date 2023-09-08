@@ -42,7 +42,7 @@ export default defineComponent({
   methods: {
     save() {
       const { _id, name, email, phone, website, address } = this
-      API.clients.update({  _id, name, email, phone, website, address }).then((response: AxiosResponse) => {
+      API.clients.update({  _id, name, email, phone, website, address }).then(() => {
         this.$router.push({ name: 'Clients/Show', params: { clientId: this._id } })
       }).catch((err: AxiosError) => {
         console.warn(err)

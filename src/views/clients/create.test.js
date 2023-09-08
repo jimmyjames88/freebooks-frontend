@@ -4,8 +4,6 @@ import { createVuetify } from "vuetify";
 import { vi } from 'vitest'
 import Create from './Create.vue'
 
-vi.mock('axios')
-
 describe('Create.vue', () => {
   const vuetify = createVuetify()
 
@@ -17,12 +15,14 @@ describe('Create.vue', () => {
     })
     expect(wrapper.html()).toMatchSnapshot()
   })
+
   
   it('form submits the correct data', async () => {
     const wrapper = mount(Create, {
+      // setup globals
       global: {
         plugins: [vuetify],
-      },
+      }
     })
 
     const formData = {

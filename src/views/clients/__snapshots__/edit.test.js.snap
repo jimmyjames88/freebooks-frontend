@@ -14,10 +14,10 @@ exports[`Edit.vue > Renders properly 1`] = `
               <div class=\\"v-window-item v-window-item--active\\">
                 <div>
                   <div data-v-5dc27b7c=\\"\\" class=\\"text-field\\"><label data-v-5dc27b7c=\\"\\">Name</label>
-                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-text-field\\">
+                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-input--dirty v-text-field\\">
                       <!---->
                       <div class=\\"v-input__control\\">
-                        <div class=\\"v-field v-field--center-affix v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
+                        <div class=\\"v-field v-field--active v-field--center-affix v-field--dirty v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
                           <div class=\\"v-field__overlay\\"></div>
                           <div class=\\"v-field__loader\\">
                             <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
@@ -59,10 +59,10 @@ exports[`Edit.vue > Renders properly 1`] = `
                     </div>
                   </div>
                   <div data-v-5dc27b7c=\\"\\" class=\\"text-field\\"><label data-v-5dc27b7c=\\"\\">Email</label>
-                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-text-field\\">
+                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-input--dirty v-text-field\\">
                       <!---->
                       <div class=\\"v-input__control\\">
-                        <div class=\\"v-field v-field--center-affix v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
+                        <div class=\\"v-field v-field--active v-field--center-affix v-field--dirty v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
                           <div class=\\"v-field__overlay\\"></div>
                           <div class=\\"v-field__loader\\">
                             <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
@@ -104,10 +104,10 @@ exports[`Edit.vue > Renders properly 1`] = `
                     </div>
                   </div>
                   <div data-v-5dc27b7c=\\"\\" class=\\"text-field\\"><label data-v-5dc27b7c=\\"\\">Phone</label>
-                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-text-field\\">
+                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-input--dirty v-text-field\\">
                       <!---->
                       <div class=\\"v-input__control\\">
-                        <div class=\\"v-field v-field--center-affix v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
+                        <div class=\\"v-field v-field--active v-field--center-affix v-field--dirty v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
                           <div class=\\"v-field__overlay\\"></div>
                           <div class=\\"v-field__loader\\">
                             <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
@@ -149,10 +149,10 @@ exports[`Edit.vue > Renders properly 1`] = `
                     </div>
                   </div>
                   <div data-v-5dc27b7c=\\"\\" class=\\"text-field\\"><label data-v-5dc27b7c=\\"\\">Website</label>
-                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-text-field\\">
+                    <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-default v-locale--is-ltr v-input--dirty v-text-field\\">
                       <!---->
                       <div class=\\"v-input__control\\">
-                        <div class=\\"v-field v-field--center-affix v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
+                        <div class=\\"v-field v-field--active v-field--center-affix v-field--dirty v-field--no-label v-field--variant-filled v-theme--light v-locale--is-ltr\\">
                           <div class=\\"v-field__overlay\\"></div>
                           <div class=\\"v-field__loader\\">
                             <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
