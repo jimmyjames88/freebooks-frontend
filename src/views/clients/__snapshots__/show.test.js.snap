@@ -1,0 +1,77 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Show.vue > Renders properly 1`] = `
+"<div class=\\"v-container v-locale--is-ltr\\">
+  <div class=\\"v-row align-center justify-start\\">
+    <div class=\\"v-col\\">
+      <h1>Test Name</h1>
+    </div>
+    <div class=\\"v-col\\" align=\\"end\\"><a data-v-3c9d0845=\\"\\" class=\\"v-btn v-btn--flat v-theme--light bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+        <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-receipt-text-plus mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> New Invoice </span>
+        <!---->
+        <!---->
+      </a><button data-v-3c9d0845=\\"\\" type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--flat v-theme--light bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated\\" disabled=\\"\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+        <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-file-document-plus mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i>New Estimate </span>
+        <!---->
+        <!---->
+      </button></div>
+  </div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+  <div class=\\"v-row\\">
+    <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12\\">
+      <h3>Contact</h3>
+      <div class=\\"v-list v-theme--light v-list--density-default v-list--one-line\\" tabindex=\\"0\\" role=\\"listbox\\">
+        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
+          <!----><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-email mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> test@example.com
+          </div>
+          <!---->
+        </div>
+        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
+          <!----><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-phone mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> 1234567890
+          </div>
+          <!---->
+        </div>
+        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
+          <!----><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-link mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> https://example.com
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+    <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12\\">
+      <h3>Address</h3>
+      <div class=\\"v-list v-theme--light v-list--density-default v-list--one-line\\" tabindex=\\"0\\" role=\\"listbox\\">
+        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
+          <!----><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!---->
+            <p>Address Line 1</p>
+            <p>Address Line 2</p>
+            <p>Calgary, Alberta, Canada</p>
+            <p>T1T1T1</p>
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+  <h2>Invoices (0)</h2>
+  <div class=\\"v-row\\"></div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+</div>"
+`;
