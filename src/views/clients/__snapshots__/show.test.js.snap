@@ -20,35 +20,28 @@ exports[`Show.vue > Renders properly 1`] = `
   <div class=\\"v-row\\">
     <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12\\">
       <h3>Contact</h3>
-      <div class=\\"v-list v-theme--light v-list--density-default v-list--one-line\\" tabindex=\\"0\\" role=\\"listbox\\">
-        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
-          <!----><span class=\\"v-list-item__underlay\\"></span>
+      <div class=\\"v-list v-theme--light v-list--density-default v-list--one-line\\" tabindex=\\"0\\" role=\\"listbox\\"><a class=\\"v-list-item v-list-item--link v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" href=\\"mailto:test@example.com\\" tabindex=\\"-2\\"><span class=\\"v-list-item__overlay\\"></span><span class=\\"v-list-item__underlay\\"></span>
           <!---->
           <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
             <!---->
             <!----><i class=\\"mdi-email mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> test@example.com
           </div>
           <!---->
-        </div>
-        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
-          <!----><span class=\\"v-list-item__underlay\\"></span>
+        </a><a class=\\"v-list-item v-list-item--link v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" href=\\"tel:1234567890\\" tabindex=\\"-2\\"><span class=\\"v-list-item__overlay\\"></span><span class=\\"v-list-item__underlay\\"></span>
           <!---->
           <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
             <!---->
             <!----><i class=\\"mdi-phone mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> 1234567890
           </div>
           <!---->
-        </div>
-        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\">
-          <!----><span class=\\"v-list-item__underlay\\"></span>
+        </a><a class=\\"v-list-item v-list-item--link v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" href=\\"https://example.com\\" tabindex=\\"-2\\" target=\\"_blank\\"><span class=\\"v-list-item__overlay\\"></span><span class=\\"v-list-item__underlay\\"></span>
           <!---->
           <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
             <!---->
             <!----><i class=\\"mdi-link mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> https://example.com
           </div>
           <!---->
-        </div>
-      </div>
+        </a></div>
     </div>
     <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12\\">
       <h3>Address</h3>

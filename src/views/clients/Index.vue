@@ -1,17 +1,30 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import API from '@/api'
 import { Button, ClientCard } from '@/components'
 import { AxiosError, AxiosResponse } from 'axios'
 
 export default defineComponent({
   name: 'Clients.Index',
-  components: { Button, ClientCard, VSkeletonLoader },
+  components: { Button, ClientCard, VDataTableServer, VSkeletonLoader },
   data: () => ({
     clients: [] as any[],
-    loading: true
+    itemsPerPage: 10,
+    loading: true,
+    totalItems: 100
   }),
+  computed: {
+    headers: () => ([
+      {
+        title: 'Name',
+        align: 'start',
+        sortable: true,
+        key: 'name'
+      }
+    ])
+  },
   mounted() {
     API.clients.index().then((response: AxiosResponse) => {
       this.clients = response.data
@@ -25,6 +38,9 @@ export default defineComponent({
   methods: {
     deleteClient(clientId: string) {
       this.clients = this.clients.filter(client => client._id !== clientId)
+    },
+    search() {
+      // ...
     }
   }
 })
@@ -46,13 +62,30 @@ export default defineComponent({
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="client in clients" :key="`client-${client._id}`" cols="12" md="6" lg="4">
-        <v-skeleton-loader
+      <v-col>
+        <!-- <v-skeleton-loader
           v-if="loading"
           class="mx-auto"
           type="avatar, heading, article"
         />
-        <ClientCard v-else v-bind="client" @delete="deleteClient(client._id)"></ClientCard>
+        <ClientCard v-else v-bind="client" @delete="deleteClient(client._id)"></ClientCard> -->
+        <v-data-table-server
+          v-model:items-per-page="itemsPerPage"
+          :headers="headers"
+          :items-length="totalItems"
+          :items="clients"
+          :loading="loading"
+          :search="search"
+          class="elevation-1"
+          item-value="name"
+          @update:options="loadItems"
+        >
+          <template v-slot:item.name="{ item }">
+            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable._id }}">
+              {{ item.selectable.name }}
+            </router-link>
+          </template>
+        </v-data-table-server>  
       </v-col>
     </v-row>
   </v-container>

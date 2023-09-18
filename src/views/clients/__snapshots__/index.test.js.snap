@@ -17,16 +17,130 @@ exports[`Index.vue > Renders properly 1`] = `
       </a></div>
   </div>
   <div class=\\"v-row\\">
-    <div class=\\"v-col-md-6 v-col-lg-4 v-col-12\\">
-      <div class=\\"v-skeleton-loader v-theme--light mx-auto\\" aria-busy=\\"true\\" aria-live=\\"polite\\" aria-label=\\"Loading...\\" role=\\"alert\\">
-        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__avatar\\"></div>
-        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__heading\\"></div>
-        <div class=\\"v-skeleton-loader__bone v-skeleton-loader__article\\">
-          <div class=\\"v-skeleton-loader__bone v-skeleton-loader__heading\\"></div>
-          <div class=\\"v-skeleton-loader__bone v-skeleton-loader__paragraph\\">
-            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
-            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
-            <div class=\\"v-skeleton-loader__bone v-skeleton-loader__text\\"></div>
+    <div class=\\"v-col\\">
+      <!-- <v-skeleton-loader
+          v-if=\\"loading\\"
+          class=\\"mx-auto\\"
+          type=\\"avatar, heading, article\\"
+        />
+        <ClientCard v-else v-bind=\\"client\\" @delete=\\"deleteClient(client._id)\\"></ClientCard> -->
+      <div class=\\"v-table v-table--has-top v-table--has-bottom v-theme--light v-table--density-default v-data-table v-data-table--loading elevation-1\\">
+        <!---->
+        <div class=\\"v-table__wrapper\\">
+          <table>
+            <!---->
+            <thead class=\\"v-data-table__thead\\" role=\\"rowgroup\\">
+              <tr>
+                <th class=\\"v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable v-data-table-headers--loading v-data-table__th v-data-table__th--sortable v-data-table-headers--loading\\">
+                  <div class=\\"v-data-table-header__content\\"><span>Name</span><i class=\\"mdi-arrow-up mdi v-icon notranslate v-theme--light v-icon--size-default v-data-table-header__sort-icon\\" aria-hidden=\\"true\\"></i>
+                    <!---->
+                  </div>
+                </th>
+              </tr>
+              <tr class=\\"v-data-table-progress\\">
+                <th colspan=\\"1\\">
+                  <div class=\\"v-data-table-progress__loader\\">
+                    <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 2px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"false\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
+                      <!---->
+                      <div class=\\"v-progress-linear__background\\" style=\\"width: 100%;\\"></div>
+                      <transition-stub name=\\"fade-transition\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+                        <div class=\\"v-progress-linear__indeterminate\\">
+                          <div class=\\"v-progress-linear__indeterminate long\\"></div>
+                          <div class=\\"v-progress-linear__indeterminate short\\"></div>
+                        </div>
+                      </transition-stub>
+                      <!---->
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <!---->
+            <tbody class=\\"v-data-table__tbody\\" role=\\"rowgroup\\">
+              <tr class=\\"v-data-table__tr\\">
+                <td class=\\"v-data-table__td v-data-table-column--align-start\\">
+                  <router-link to=\\"[object Object]\\">Test Name</router-link>
+                </td>
+              </tr>
+              <!---->
+            </tbody>
+            <!---->
+            <!---->
+          </table>
+        </div>
+        <div class=\\"v-data-table-footer\\">
+          <!---->
+          <div class=\\"v-data-table-footer__items-per-page\\"><span>Items per page:</span>
+            <div class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-compact v-locale--is-ltr v-input--dirty v-text-field v-select v-select--single v-select--selected\\">
+              <!---->
+              <div class=\\"v-input__control\\">
+                <div class=\\"v-field v-field--active v-field--appended v-field--center-affix v-field--dirty v-field--no-label v-field--variant-outlined v-theme--light v-locale--is-ltr\\" role=\\"button\\" aria-haspopup=\\"menu\\" aria-expanded=\\"false\\" aria-owns=\\"v-menu-4\\">
+                  <div class=\\"v-field__overlay\\"></div>
+                  <div class=\\"v-field__loader\\">
+                    <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
+                      <!---->
+                      <div class=\\"v-progress-linear__background\\" style=\\"width: 100%;\\"></div>
+                      <transition-stub name=\\"fade-transition\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+                        <div class=\\"v-progress-linear__indeterminate\\">
+                          <div class=\\"v-progress-linear__indeterminate long\\"></div>
+                          <div class=\\"v-progress-linear__indeterminate short\\"></div>
+                        </div>
+                      </transition-stub>
+                      <!---->
+                    </div>
+                  </div>
+                  <!---->
+                  <div class=\\"v-field__field\\" data-no-activator=\\"\\">
+                    <!----><label class=\\"v-label v-field-label\\" for=\\"input-2\\">
+                      <!---->
+                      <!---->
+                    </label>
+                    <!---->
+                    <div class=\\"v-field__input\\" data-no-activator=\\"\\">
+                      <!---->
+                      <!---->
+                      <div class=\\"v-select__selection\\"><span class=\\"v-select__selection-text\\">10<!----></span></div><input size=\\"1\\" type=\\"text\\" id=\\"input-2\\" aria-describedby=\\"input-2-messages\\" inputmode=\\"none\\" aria-label=\\"Open\\" title=\\"Open\\">
+                    </div>
+                    <!---->
+                  </div>
+                  <!---->
+                  <div class=\\"v-field__append-inner\\">
+                    <!----><i class=\\"mdi-menu-down mdi v-icon notranslate v-theme--light v-icon--size-default v-select__menu-icon\\" aria-hidden=\\"true\\"></i>
+                    <!---->
+                  </div>
+                  <div class=\\"v-field__outline\\">
+                    <div class=\\"v-field__outline__start\\"></div>
+                    <!---->
+                    <div class=\\"v-field__outline__end\\"></div>
+                    <!---->
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <!---->
+            </div>
+          </div>
+          <div class=\\"v-data-table-footer__info\\">
+            <div>1-10 of 100</div>
+          </div>
+          <div class=\\"v-data-table-footer__pagination\\"><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" aria-label=\\"First page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-first mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+              <!---->
+              <!---->
+            </button><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" aria-label=\\"Previous page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-left mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+              <!---->
+              <!---->
+            </button>
+            <!----><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" aria-label=\\"Next page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-right mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+              <!---->
+              <!---->
+            </button><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" aria-label=\\"Last page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-last mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+              <!---->
+              <!---->
+            </button>
           </div>
         </div>
       </div>
