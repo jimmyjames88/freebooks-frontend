@@ -35,7 +35,7 @@ export default defineComponent({
   computed: {
     clientList(): any {
       return this.clients.map((client: any) => ({
-        value: client._id,
+        value: client.id,
         title: client.name
       })).sort((a: any, b: any) => {
         if (a.title.toLowerCase() < b.title.toLowerCase()) return -1

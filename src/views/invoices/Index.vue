@@ -8,7 +8,7 @@ export default defineComponent({
   components: { Button, InvoiceCard },
   data: () => ({
     loading: true,
-    invoices: [] as { _id: string, total: string }[],
+    invoices: [] as { id: string, total: string }[],
   }),
   async mounted() {
     API.invoices.index().then((response: AxiosResponse) => {
@@ -38,7 +38,7 @@ export default defineComponent({
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
+      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="4" lg="3">
         <InvoiceCard v-bind="invoice" :loading="loading" />
       </v-col>
     </v-row>

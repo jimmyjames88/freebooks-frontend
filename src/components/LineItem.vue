@@ -54,7 +54,6 @@ export default defineComponent({
       this.$emit('delete')
     },
     handleQuantityKeydown(e: KeyboardEvent) {
-      console.log('focus', e)
       if (e.keyCode === 9 && !e.shiftKey && !e.altKey && !e.ctrlKey)  // tab
         this.$emit('endOfLine')
     }

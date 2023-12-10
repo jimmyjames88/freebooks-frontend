@@ -28,7 +28,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => response,
   async err => {
-    console.log('RESPONSE: ', err)
     const token = Cookies.get('token')
     if (token && err.response?.status === 401) {
       useAuthStore().logout()

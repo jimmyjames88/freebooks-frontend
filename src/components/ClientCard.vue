@@ -38,7 +38,7 @@ export default defineComponent({
       this.showConfirmDelete = true
     },
     handleDelete() {
-      API.clients.destroy(this._id).then(() => {
+      API.clients.destroy(this.id).then(() => {
         this.$emit('delete')
       }).catch((err: AxiosError) => {
         console.warn(err)
@@ -54,7 +54,7 @@ export default defineComponent({
     <v-card variant="flat">
       <v-toolbar color="transparent">
         <template #prepend>
-          <router-link :to="{ name: 'Clients/Show', params: { clientId: _id }}">
+          <router-link :to="{ name: 'Clients/Show', params: { clientId: id }}">
             <v-avatar color="primary">
               <span class="text-h6">{{ initials }}</span>
             </v-avatar>
@@ -62,7 +62,7 @@ export default defineComponent({
         </template>
         <v-toolbar-title>
           <h3>
-            <router-link :to="{ name: 'Clients/Show', params: { clientId: _id }}">
+            <router-link :to="{ name: 'Clients/Show', params: { clientId: id }}">
               {{ name }}
             </router-link>
           </h3>
@@ -83,10 +83,10 @@ export default defineComponent({
               <v-list-item>
                 <v-list-item-subtitle>Client Actions</v-list-item-subtitle>
               </v-list-item>
-              <v-list-item :to="{ name: 'Clients/Show', params: { clientId: _id }}">
+              <v-list-item :to="{ name: 'Clients/Show', params: { clientId: id }}">
                   <v-icon>mdi-account-eye</v-icon> View
               </v-list-item>
-              <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: _id }}">
+              <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: id }}">
                   <v-icon>mdi-account-edit</v-icon> Edit
               </v-list-item>
               <v-list-item @click="confirmDelete">

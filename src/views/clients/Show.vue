@@ -10,10 +10,17 @@ export default defineComponent({
   components: { Button, InvoiceCard },
   data: () => ({
     loading: true,
-    _id: '',
+    id: null,
     name: '',
     email: '',
-    address: '',
+    address: {
+      line1: '',
+      line2: '',
+      city: '',
+      state: '',
+      postal: '',
+      country: ''
+    },
     phone: '',
     website: '',
     invoices: []
@@ -22,8 +29,8 @@ export default defineComponent({
     console.log(this.$route.params.clientId)
     API.clients.show(this.$route.params.clientId)
       .then((response: AxiosResponse) => {
-        const { _id, name, email, address, phone, website, invoices } = response.data
-        this._id = _id
+        const { id, name, email, address, phone, website, invoices } = response.data
+        this.id = id
         this.name = name
         this.email = email
         this.address = address
@@ -46,7 +53,7 @@ export default defineComponent({
         <h1 v-text="name" />
       </v-col>
       <v-col align="end">
-        <Button color="primary" :to="{ name: 'Invoices/Create', query: { clientId: _id }}">
+        <Button color="primary" :to="{ name: 'Invoices/Create', query: { clientId: id }}">
           <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
         </Button>
         <Button color="primary" disabled>
@@ -77,10 +84,10 @@ export default defineComponent({
         <h3>Address</h3>
         <v-list>
           <v-list-item>
-            <p>{{ address.line1 }}</p>
+            <!-- <p>{{ address.line1 }}</p>
             <p>{{ address.line2 }}</p>
-            <p>{{ address.city }}, {{ address.province }}, {{ address.country }}</p>
-            <p>{{ address.postal }}</p>
+            <p>{{ address.city }}, {{ address.state }}, {{ address.country }}</p>
+            <p>{{ address.postal }}</p> -->
           </v-list-item>
         </v-list>
       </v-col>
@@ -88,7 +95,7 @@ export default defineComponent({
     <v-divider class="my-4" />
     <h2>Invoices ({{  invoices.length  }})</h2>
     <v-row>
-      <v-col v-for="invoice in invoices" :key="`invoice-${invoice._id}`" cols="12" sm="6" md="4" lg="3">
+      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="4" lg="3">
         <InvoiceCard v-bind="invoice" :client="{ name }" :loading="loading" />
       </v-col>
     </v-row>

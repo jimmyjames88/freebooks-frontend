@@ -8,7 +8,7 @@ export default defineComponent({
   components: { Button, GradientContainer, TextField },
   data: () => ({
     step: 1,
-    _id: '',
+    id: '',
     name: '',
     email: '',
     phone: '',
@@ -26,8 +26,8 @@ export default defineComponent({
     // load data from clients.show endpoint
     const response = await API.clients.edit(this.$route.params.clientId)
     // set data properties
-    const { _id, name, email, phone, website, address } = response.data
-    this._id = _id
+    const { id, name, email, phone, website, address } = response.data
+    this.id = id
     this.name = name
     this.email = email
     this.phone = phone
@@ -41,9 +41,9 @@ export default defineComponent({
   },
   methods: {
     save() {
-      const { _id, name, email, phone, website, address } = this
-      API.clients.update({  _id, name, email, phone, website, address }).then(() => {
-        this.$router.push({ name: 'Clients/Show', params: { clientId: this._id } })
+      const { id, name, email, phone, website, address } = this
+      API.clients.update({  id, name, email, phone, website, address }).then(() => {
+        this.$router.push({ name: 'Clients/Show', params: { clientId: this.id } })
       }).catch((err: AxiosError) => {
         console.warn(err)
       })

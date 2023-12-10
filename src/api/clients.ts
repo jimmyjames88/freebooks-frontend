@@ -26,7 +26,7 @@ export default {
   },
 
   update(client: any) {
-    return axios.put(`${url}/${client._id}`, {
+    return axios.put(`${url}/${client.id}`, {
       ...client
     })
   },

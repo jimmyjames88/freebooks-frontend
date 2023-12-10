@@ -15,7 +15,6 @@ export default defineComponent({
         rate: null,
         quantity: null
     }) {
-      console.log(item)
       this.lineItems.push(item)
     },
     deleteItem(index: number) {

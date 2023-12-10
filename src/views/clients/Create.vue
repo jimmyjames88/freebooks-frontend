@@ -25,7 +25,7 @@ export default defineComponent({
     save() {
       const { name, email, phone, website, address } = this
       API.clients.store({  name, email, phone, website, address }).then((response: AxiosResponse) => {
-        this.$router.push({ name: 'Clients/Show', params: { clientId: response.data._id } })
+        this.$router.push({ name: 'Clients/Show', params: { clientId: response.data.id } })
       }).catch((err: AxiosError) => {
         console.warn(err)
       })

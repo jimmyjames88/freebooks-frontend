@@ -10,7 +10,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    _id: String,
+    id: Number,
     client: Object,
     ref: String,
     date: String,
@@ -27,7 +27,7 @@ export default defineComponent({
   />
   <v-card v-else variant="flat">
     <v-card-text>
-      <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: _id }}">
+      <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
         <v-row>
           <v-col>
             <h3>{{ client?.name }}</h3>

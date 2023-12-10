@@ -37,11 +37,12 @@ export default defineComponent({
   
   methods: {
     deleteClient(clientId: string) {
-      this.clients = this.clients.filter(client => client._id !== clientId)
+      this.clients = this.clients.filter(client => client.id !== clientId)
     },
     search() {
       // ...
-    }
+    },
+    loadItems() {}
   }
 })
 </script>
@@ -68,7 +69,7 @@ export default defineComponent({
           class="mx-auto"
           type="avatar, heading, article"
         />
-        <ClientCard v-else v-bind="client" @delete="deleteClient(client._id)"></ClientCard> -->
+        <ClientCard v-else v-bind="client" @delete="deleteClient(client.id)"></ClientCard> -->
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
           :headers="headers"
@@ -81,7 +82,7 @@ export default defineComponent({
           @update:options="loadItems"
         >
           <template v-slot:item.name="{ item }">
-            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable._id }}">
+            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
               {{ item.selectable.name }}
             </router-link>
           </template>
