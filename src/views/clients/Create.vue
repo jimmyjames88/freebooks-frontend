@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useToast } from 'vue-toastification';
 import { Button, GradientContainer, TextField } from '@/components'
 import API from '@/api'
 
@@ -25,6 +26,7 @@ export default defineComponent({
     save() {
       const { name, email, phone, website, address } = this
       API.clients.store({  name, email, phone, website, address }).then((response: AxiosResponse) => {
+        useToast().success('Client created successfully')
         this.$router.push({ name: 'Clients/Show', params: { clientId: response.data.id } })
       }).catch((err: AxiosError) => {
         console.warn(err)

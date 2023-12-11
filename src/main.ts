@@ -3,10 +3,13 @@ import { createPinia } from 'pinia'
 import router from './router'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Toast from 'vue-toastification';
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { useAuthStore } from './stores/Auth'
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
 
 loadFonts()
 
@@ -41,4 +44,5 @@ createApp(App)
   .use(vuetify)
   .use(pinia)
   .use(router)
+  .use(Toast, { position: 'bottom-right' })
   .mount('#app')

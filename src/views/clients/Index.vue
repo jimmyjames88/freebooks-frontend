@@ -16,12 +16,26 @@ export default defineComponent({
     totalItems: 100
   }),
   computed: {
+    actions: () => ([
+      { title: 'Edit' },
+      { title: 'Delete' }
+    ]),
     headers: () => ([
       {
         title: 'Name',
         align: 'start',
         sortable: true,
         key: 'name'
+      },
+      {
+        title: 'Email',
+        sortable: true,
+        key: 'email'
+      },
+      {
+        title: 'Actions',
+        align: 'end',
+        key: 'actions'
       }
     ])
   },
@@ -76,7 +90,7 @@ export default defineComponent({
           :items-length="totalItems"
           :items="clients"
           :loading="loading"
-          :search="search"
+          
           class="elevation-1"
           item-value="name"
           @update:options="loadItems"
@@ -85,6 +99,21 @@ export default defineComponent({
             <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
               {{ item.selectable.name }}
             </router-link>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn flat size="xs">
+              <v-icon>mdi-dots-vertical</v-icon>
+              <v-menu activator="parent">
+                <v-list>
+                  <v-list-item v-for="(item, index) in actions"
+                    :key="index"
+                    :value="index"
+                  >
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-btn>
           </template>
         </v-data-table-server>  
       </v-col>
