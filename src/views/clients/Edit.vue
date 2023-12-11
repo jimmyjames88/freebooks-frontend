@@ -17,7 +17,7 @@ export default defineComponent({
       line1: '',
       line2: '',
       city: '',
-      province: '',
+      state: '',
       postal: '',
       country: ''
     }
@@ -35,7 +35,7 @@ export default defineComponent({
     this.address.line1 = address.line1
     this.address.line2 = address.line2
     this.address.city = address.city
-    this.address.province = address.province
+    this.address.state = address.state
     this.address.postal = address.postal
     this.address.country = address.country
   },
@@ -86,7 +86,7 @@ export default defineComponent({
               <TextField name="line1" v-model="address.line1" label="Line 1" />
               <TextField name="line2" v-model="address.line2" label="Line 2" />
               <TextField name="city" v-model="address.city" label="City" />
-              <TextField name="province" v-model="address.province" label="Province" />
+              <TextField name="state" v-model="address.state" label="state" />
               <TextField name="postal" v-model="address.postal" label="Postal Code" />
               <TextField name="country" v-model="address.country" label="Country" />
               <Button color="transparent" @click="step--">Previous</Button>

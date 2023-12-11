@@ -18,7 +18,7 @@ const mockClientResponse = [{
     line1: 'Address Line 1',
     line2: 'Address Line 2',
     city: 'Calgary',
-    province: 'Alberta',
+    state: 'Alberta',
     postal: 'T1T1T1',
     country: 'Canada'
   }

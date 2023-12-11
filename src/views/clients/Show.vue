@@ -84,10 +84,10 @@ export default defineComponent({
         <h3>Address</h3>
         <v-list>
           <v-list-item>
-            <!-- <p>{{ address.line1 }}</p>
+            <p>{{ address.line1 }}</p>
             <p>{{ address.line2 }}</p>
             <p>{{ address.city }}, {{ address.state }}, {{ address.country }}</p>
-            <p>{{ address.postal }}</p> -->
+            <p>{{ address.postal }}</p>
           </v-list-item>
         </v-list>
       </v-col>

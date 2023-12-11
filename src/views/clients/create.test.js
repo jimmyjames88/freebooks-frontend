@@ -33,7 +33,7 @@ describe('Create.vue', () => {
       line1: 'Address Line 1',
       line2: 'Address Line 2',
       city: 'Calgary',
-      province: 'Alberta',
+      state: 'Alberta',
       postal: 'T1T1T1',
       country: 'Canada'
     }
@@ -51,7 +51,7 @@ describe('Create.vue', () => {
     const line1 = wrapper.find('input[name=line1]').setValue(formData.line1)
     const line2 = wrapper.find('input[name=line2]').setValue(formData.line2)
     const city = wrapper.find('input[name=city]').setValue(formData.city)
-    const province = wrapper.find('input[name=province]').setValue(formData.province)
+    const state = wrapper.find('input[name=state]').setValue(formData.state)
     const postal = wrapper.find('input[name=postal]').setValue(formData.postal)
     const country = wrapper.find('input[name=country]').setValue(formData.country)
   

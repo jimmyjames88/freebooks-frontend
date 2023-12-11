@@ -14,7 +14,7 @@ export default defineComponent({
         line1: '',
         line2: '',
         city: '',
-        province: '',
+        state: '',
         postal: '',
         country: ''
       },
@@ -79,7 +79,7 @@ export default defineComponent({
           <p>{{ client.address.line1 }}</p>
           <p>{{ client.address.line2 }}</p>
           <p>{{ client.address.city }}</p>
-          <p>{{ client.address.province }}</p>
+          <p>{{ client.address.state }}</p>
           <p>{{ client.address.postal }}</p>
           <p>{{ client.address.country }}</p>
         </v-col>
