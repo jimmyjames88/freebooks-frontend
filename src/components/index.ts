@@ -1,3 +1,4 @@
+export { default as Avatar } from './Avatar.vue'
 export { default as Button } from './Button.vue'
 export { default as ClientCard } from './ClientCard.vue'
 export { default as GradientContainer } from './GradientContainer.vue'
