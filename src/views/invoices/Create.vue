@@ -63,11 +63,11 @@ export default defineComponent({
 
   methods: {
     async submitForm() {
-      const { clientId, ref, date, lineItems, notes, subtotal, tax, total } = this
+      const { clientId, refNo, date, lineItems, notes, subtotal, tax, total } = this
       try {
         await API.invoices.store({
           clientId: clientId,
-          ref,
+          refNo,
           date,
           lineItems,
           notes,
@@ -108,7 +108,7 @@ export default defineComponent({
         <v-divider class="my-4" />
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <TextField v-model="ref" label="Ref #" variant="outlined" />
+            <TextField v-model="refNo" label="Ref #" variant="outlined" />
           </v-col>
           <v-col cols="12" sm="6" md="4" class="datepicker-col">
             <VueDatePicker v-model="date" label="Issue Date" />

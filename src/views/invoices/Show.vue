@@ -31,18 +31,18 @@ export default defineComponent({
     tax: 0,
     total: 0,
     notes: '',
-    ref: '',
+    refNo: '',
     date: null
   }),
   mounted() {
     API.invoices.show(this.$route.params.invoiceId)
       .then((response: AxiosResponse) => {
-        const { client, lineItems, total, notes, ref, date } = response.data
+        const { client, lineItems, total, notes, refNo, date } = response.data
         this.client = client
         this.lineItems = lineItems
         this.total = total
         this.notes = notes
-        this.ref = ref
+        this.refNo = refNo
         this.date = date
       })
       .catch((err: Error) => console.warn(err))
@@ -54,7 +54,7 @@ export default defineComponent({
   <v-container>
     <v-row>
       <v-col>
-        <h1 class="title">Invoice: #{{ ref }}</h1>
+        <h1 class="title">Invoice: #{{ refNo }}</h1>
       </v-col>
       <v-col>
         <Button color="primary" disabled>
@@ -84,7 +84,7 @@ export default defineComponent({
           <p>{{ client.address.country }}</p>
         </v-col>
         <v-col>
-          <p>#{{ ref }}</p>
+          <p>#{{ refNo }}</p>
           <p>&nbsp;</p>
           <p>
             <strong>Issued: </strong>{{ date }}
@@ -94,7 +94,7 @@ export default defineComponent({
       <v-row>
         <v-col>
           <p>{{ date }}</p>
-          <p>{{ ref }}</p>
+          <p>{{ refNo }}</p>
         </v-col>
       </v-row>
       <v-row>
