@@ -14,15 +14,10 @@ export default defineComponent({
     clients: [] as any[],
     itemsPerPage: 10,
     loading: true,
-    totalItems: 100,
+    totalItems: 0,
     search: '',
     searchTrigger: ''
   }),
-  watch: {
-    search() {
-      this.searchTrigger = String(Date.now())
-    }
-  },
   computed: {
     headers: () => ([
       {
@@ -45,21 +40,22 @@ export default defineComponent({
     ]),
     initials: (str: string) => initials(str)
   },
-
-  mounted() {
-    this.loadItems()
-  },
   
   methods: {
     deleteClient(clientId: string) {
       this.clients = this.clients.filter(client => client.id !== clientId)
     },
+    triggerSearch() {
+      if (!this.search || this.search.length > 2) {
+        this.searchTrigger = Date.now().toString()
+      }
+    },
     loadItems(filters: any = undefined) {
-      console.log('filters', filters)
       this.loading = true
       API.clients.index({ ...filters, search: this.search })
         .then((response: AxiosResponse) => {
-          this.clients = response.data
+          this.clients = response.data.clients
+          this.totalItems = response.data.total
         }).catch((err: AxiosError) => {
           console.warn(err)
         }).finally(() => {
@@ -100,12 +96,18 @@ export default defineComponent({
               <v-row>
                 <v-col cols="12" sm="6" md="4">
                   <TextField
+                    ref="search"
                     variant="outlined"
                     v-model="search"
                     prepend-inner-icon="mdi-magnify"
+                    clearable
+                    clear-icon="mdi-close"
                     single-line
                     hide-details
                     placeholder="Search"
+                    @keypress.enter="triggerSearch"
+                    @click:clear="triggerSearch"
+                    @click:prepend-inner="triggerSearch"
                   ></TextField>
                 </v-col>
               </v-row>
