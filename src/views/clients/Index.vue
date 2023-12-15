@@ -3,23 +3,27 @@ import { defineComponent } from 'vue'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 import API from '@/api'
-import { Button, ClientCard } from '@/components'
+import { Avatar, Button, ClientCard } from '@/components'
 import { AxiosError, AxiosResponse } from 'axios'
+import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Clients.Index',
-  components: { Button, ClientCard, VDataTableServer, VSkeletonLoader },
+  components: { Avatar, Button, ClientCard, VDataTableServer, VSkeletonLoader, TextField },
   data: () => ({
     clients: [] as any[],
     itemsPerPage: 10,
     loading: true,
-    totalItems: 100
+    totalItems: 100,
+    search: '',
+    searchTrigger: ''
   }),
+  watch: {
+    search() {
+      this.searchTrigger = String(Date.now())
+    }
+  },
   computed: {
-    actions: () => ([
-      { title: 'Edit' },
-      { title: 'Delete' }
-    ]),
     headers: () => ([
       {
         title: 'Name',
@@ -35,28 +39,33 @@ export default defineComponent({
       {
         title: 'Actions',
         align: 'end',
-        key: 'actions'
+        key: 'actions',
+        sortable: false
       }
-    ])
+    ]),
+    initials: (str: string) => initials(str)
   },
+
   mounted() {
-    API.clients.index().then((response: AxiosResponse) => {
-      this.clients = response.data
-    }).catch((err: AxiosError) => {
-      console.warn(err)
-    }).finally(() => {
-      this.loading = false
-    })
+    this.loadItems()
   },
   
   methods: {
     deleteClient(clientId: string) {
       this.clients = this.clients.filter(client => client.id !== clientId)
     },
-    search() {
-      // ...
-    },
-    loadItems() {}
+    loadItems(filters: any = undefined) {
+      console.log('filters', filters)
+      this.loading = true
+      API.clients.index({ ...filters, search: this.search })
+        .then((response: AxiosResponse) => {
+          this.clients = response.data
+        }).catch((err: AxiosError) => {
+          console.warn(err)
+        }).finally(() => {
+          this.loading = false
+        })
+    }
   }
 })
 </script>
@@ -68,9 +77,6 @@ export default defineComponent({
         <h1 class="title">Clients</h1>
       </v-col>
       <v-col align="end">
-        <Button color="transparent" disabled>
-          <v-icon>mdi-magnify</v-icon> Search
-        </Button>
         <Button color="primary" :to="{ name: 'Clients/Create' }">
           <v-icon>mdi-account-plus</v-icon> Add Client
         </Button>
@@ -78,25 +84,37 @@ export default defineComponent({
     </v-row>
     <v-row>
       <v-col>
-        <!-- <v-skeleton-loader
-          v-if="loading"
-          class="mx-auto"
-          type="avatar, heading, article"
-        />
-        <ClientCard v-else v-bind="client" @delete="deleteClient(client.id)"></ClientCard> -->
         <v-data-table-server
           v-model:items-per-page="itemsPerPage"
+          :search="searchTrigger"
           :headers="headers"
           :items-length="totalItems"
           :items="clients"
-          :loading="loading"
-          
+          :loading="loading"  
           class="elevation-1"
           item-value="name"
           @update:options="loadItems"
         >
+          <template v-slot:top>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <TextField
+                    variant="outlined"
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    single-line
+                    hide-details
+                    placeholder="Search"
+                  ></TextField>
+                </v-col>
+              </v-row>
+            </v-container>
+          </template>
+          
           <template v-slot:item.name="{ item }">
             <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
+              <Avatar>{{ item.selectable.name }}</Avatar>
               {{ item.selectable.name }}
             </router-link>
           </template>
@@ -105,11 +123,20 @@ export default defineComponent({
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item v-for="(item, index) in actions"
-                    :key="index"
-                    :value="index"
-                  >
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item>
+                    <v-list-item-title>New Invoice</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>New Estimate</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
+                    <v-list-item-title>View</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.selectable.id }}">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>

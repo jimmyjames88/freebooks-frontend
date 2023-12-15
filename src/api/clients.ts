@@ -3,8 +3,12 @@ import axios from 'axios'
 const url = `${import.meta.env.VITE_API}/clients`
 
 export default {
-  index() {
-    return axios.get(`${url}/`)
+  index(filters: any) {
+    return axios.get(`${url}/`, {
+      params: {
+        ...filters
+      }
+    })
   },
 
   list() {

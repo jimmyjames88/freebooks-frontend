@@ -12,9 +12,13 @@ export default defineComponent({
     },
     id: Number,
     client: Object,
-    ref: String,
+    refNo: String,
     date: String,
-    total: Number
+    total: Number,
+    hideName: {
+      type: Boolean,
+      default: false
+    }
   }
 })
 </script>
@@ -29,11 +33,11 @@ export default defineComponent({
     <v-card-text>
       <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
         <v-row>
-          <v-col>
+          <v-col v-if="!hideName">
             <h3>{{ client?.name }}</h3>
           </v-col>
           <v-col align="end">
-            <h4>#{{ ref || ' ---' }}</h4>
+            <h4># {{ refNo || '---' }}</h4>
           </v-col>
         </v-row>
       </router-link>

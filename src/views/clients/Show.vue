@@ -2,12 +2,12 @@
 import { defineComponent } from 'vue';
 import { AxiosResponse } from 'axios';
 import API from '@/api'
-import { Button, InvoiceCard } from '@/components'
+import { Avatar, Button, InvoiceCard } from '@/components'
 
 
 export default defineComponent({
   name: 'Client.Show',
-  components: { Button, InvoiceCard },
+  components: { Avatar, Button, InvoiceCard },
   data: () => ({
     loading: true,
     id: null,
@@ -25,6 +25,12 @@ export default defineComponent({
     website: '',
     invoices: []
   }),
+  computed: {
+    actions: () => ([
+      { title: 'Edit' },
+      { title: 'Delete' }
+    ])
+  },
   mounted() {
     console.log(this.$route.params.clientId)
     API.clients.show(this.$route.params.clientId)
@@ -50,7 +56,10 @@ export default defineComponent({
   <v-container>
     <v-row justify="start" align="center">
       <v-col>
-        <h1 v-text="name" />
+        <h1>
+          <Avatar>{{ name }}</Avatar>
+          <span>{{ name }}</span>
+        </h1>
       </v-col>
       <v-col align="end">
         <Button color="primary" :to="{ name: 'Invoices/Create', query: { clientId: id }}">
@@ -58,6 +67,19 @@ export default defineComponent({
         </Button>
         <Button color="primary" disabled>
           <v-icon>mdi-file-document-plus</v-icon>New Estimate
+        </Button>
+        <Button icon color="transparent" flat size="small">
+          <v-icon>mdi-dots-vertical</v-icon>
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item v-for="(item, index) in actions"
+                :key="index"
+                :value="index"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </Button>
       </v-col>
     </v-row>
@@ -96,7 +118,11 @@ export default defineComponent({
     <h2>Invoices ({{  invoices.length  }})</h2>
     <v-row>
       <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="4" lg="3">
-        <InvoiceCard v-bind="invoice" :client="{ name }" :loading="loading" />
+        <InvoiceCard v-bind="invoice" 
+          :client="{ name }"
+          :loading="loading"
+          :hideName="true"
+        />
       </v-col>
     </v-row>
     <v-divider class="my-4" />
