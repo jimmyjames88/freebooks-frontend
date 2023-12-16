@@ -1,10 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+import InvoiceStatus from './InvoiceStatus.vue'
 
 export default defineComponent({
   name: 'InvoiceCard',
-  components: { VSkeletonLoader },
+  components: { InvoiceStatus, VSkeletonLoader },
   props: {
     loading: {
       type: Boolean,
@@ -13,6 +14,7 @@ export default defineComponent({
     id: Number,
     client: Object,
     refNo: String,
+    status: String,
     date: String,
     total: Number,
     hideName: {
@@ -33,11 +35,11 @@ export default defineComponent({
     <v-card-text>
       <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
         <v-row>
-          <v-col v-if="!hideName">
-            <h3>{{ client?.name }}</h3>
-          </v-col>
-          <v-col align="end">
+          <v-col>
             <h4># {{ refNo || '---' }}</h4>
+          </v-col>
+          <v-col align="end" class="pa-2 ma-0">
+            <InvoiceStatus :status="status" />
           </v-col>
         </v-row>
       </router-link>
