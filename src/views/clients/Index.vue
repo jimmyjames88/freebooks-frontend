@@ -42,9 +42,6 @@ export default defineComponent({
   },
   
   methods: {
-    deleteClient(clientId: string) {
-      this.clients = this.clients.filter(client => client.id !== clientId)
-    },
     triggerSearch() {
       if (!this.search || this.search.length > 2) {
         this.searchTrigger = Date.now().toString()
@@ -137,7 +134,7 @@ export default defineComponent({
                   <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.selectable.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: item.selectable.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>

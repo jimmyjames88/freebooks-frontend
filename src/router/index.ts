@@ -24,6 +24,11 @@ const routes = [
     component: () => import('../views/clients/Edit.vue')
   },
   {
+    path: '/clients/:clientId/delete',
+    name: 'Clients/Delete',
+    component: () => import('../views/clients/Delete.vue')
+  },
+  {
     path: '/clients/:clientId',
     name: 'Clients/Show',
     component: () => import('../views/clients/Show.vue')

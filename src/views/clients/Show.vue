@@ -25,12 +25,7 @@ export default defineComponent({
     website: '',
     invoices: []
   }),
-  computed: {
-    actions: () => ([
-      { title: 'Edit' },
-      { title: 'Delete' }
-    ])
-  },
+
   mounted() {
     console.log(this.$route.params.clientId)
     API.clients.show(this.$route.params.clientId)
@@ -72,11 +67,11 @@ export default defineComponent({
           <v-icon>mdi-dots-vertical</v-icon>
           <v-menu activator="parent">
             <v-list>
-              <v-list-item v-for="(item, index) in actions"
-                :key="index"
-                :value="index"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: id }}">
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item>
+              <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: id }}">
+                <v-list-item-title>Delete</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
