@@ -110,16 +110,36 @@ export default defineComponent({
       </v-col>
     </v-row>
     <v-divider class="my-4" />
-    <h2>Invoices ({{  invoices.length  }})</h2>
+    <h2>Recent Invoices</h2>
     <v-row>
-      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="4" lg="3">
+      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="3">
         <InvoiceCard v-bind="invoice" 
           :client="{ name }"
           :loading="loading"
           :hideName="true"
         />
       </v-col>
+      <v-col cols="12" sm="6" md="3">
+        <v-card variant="flat" class="h-100 d-flex align-center justify-center" to="#">
+          <h3>View all Invoices</h3>
+        </v-card>
+      </v-col>
     </v-row>
-    <v-divider class="my-4" />
+    <!-- <v-divider class="my-4" />
+    <h2>Recent Estimates</h2>
+    <v-row>
+      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="3">
+        <InvoiceCard v-bind="invoice" 
+          :client="{ name }"
+          :loading="loading"
+          :hideName="true"
+        />
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-card variant="flat" class="h-100 d-flex align-center justify-center" to="#">
+          <h3>View all Estimates</h3>
+        </v-card>
+      </v-col>
+    </v-row> -->
   </v-container>
 </template>
