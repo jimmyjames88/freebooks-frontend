@@ -2,21 +2,23 @@
 import { defineComponent } from 'vue'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import API from '@/api'
+import DataTableComposable from '../../composables/DataTable'
 import { Avatar, Button, ClientCard, DataTable } from '@/components'
-import { AxiosError, AxiosResponse } from 'axios'
 import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Clients.Index',
   components: { Avatar, Button, ClientCard, DataTable, VSkeletonLoader, TextField },
+  setup(){
+    const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.clients.index)
+    return { items, itemsLength, sortBy, loadItems }
+
+  },
   data: () => ({
-    clients: [] as any[],
-    loading: true,
-    itemsLength: 0,
     sortBy: [{
-      key: 'name',
+      key: 'updatedAt',
       order: 'asc'
-    }]
+    }],
   }),
   computed: {
     headers: (): any[] => ([
@@ -38,21 +40,6 @@ export default defineComponent({
         sortable: false
       }
     ])
-  },
-  
-  methods: {
-    loadItems(filters: any = undefined, search: string = '') {
-      this.loading = true
-      API.clients.index({ ...filters, search })
-        .then((response: AxiosResponse) => {
-          this.clients = response.data.clients
-          this.itemsLength = response.data.total
-        }).catch((err: AxiosError) => {
-          console.warn(err)
-        }).finally(() => {
-          this.loading = false
-        })
-    }
   }
 })
 </script>
@@ -73,11 +60,10 @@ export default defineComponent({
       <v-col>
         <DataTable
           :headers="headers"
-          :items="clients"
           :sort-by="sortBy"
+          :items="items"
           :items-length="itemsLength"
-          :loading="loading"
-          @loadItems="loadItems"
+          @load-items="loadItems"
         >
         <template #item.name="{ item }">
             <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
