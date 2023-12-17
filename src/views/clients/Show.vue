@@ -52,8 +52,8 @@ export default defineComponent({
     <v-row justify="start" align="center">
       <v-col>
         <h1>
-          <Avatar>{{ name }}</Avatar>
           <span>{{ name }}</span>
+          <Avatar class="ml-4">{{ name }}</Avatar>
         </h1>
       </v-col>
       <v-col align="end">
@@ -82,7 +82,7 @@ export default defineComponent({
     <v-row>
       <v-col cols="12" md="6" lg="4" xl="3">
         <h3>Contact</h3>
-        <v-list>
+        <v-list bgColor="transparent" class="ml-n4">
           <v-list-item :href="`mailto:${email}`">
             <v-icon>mdi-email</v-icon>
             {{ email }}
@@ -99,7 +99,7 @@ export default defineComponent({
       </v-col>
       <v-col cols="12" md="6" lg="4" xl="3">
         <h3>Address</h3>
-        <v-list>
+        <v-list bgColor="transparent" class="ml-n4">
           <v-list-item>
             <p>{{ address.line1 }}</p>
             <p>{{ address.line2 }}</p>
@@ -125,8 +125,8 @@ export default defineComponent({
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-divider class="my-4" />
-    <h2>Recent Estimates</h2>
+    <v-divider class="my-4" />
+    <!-- <h2>Recent Estimates</h2>
     <v-row>
       <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="3">
         <InvoiceCard v-bind="invoice" 

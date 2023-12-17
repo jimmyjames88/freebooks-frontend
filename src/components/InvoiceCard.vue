@@ -31,25 +31,23 @@ export default defineComponent({
     class="mx-auto"
     type="heading, divider, paragraph"
   />
-  <v-card v-else variant="flat">
+  <v-card v-else variant="flat" color="gray" :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
     <v-card-text>
-      <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
-        <v-row>
-          <v-col>
-            <h4># {{ refNo || '---' }}</h4>
-          </v-col>
-          <v-col align="end" class="pa-2 ma-0">
-            <InvoiceStatus :status="status" />
-          </v-col>
-        </v-row>
-      </router-link>
-      <v-divider class="my-4" />
       <v-row>
         <v-col>
+          <h4 class="on-surface"># {{ refNo || '---' }}</h4>
+        </v-col>
+        <v-col align="end" class="pa-2 ma-0">
+          <InvoiceStatus :status="status" />
+        </v-col>
+      </v-row>
+      <v-divider class="my-4" />
+      <v-row>
+        <v-col class="on-surface">
           {{ date || 'January 1st, 2023' }}
         </v-col>
         <v-col align="end">
-          <h2>${{ total || ' ---' }}</h2>
+          <h2 class="text-tertiary">${{ total || ' ---' }}</h2>
         </v-col>
       </v-row>
     </v-card-text>

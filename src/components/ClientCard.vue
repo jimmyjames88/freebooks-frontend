@@ -69,7 +69,7 @@ export default defineComponent({
         </v-toolbar-title>
         <template #append>
           <v-menu>
-            <template v-slot:activator="{ props }">
+            <template #activator="{ props }">
               <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
             </template>
 

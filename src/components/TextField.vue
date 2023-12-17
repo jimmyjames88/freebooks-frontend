@@ -18,7 +18,10 @@ export default defineComponent({
 <template>
   <div :class="class" class="text-field">
     <label v-if="label">{{ label }}</label>
-    <v-text-field v-bind="$attrs" />
+    <v-text-field v-bind="$attrs">
+      <slot />
+      <template v-for="(_, slot) of $slots" v-slot:[slot]="scope"><slot :name="slot" v-bind="scope"/></template>
+    </v-text-field>
   </div>
 </template>
 

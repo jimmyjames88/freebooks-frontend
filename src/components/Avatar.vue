@@ -52,7 +52,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-avatar class="mr-4" :class="stringToColor(letters)">
+  <v-avatar v-bind="$attrs" :class="stringToColor(letters)">
     <span class="text-h6">
       {{ letters }}
     </span>
