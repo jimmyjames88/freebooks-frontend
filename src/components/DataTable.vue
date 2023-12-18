@@ -1,13 +1,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VDataTableServer, VDataTableFooter } from 'vuetify/labs/VDataTable'
 import Button from './Button.vue'
 import TextField from './TextField.vue'
 
 export default defineComponent({
   name: 'DataTable',
   inheritAttrs: false,
-  components: { VDataTableServer, VDataTableFooter, Button, TextField },
+  components: { Button, TextField },
   
   data: () => ({
     search: '',

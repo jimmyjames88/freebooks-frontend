@@ -50,7 +50,7 @@ export default defineComponent({
 <template>
   <v-container>
     <v-row justify="start" align="center">
-      <v-col>
+      <v-col class="v-col-auto">
         <h1>
           <span>{{ name }}</span>
           <Avatar class="ml-4">{{ name }}</Avatar>

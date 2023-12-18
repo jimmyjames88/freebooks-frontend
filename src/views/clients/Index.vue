@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
 import { Avatar, Button, DataTable } from '@/components'
@@ -8,7 +7,7 @@ import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Clients/Index',
-  components: { Avatar, Button, DataTable, VSkeletonLoader, TextField },
+  components: { Avatar, Button, DataTable, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.clients.index)
     return { items, itemsLength, sortBy, loadItems }
@@ -30,7 +29,6 @@ export default defineComponent({
       key: 'email'
     },
     {
-      title: 'Actions',
       align: 'end',
       key: 'actions',
       sortable: false
@@ -54,6 +52,7 @@ export default defineComponent({
     <v-row>
       <v-col>
         <DataTable
+          class="pa-4"
           :headers="headers"
           :sort-by="sortBy"
           :items="items"
@@ -61,9 +60,9 @@ export default defineComponent({
           @load-items="loadItems"
         >
         <template #item.name="{ item }">
-            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
-              <Avatar class="mr-4">{{ item.selectable.name }}</Avatar>
-              {{ item.selectable.name }}
+            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
+              <Avatar class="mr-4">{{ item.name }}</Avatar>
+              {{ item.name }}
             </router-link>
           </template>
           <template #item.actions="{ item }">
@@ -77,13 +76,13 @@ export default defineComponent({
                   <v-list-item>
                     <v-list-item-title>New Estimate</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Show', params: { clientId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>

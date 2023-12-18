@@ -1,11 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import API from '@/api'
-import { Button } from '@/components'
+import { Avatar, Button } from '@/components'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Button },
+  components: { Avatar, Button },
   data: () => ({
     client: {
       name: '',
@@ -53,10 +53,14 @@ export default defineComponent({
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <h1 class="title">Invoice: #{{ refNo }}</h1>
+      <v-col class="v-col-auto">
+        <h1>
+          {{ client.name }}
+          <Avatar>{{ client.name }}</Avatar>
+        </h1>
+        <h2># {{ refNo }}</h2>
       </v-col>
-      <v-col>
+      <v-col align="end">
         <Button color="primary" disabled>
           <v-icon>mdi-printer</v-icon> Print
         </Button>
@@ -76,12 +80,12 @@ export default defineComponent({
       </v-row>
       <v-row>
         <v-col>
-          <p>{{ client.address.line1 }}</p>
-          <p>{{ client.address.line2 }}</p>
-          <p>{{ client.address.city }}</p>
-          <p>{{ client.address.state }}</p>
-          <p>{{ client.address.postal }}</p>
-          <p>{{ client.address.country }}</p>
+          <p>{{ client.address?.line1 }}</p>
+          <p>{{ client.address?.line2 }}</p>
+          <p>{{ client.address?.city }}</p>
+          <p>{{ client.address?.state }}</p>
+          <p>{{ client.address?.postal }}</p>
+          <p>{{ client.address?.country }}</p>
         </v-col>
         <v-col>
           <p>#{{ refNo }}</p>

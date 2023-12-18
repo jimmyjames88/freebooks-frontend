@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
 import { Avatar, Button, DataTable, InvoiceStatus } from '@/components'
@@ -8,7 +7,7 @@ import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Avatar, Button, DataTable, InvoiceStatus, VSkeletonLoader, TextField },
+  components: { Avatar, Button, DataTable, InvoiceStatus, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.invoices.index)
     return { items, itemsLength, sortBy, loadItems }
@@ -67,6 +66,7 @@ export default defineComponent({
     <v-row>
       <v-col>
         <DataTable
+          class="pa-4"
           :headers="headers"
           :sort-by="sortBy"
           :items="items"
@@ -74,37 +74,37 @@ export default defineComponent({
           @load-items="loadItems"
         >
           <template #item.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
-              # {{ item.selectable.refNo }}
+            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
+              # {{ item.refNo }}
             </router-link>
           </template>
           <template #item.client.name="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
-              <Avatar class="mr-4">{{ item.selectable.client.name }}</Avatar>
-              {{ item.selectable.client.name }}
+            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
+              <Avatar class="mr-4">{{ item.client.name }}</Avatar>
+              {{ item.client.name }}
             </router-link>
           </template>
           <template #item.date="{ item }">
-            {{ item.selectable.date }}
+            {{ item.date }}
           </template>
           <template #item.status="{ item }">
-            <InvoiceStatus :status="item.selectable.status" />
+            <InvoiceStatus :status="item.status" />
           </template>
           <template #item.total="{ item }">
-            {{ item.selectable.total }}
+            {{ item.total }}
           </template>
           <template #item.actions="{ item }">
             <v-btn flat size="xs">
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: item.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: item.selectable.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>

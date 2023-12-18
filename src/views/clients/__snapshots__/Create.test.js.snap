@@ -38,7 +38,8 @@ exports[`Create.vue > Renders properly 1`] = `
                               <!---->
                               <!---->
                             </label>
-                            <!----><input name=\\"name\\" size=\\"1\\" type=\\"text\\" id=\\"input-1\\" aria-describedby=\\"input-1-messages\\" class=\\"v-field__input\\">
+                            <!---->
+                            <div class=\\"v-field__input\\" data-no-activator=\\"\\"><input name=\\"name\\" size=\\"1\\" type=\\"text\\" id=\\"input-1\\" aria-describedby=\\"input-1-messages\\"></div>
                             <!---->
                           </div>
                           <!---->
@@ -83,7 +84,8 @@ exports[`Create.vue > Renders properly 1`] = `
                               <!---->
                               <!---->
                             </label>
-                            <!----><input name=\\"email\\" size=\\"1\\" type=\\"text\\" id=\\"input-3\\" aria-describedby=\\"input-3-messages\\" class=\\"v-field__input\\">
+                            <!---->
+                            <div class=\\"v-field__input\\" data-no-activator=\\"\\"><input name=\\"email\\" size=\\"1\\" type=\\"text\\" id=\\"input-3\\" aria-describedby=\\"input-3-messages\\"></div>
                             <!---->
                           </div>
                           <!---->
@@ -128,7 +130,8 @@ exports[`Create.vue > Renders properly 1`] = `
                               <!---->
                               <!---->
                             </label>
-                            <!----><input name=\\"phone\\" size=\\"1\\" type=\\"text\\" id=\\"input-5\\" aria-describedby=\\"input-5-messages\\" class=\\"v-field__input\\">
+                            <!---->
+                            <div class=\\"v-field__input\\" data-no-activator=\\"\\"><input name=\\"phone\\" size=\\"1\\" type=\\"text\\" id=\\"input-5\\" aria-describedby=\\"input-5-messages\\"></div>
                             <!---->
                           </div>
                           <!---->
@@ -173,7 +176,8 @@ exports[`Create.vue > Renders properly 1`] = `
                               <!---->
                               <!---->
                             </label>
-                            <!----><input name=\\"website\\" placeholder=\\"https://\\" size=\\"1\\" type=\\"text\\" id=\\"input-7\\" aria-describedby=\\"input-7-messages\\" class=\\"v-field__input\\">
+                            <!---->
+                            <div class=\\"v-field__input\\" data-no-activator=\\"\\"><input name=\\"website\\" placeholder=\\"https://\\" size=\\"1\\" type=\\"text\\" id=\\"input-7\\" aria-describedby=\\"input-7-messages\\"></div>
                             <!---->
                           </div>
                           <!---->

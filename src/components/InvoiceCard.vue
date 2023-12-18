@@ -1,11 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import InvoiceStatus from './InvoiceStatus.vue'
 
 export default defineComponent({
   name: 'InvoiceCard',
-  components: { InvoiceStatus, VSkeletonLoader },
+  components: { InvoiceStatus },
   props: {
     loading: {
       type: Boolean,
