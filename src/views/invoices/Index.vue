@@ -42,6 +42,11 @@ export default defineComponent({
       title: 'Total',
       align: 'end',
       key: 'total',
+    },
+    {
+      align: 'end',
+      key: 'actions',
+      sortable: false 
     }]
   }),
 })
@@ -55,7 +60,7 @@ export default defineComponent({
       </v-col>
       <v-col align="end">
         <Button color="primary" :to="{ name: 'Invoices/Create' }">
-          <v-icon>mdi-account-plus</v-icon> New Invoice
+          <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
         </Button>
       </v-col>
     </v-row>
@@ -88,6 +93,24 @@ export default defineComponent({
           <template #item.total="{ item }">
             {{ item.selectable.total }}
           </template>
+          <template #item.actions="{ item }">
+            <v-btn flat size="xs">
+              <v-icon>mdi-dots-vertical</v-icon>
+              <v-menu activator="parent">
+                <v-list>
+                  <v-list-item :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
+                    <v-list-item-title>View</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: item.selectable.id }}">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: item.selectable.id }}">
+                    <v-list-item-title>Delete</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-btn>
+          </template> 
         </DataTable>
       </v-col>
     </v-row>

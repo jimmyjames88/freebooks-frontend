@@ -77,9 +77,6 @@ export default defineComponent({
               <v-list-item to="/">
                   <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
               </v-list-item>
-              <v-list-item to="/" disabled>
-                  <v-icon>mdi-file-document-plus</v-icon> New Estimate
-              </v-list-item>
               <v-list-item>
                 <v-list-item-subtitle>Client Actions</v-list-item-subtitle>
               </v-list-item>

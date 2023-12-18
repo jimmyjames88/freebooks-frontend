@@ -44,6 +44,16 @@ const routes = [
     component: () => import('../views/invoices/Create.vue')
   },
   {
+    path: '/invoices/:invoiceId/edit',
+    name: 'Invoices/Edit',
+    component: () => import('../views/invoices/Edit.vue')
+  },
+  {
+    path: '/invoices/:invoiceId/delete',
+    name: 'Invoices/Delete',
+    component: () => import('../views/invoices/Delete.vue')
+  },
+  {
     path: '/invoices/:invoiceId',
     name: 'Invoices/Show',
     component: () => import('../views/invoices/Show.vue')
