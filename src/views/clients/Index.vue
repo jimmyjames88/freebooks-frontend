@@ -3,41 +3,38 @@ import { defineComponent } from 'vue'
 import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
-import { Avatar, Button, ClientCard, DataTable } from '@/components'
+import { Avatar, Button, DataTable } from '@/components'
 import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
-  name: 'Clients.Index',
-  components: { Avatar, Button, ClientCard, DataTable, VSkeletonLoader, TextField },
+  name: 'Clients/Index',
+  components: { Avatar, Button, DataTable, VSkeletonLoader, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.clients.index)
     return { items, itemsLength, sortBy, loadItems }
-
   },
   data: () => ({
     sortBy: [{
       key: 'updatedAt',
       order: 'asc'
     }],
-    headers: [
-      {
-        title: 'Name',
-        align: 'start',
-        sortable: true,
-        key: 'name'
-      },
-      {
-        title: 'Email',
-        sortable: true,
-        key: 'email'
-      },
-      {
-        title: 'Actions',
-        align: 'end',
-        key: 'actions',
-        sortable: false
-      }
-    ]
+    headers: [{
+      title: 'Name',
+      align: 'start',
+      sortable: true,
+      key: 'name'
+    },
+    {
+      title: 'Email',
+      sortable: true,
+      key: 'email'
+    },
+    {
+      title: 'Actions',
+      align: 'end',
+      key: 'actions',
+      sortable: false
+    }]
   }),
 })
 </script>

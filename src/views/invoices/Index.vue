@@ -1,24 +1,49 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
 import API from '@/api'
-import { Button, InvoiceCard } from '@/components'
+import DataTableComposable from '../../composables/DataTable'
+import { Avatar, Button, DataTable, InvoiceStatus } from '@/components'
+import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Button, InvoiceCard },
+  components: { Avatar, Button, DataTable, InvoiceStatus, VSkeletonLoader, TextField },
+  setup(){
+    const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.invoices.index)
+    return { items, itemsLength, sortBy, loadItems }
+  },
   data: () => ({
-    loading: true,
-    invoices: [] as { id: string, total: string }[],
+    sortBy: [{
+      key: 'updatedAt',
+      order: 'asc'
+    }],
+    headers: [{
+      title: 'Ref',
+      align: 'start',
+      sortable: true,
+      key: 'refNo'
+    },
+    {
+      title: 'Client',
+      sortable: true,
+      key: 'client.name'
+    },
+    {
+      title: 'Date',
+      sortable: true,
+      key: 'date'
+    },
+    {
+      title: 'Status',
+      key: 'status'
+    },
+    {
+      title: 'Total',
+      align: 'end',
+      key: 'total',
+    }]
   }),
-  async mounted() {
-    API.invoices.index().then((response: AxiosResponse) => {
-      this.invoices = response.data
-    }).catch((err: AxiosError) => {
-      console.warn(err)
-    }).finally(() => {
-      this.loading = false
-    })
-  }
 })
 </script>
 
@@ -29,17 +54,41 @@ export default defineComponent({
         <h1 class="title">Invoices</h1>
       </v-col>
       <v-col align="end">
-        <Button color="transparent" disabled>
-          <v-icon>mdi-magnify</v-icon> Search
-        </Button>
-        <Button :to="{ name: 'Invoices/Create' }" color="primary">
-          <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
+        <Button color="primary" :to="{ name: 'Invoices/Create' }">
+          <v-icon>mdi-account-plus</v-icon> New Invoice
         </Button>
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="invoice in invoices" :key="`invoice-${invoice.id}`" cols="12" sm="6" md="4" lg="3">
-        <InvoiceCard v-bind="invoice" :loading="loading" />
+      <v-col>
+        <DataTable
+          :headers="headers"
+          :sort-by="sortBy"
+          :items="items"
+          :items-length="itemsLength"
+          @load-items="loadItems"
+        >
+          <template #item.refNo="{ item }">
+            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
+              # {{ item.selectable.refNo }}
+            </router-link>
+          </template>
+          <template #item.client.name="{ item }">
+            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.selectable.id }}">
+              <Avatar class="mr-4">{{ item.selectable.client.name }}</Avatar>
+              {{ item.selectable.client.name }}
+            </router-link>
+          </template>
+          <template #item.date="{ item }">
+            {{ item.selectable.date }}
+          </template>
+          <template #item.status="{ item }">
+            <InvoiceStatus :status="item.selectable.status" />
+          </template>
+          <template #item.total="{ item }">
+            {{ item.selectable.total }}
+          </template>
+        </DataTable>
       </v-col>
     </v-row>
   </v-container>
