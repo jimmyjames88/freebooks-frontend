@@ -31,7 +31,7 @@
     "jsdom": "^22.1.0",
     "sass": "^1.65.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5",
+    "vite": "^4.4.12",
     "vite-plugin-vuetify": "^1.0.0-alpha.12",
     "vitest": "^0.34.3",
     "vue-cli-plugin-vuetify": "~2.5.8",
