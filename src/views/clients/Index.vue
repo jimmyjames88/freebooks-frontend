@@ -19,9 +19,7 @@ export default defineComponent({
       key: 'updatedAt',
       order: 'asc'
     }],
-  }),
-  computed: {
-    headers: (): any[] => ([
+    headers: [
       {
         title: 'Name',
         align: 'start',
@@ -39,8 +37,8 @@ export default defineComponent({
         key: 'actions',
         sortable: false
       }
-    ])
-  }
+    ]
+  }),
 })
 </script>
 
