@@ -62,39 +62,54 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-row>
-    <v-col cols="2">
+  <v-row class="line-item-row align-center">
+    <v-col cols="12" md="2">
       <Select :value="type" @update:model-value="$emit('update:type', $event)" :items="['', 'Service', 'Item', 'Expense']" variant="outlined"></Select>
     </v-col>
-    <v-col cols="5">
+    <v-col cols="12" md="5">
       <TextField :value="description" @update:model-value="$emit('update:description', $event)" variant="outlined" />
     </v-col>
-    <v-col cols="1">
-      <TextField type="number" :value="rate" @update:model-value="$emit('update:rate', $event)" variant="outlined" />
+    <v-col cols="6" md="2">
+      <TextField
+        :value="rate"
+        variant="outlined"
+        prepend-inner-icon="mdi-currency-usd"
+        @update:model-value="$emit('update:rate', $event)"
+      />
     </v-col>
-    <v-col cols="1">
+    <v-col cols="6" md="1">
       <TextField 
-        type="number"
         :value="quantity"
         @update:modelValue="$emit('update:quantity', $event)"
         @keydown="handleQuantityKeydown"
         variant="outlined"
       />
     </v-col>
-    <v-col cols="2">{{ lineTotal }}</v-col>
-    <v-col cols="1">
+    <v-col cols="10" md="1" class="ml-auto" align="end">{{ lineTotal }}</v-col>
+    <v-col cols="2" md="1" align="end">
       <v-btn icon="mdi-close" color="primary" size="x-small" @click="confirmDelete" variant="flat" tabindex="-1"></v-btn>
+      <v-dialog v-model="showConfirmDelete" width="auto">
+        <v-card>
+          <v-card-text>
+            Confirm delete?
+          </v-card-text>
+          <v-card-text class="text-center">
+            <Button color="transparent" @click="showConfirmDelete = false">Cancel</Button>
+            <Button color="primary" @click="handleDelete">Yes, Delete</Button>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
-  <v-dialog v-model="showConfirmDelete" width="auto">
-    <v-card>
-      <v-card-text>
-        Confirm delete?
-      </v-card-text>
-      <v-card-text class="text-center">
-        <Button color="transparent" @click="showConfirmDelete = false">Cancel</Button>
-        <Button color="primary" @click="handleDelete">Yes, Delete</Button>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
 </template>
+
+<style lang="scss" scoped>
+.line-item-row {
+  &:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.015);
+  }
+  &:deep(.v-input__details) {
+    display: none !important;
+  }
+}
+</style>

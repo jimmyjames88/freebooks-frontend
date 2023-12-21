@@ -35,20 +35,33 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-row>
-    <v-col cols="2">Type</v-col>
-    <v-col cols="5">Description</v-col>
-    <v-col cols="1">Rate</v-col>
-    <v-col cols="1">Qty</v-col>
-    <v-col cols="3"></v-col>
-  </v-row>
-  <LineItem v-for="(item, index) in lineItems"
-    :key="`lineitem-${index}`"
-    v-model:type="item.type"
-    v-model:description="item.description"
-    v-model:rate="item.rate"
-    v-model:quantity="item.quantity"
-    @delete="deleteItem(index)"
-    @endOfLine="handleEndOfLine(index)"
-  />
+  <div>
+    <v-row class="d-none d-sm-flex line-item-headers">
+      <v-col cols="2">
+        <h3>Type</h3>
+      </v-col>
+      <v-col cols="5">
+        <h3>Description</h3>
+      </v-col>
+      <v-col cols="2">
+        <h3>Rate</h3>
+      </v-col>
+      <v-col cols="1">
+        <h3>Qty</h3>
+      </v-col>
+      <v-col cols="2">
+        <h3>Amount</h3>
+      </v-col>
+    </v-row>
+    <LineItem v-for="(item, index) in lineItems"
+      class="line-item"
+      :key="`lineitem-${index}`"
+      v-model:type="item.type"
+      v-model:description="item.description"
+      v-model:rate="item.rate"
+      v-model:quantity="item.quantity"
+      @delete="deleteItem(index)"
+      @endOfLine="handleEndOfLine(index)"
+    />
+  </div>
 </template>

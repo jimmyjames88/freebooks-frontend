@@ -66,6 +66,12 @@ export default defineComponent({
   color: #ffffff;
   opacity: 0.75;
 
+  .text-h6 {
+    font-family: 'Fira Sans' !important;
+    text-transform: uppercase !important;
+    font-size: 1.125rem !important;
+  }
+
   &.color {
     &-1 { background-color: #f44336; }
     &-2 { background-color: #e91e63; }

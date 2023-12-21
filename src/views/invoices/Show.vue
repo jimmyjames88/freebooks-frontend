@@ -54,7 +54,7 @@ export default defineComponent({
   <v-container>
     <v-row>
       <v-col class="v-col-auto">
-        <h1>
+        <h1 v-if="client">
           {{ client.name }}
           <Avatar>{{ client.name }}</Avatar>
         </h1>
@@ -80,12 +80,12 @@ export default defineComponent({
       </v-row>
       <v-row>
         <v-col>
-          <p>{{ client.address?.line1 }}</p>
-          <p>{{ client.address?.line2 }}</p>
-          <p>{{ client.address?.city }}</p>
-          <p>{{ client.address?.state }}</p>
-          <p>{{ client.address?.postal }}</p>
-          <p>{{ client.address?.country }}</p>
+          <p>{{ client?.address?.line1 }}</p>
+          <p>{{ client?.address?.line2 }}</p>
+          <p>{{ client?.address?.city }}</p>
+          <p>{{ client?.address?.state }}</p>
+          <p>{{ client?.address?.postal }}</p>
+          <p>{{ client?.address?.country }}</p>
         </v-col>
         <v-col>
           <p>#{{ refNo }}</p>

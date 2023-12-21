@@ -1,19 +1,33 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
-import { Button, LineItems, Select, TextArea, TextField } from '@/components'
+import { AxiosError, AxiosResponse } from 'axios'
+import { AutoComplete, Button, LineItems, Select, TextArea, TextField } from '@/components'
 import API from '@/api'
 
 
 export default defineComponent({
   name: 'Invoices/Create',
-  components: { Button, LineItems, Select, TextArea, TextField, VueDatePicker },
-  data: () => ({
+  components: { AutoComplete, Button, LineItems, Select, TextArea, TextField },
+  data: (): {
+    menu: boolean,
+    loading: boolean,
+    clients: any[],
+    clientId: number | undefined,
+    refNo: string,
+    date: Date | undefined,
+    lineItems: {
+      type: string,
+      description: string,
+      rate: number | null,
+      quantity: number | null
+    }[],
+    notes: string
+  } => ({
+    menu: false,
     loading: true,
     clients: [],
-    clientId: '',
-    ref: '',
+    clientId: undefined,
+    refNo: '',
     date: undefined,
     lineItems: [
       { type: '', description: '', rate: null, quantity: null }
@@ -24,7 +38,8 @@ export default defineComponent({
   async mounted() {
     await API.clients.list().then((response: AxiosResponse) => {
       this.clients = response.data
-      this.clientId = this.$route.query.clientId as string
+      if (this.$route.query.clientId)
+        this.clientId = Number(this.$route.query.clientId)
     }).catch((err: AxiosError) => {
       console.warn(err)
     }).finally(() => {
@@ -45,8 +60,8 @@ export default defineComponent({
     },
     subtotal(): string {
       const sub = this.lineItems.reduce((acc, lineItem) => {
-        const rate = parseFloat(lineItem.rate || '0.00')
-        const quantity = parseFloat(lineItem.quantity || '0.00')
+        const rate = Number(lineItem.rate || 0)
+        const quantity = Number(lineItem.quantity || 0)
         if (isNaN(rate) || isNaN(quantity)) return Number(acc)
         return Number(acc) + rate * quantity
       }, 0)
@@ -57,6 +72,11 @@ export default defineComponent({
     },
     total(): string {
       return (parseFloat(this.subtotal) + parseFloat(this.tax)).toFixed(2)
+    },
+    formattedDate(): string {
+      if (!this.date) return ''
+      const date = new Date(this.date)
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
     }
     
   },
@@ -65,7 +85,7 @@ export default defineComponent({
     async submitForm() {
       const { clientId, refNo, date, lineItems, notes, subtotal, tax, total } = this
       try {
-        await API.invoices.store({
+        const response = await API.invoices.store({
           clientId: clientId,
           refNo,
           date,
@@ -75,12 +95,12 @@ export default defineComponent({
           tax: parseFloat(tax).toFixed(2),
           total: parseFloat(total).toFixed(2)
         })
-        
-        this.$router.push({ name: 'Invoices' })
+
+        const { id } = response.data        
+        this.$router.push({ name: 'Invoices/Show', params: { invoiceId: id }})
       } catch(e) {
         console.error(e)
       }
-
     }
   }
 })
@@ -96,37 +116,61 @@ export default defineComponent({
     <v-form @submit.prevent="submitForm" validate-on="submit" v-if="!loading">
       <div class="document">
         <v-row>
-          <v-col sm="8" md="6">
-            <div class="d-flex align-center">
-              <Select v-model="clientId" :items="clientList" label="Client" variant="outlined" />
-              <router-link :to="{ name: 'Clients/Create' }" class="ml-2">
-                <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
-              </router-link>
-            </div>
+          <v-col cols="12" sm="8" md="6">
+            <AutoComplete 
+              v-model="clientId"
+              :items="clientList"
+              label="Client" 
+              variant="outlined" 
+              prepend-inner-icon="mdi-account" 
+              clearable 
+            />
+            <router-link :to="{ name: 'Clients/Create' }" class="ml-2">
+              <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
+            </router-link>
           </v-col>
         </v-row>
         <v-divider class="my-4" />
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <TextField v-model="refNo" label="Ref #" variant="outlined" />
+            <TextField 
+              v-model="refNo" 
+              label="Ref #"
+              prepend-inner-icon="mdi-pound"
+              variant="outlined"
+              hint="Reference number, can be anything you want"
+            />
           </v-col>
           <v-col cols="12" sm="6" md="4" class="datepicker-col">
-            <VueDatePicker v-model="date" label="Issue Date" />
+            <v-menu v-model="menu" :close-on-content-click="false" location="end" scrim="true">
+              <template v-slot:activator="{ props }">
+                <TextField
+                  :value="formattedDate"
+                  v-bind="props"
+                  id="issueDate"
+                  label="Issue Date"
+                  prepend-inner-icon="mdi-calendar"
+                  variant="outlined"
+                  messages="MM/DD/YYYY"
+                />
+              </template>
+              <v-date-picker color="tertiary" v-model="date" theme="light" @update:model-value="menu = false" />
+            </v-menu>
+            
           </v-col>
         </v-row>
         <v-divider class="my-4" />
         <v-row>
           <v-col>
-            <h3>Line items</h3>
             <LineItems v-model:lineItems="lineItems"/>
           </v-col>
         </v-row>
-        <v-divider class="mb-8" />
+        <v-divider class="mt-8 mb-8" />
         <v-row>
-          <v-col :cols="6">
+          <v-col cols="12" sm="6">
             <TextArea v-model="notes" label="Notes" variant="outlined" />
           </v-col>
-          <v-col cols="6" class="text-right">
+          <v-col cols="12" sm="6" class="text-right mt-sm-4">
             <v-row>
               <v-col cols="6">Subtotal</v-col>
               <v-col cols="6">${{ subtotal }}</v-col>
@@ -136,8 +180,12 @@ export default defineComponent({
               <v-col cols="6">${{ tax }}</v-col>
             </v-row>
             <v-row>
-              <v-col cols="6">Total</v-col>
-              <v-col cols="6">${{ total }}</v-col>
+              <v-col cols="6">
+                <h2>Total</h2>
+              </v-col>
+              <v-col cols="6">
+                <h2>${{ total }}</h2>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
