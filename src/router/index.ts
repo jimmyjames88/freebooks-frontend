@@ -66,10 +66,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  console.log(authStore.loggedIn)
   if (!to.meta.public && !authStore.loggedIn) {
     return next({ name: 'Auth/Login' })
   } 
+  if (to.name === 'Auth/Login' && authStore.loggedIn) {
+    return next({ name: 'Clients/Index' })
+  }
   next()
 })
 

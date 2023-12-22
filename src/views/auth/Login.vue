@@ -27,7 +27,7 @@ export default defineComponent({
           return value ? true : 'Please enter your password'
         },
         async () => {
-          return await vm.attemptLogin() ? true : 'Incorrect password'
+          return await vm.login(vm.email, vm.password) ? true : 'Incorrect password'
         }
       ]
     }
@@ -37,20 +37,12 @@ export default defineComponent({
 
     async submit(event: Event) {
       this.loading = true
-      const results = await event
+      const results: any = await event
       this.loading = false
       this.password = ''
       if (results.valid) {
         this.$router.push({ name: 'Clients/Index' })
       }
-    },
-
-    async attemptLogin() {
-      return await this.login(this.email, this.password)
-        // if (this.$route.query.ref)
-        //   return window.location.href = this.$route.query.ref
-        // return this.$router.push({ name: 'Clients/Index' })
-
     }
   }
 })
@@ -66,7 +58,7 @@ export default defineComponent({
     </template>
     <template #right>
       <v-form @submit.prevent="submit" validate-on="submit">
-        <TextField v-model="email" label="Email" :rules="rules.email" />
+        <TextField v-model="email" type="email" label="Email" :rules="rules.email" />
         <TextField v-model="password" type="password" label="Password" :rules="rules.password" class="my-2" />
         <Button type="submit" color="secondary" :loading="loading">
           <v-icon>mdi-login</v-icon> Sign in
@@ -81,7 +73,3 @@ export default defineComponent({
     </template>
   </GradientContainer>
 </template>
-
-<style lang="scss" scoped>
-
-</style>
