@@ -8,11 +8,18 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     async login(email: string, password: string) {
-      const response = await API.auth.login(email, password)
-      const { token } = response.data
-      Cookies.set('token', token)
-      this.loggedIn = true
-      return true
+      try {
+        const response = await API.auth.login(email, password)
+        if (response.status === 200) {
+          const { token } = response.data
+          Cookies.set('token', token)
+          this.loggedIn = true
+          return true
+        }
+      } catch {
+        return false
+      }
+      return false
     },
 
     async logout() {

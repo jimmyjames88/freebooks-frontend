@@ -9,7 +9,7 @@ import { RouteLocationRaw } from 'vue-router'
 export default defineComponent({
   name: 'Login',
   components: { Button, GradientContainer, Logo, TextField },
-  data: (): {
+  data: (vm): {
     email: string
     password: string
     loading: boolean
@@ -25,6 +25,9 @@ export default defineComponent({
       password: [
         (value: string) => {
           return value ? true : 'Please enter your password'
+        },
+        async () => {
+          return await vm.attemptLogin() ? true : 'Incorrect password'
         }
       ]
     }
@@ -32,17 +35,21 @@ export default defineComponent({
   methods: {
     ...mapActions(useAuthStore, ['login']),
 
-    async attemptLogin() {
+    async submit(event: Event) {
       this.loading = true
-      try {
-        await this.login(this.email, this.password)
-        if (this.$route.query.ref)
-          return window.location.href = this.$route.query.ref
-        return this.$router.push({ name: 'Clients/Index' })
-    
-      } catch(err) {
-        console.warn(err)
+      const results = await event
+      this.loading = false
+      this.password = ''
+      if (results.valid) {
+        this.$router.push({ name: 'Clients/Index' })
       }
+    },
+
+    async attemptLogin() {
+      return await this.login(this.email, this.password)
+        // if (this.$route.query.ref)
+        //   return window.location.href = this.$route.query.ref
+        // return this.$router.push({ name: 'Clients/Index' })
 
     }
   }
@@ -58,10 +65,10 @@ export default defineComponent({
       
     </template>
     <template #right>
-      <v-form @submit.prevent="attemptLogin" validate-on="submit">
+      <v-form @submit.prevent="submit" validate-on="submit">
         <TextField v-model="email" label="Email" :rules="rules.email" />
         <TextField v-model="password" type="password" label="Password" :rules="rules.password" class="my-2" />
-        <Button type="submit" color="secondary">
+        <Button type="submit" color="secondary" :loading="loading">
           <v-icon>mdi-login</v-icon> Sign in
         </Button>
         <Button color="transparent" to="/">
