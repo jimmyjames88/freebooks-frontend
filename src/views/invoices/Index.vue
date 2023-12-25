@@ -29,9 +29,9 @@ export default defineComponent({
       key: 'client.name'
     },
     {
-      title: 'Date',
+      title: 'Issued',
       sortable: true,
-      key: 'date'
+      key: 'issueDate'
     },
     {
       title: 'Status',

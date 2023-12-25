@@ -9,12 +9,14 @@ export default defineComponent({
   name: 'Invoices/Create',
   components: { AutoComplete, Button, LineItems, Select, TextArea, TextField },
   data: (): {
-    menu: boolean,
     loading: boolean,
     clients: any[],
     clientId: number | undefined,
     refNo: string,
-    date: Date | undefined,
+    issueDate: Date | undefined,
+    issueDatePicker: boolean,
+    dueDate: Date | undefined,
+    dueDatePicker: boolean,
     lineItems: {
       type: string,
       description: string,
@@ -23,12 +25,14 @@ export default defineComponent({
     }[],
     notes: string
   } => ({
-    menu: false,
     loading: true,
     clients: [],
     clientId: undefined,
     refNo: '',
-    date: undefined,
+    issueDate: new Date(),
+    issueDatePicker: false,
+    dueDate: undefined,
+    dueDatePicker: false,
     lineItems: [
       { type: '', description: '', rate: null, quantity: null }
     ],
@@ -72,16 +76,15 @@ export default defineComponent({
     },
     total(): string {
       return (parseFloat(this.subtotal) + parseFloat(this.tax)).toFixed(2)
-    },
-    formattedDate(): string {
-      if (!this.date) return ''
-      const date = new Date(this.date)
-      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
     }
-    
   },
 
   methods: {
+    formatDate(str: string | Date | undefined): string {
+      if (!str) return ''
+      const date = new Date(str)
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+    },
     async submitForm() {
       const { clientId, refNo, date, lineItems, notes, subtotal, tax, total } = this
       try {
@@ -129,10 +132,7 @@ export default defineComponent({
               <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
             </router-link>
           </v-col>
-        </v-row>
-        <v-divider class="my-4" />
-        <v-row>
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="4">
             <TextField 
               v-model="refNo" 
               label="Ref #"
@@ -141,22 +141,40 @@ export default defineComponent({
               hint="Reference number, can be anything you want"
             />
           </v-col>
+        </v-row>
+        <v-divider class="my-4" />
+        <v-row>
           <v-col cols="12" sm="6" md="4" class="datepicker-col">
-            <v-menu v-model="menu" :close-on-content-click="false" location="end" scrim="true">
+            <v-menu v-model="issueDatePicker" :close-on-content-click="false" location="end" scrim="true">
               <template v-slot:activator="{ props }">
                 <TextField
-                  :value="formattedDate"
+                  :value="formatDate(issueDate)"
                   v-bind="props"
                   id="issueDate"
                   label="Issue Date"
+                  prepend-inner-icon="mdi-calendar-month"
+                  variant="outlined"
+                  messages="MM/DD/YYYY"
+                />
+              </template>
+              <v-date-picker color="tertiary" v-model="issueDate" theme="light" @update:model-value="issueDatePicker = false" />
+            </v-menu>
+          </v-col>
+          <v-col cols="12" sm="6" md="4" class="datepicker-col">
+            <v-menu v-model="dueDatePicker" :close-on-content-click="false" location="end" scrim="true">
+              <template v-slot:activator="{ props }">
+                <TextField
+                  :value="formatDate(dueDate)"
+                  v-bind="props"
+                  id="dueDate"
+                  label="Due Date"
                   prepend-inner-icon="mdi-calendar"
                   variant="outlined"
                   messages="MM/DD/YYYY"
                 />
               </template>
-              <v-date-picker color="tertiary" v-model="date" theme="light" @update:model-value="menu = false" />
+              <v-date-picker color="tertiary" v-model="dueDate" theme="light" @update:model-value="dueDatePicker = false" />
             </v-menu>
-            
           </v-col>
         </v-row>
         <v-divider class="my-4" />
