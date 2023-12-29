@@ -10,7 +10,6 @@ export default defineComponent({
   emits: [
     'delete',
     'endOfLine',
-    'update:type',
     'update:description',
     'update:rate',
     'update:quantity'
@@ -63,10 +62,7 @@ export default defineComponent({
 
 <template>
   <v-row class="line-item-row align-center">
-    <v-col cols="12" md="2">
-      <Select :value="type" @update:model-value="$emit('update:type', $event)" :items="['', 'Service', 'Item', 'Expense']" variant="outlined"></Select>
-    </v-col>
-    <v-col cols="12" md="5">
+    <v-col cols="12" md="6">
       <TextField :value="description" @update:model-value="$emit('update:description', $event)" variant="outlined" />
     </v-col>
     <v-col cols="6" md="2">
@@ -85,7 +81,7 @@ export default defineComponent({
         variant="outlined"
       />
     </v-col>
-    <v-col cols="10" md="1" class="ml-auto" align="end">{{ lineTotal }}</v-col>
+    <v-col cols="10" md="2">{{ lineTotal }}</v-col>
     <v-col cols="2" md="1" align="end">
       <v-btn icon="mdi-close" color="primary" size="x-small" @click="confirmDelete" variant="flat" tabindex="-1"></v-btn>
       <v-dialog v-model="showConfirmDelete" width="auto">

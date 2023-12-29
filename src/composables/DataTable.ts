@@ -10,8 +10,8 @@ export default function DataTableComposable(apiEndpoint: Function = apiEndpointW
   const loading = ref(true)
   const  itemsLength = ref(0)
   const sortBy = ref([{
-    key: 'id',
-    order: 'asc'
+    key: 'updatedAt',
+    order: 'desc'
   }])
   const items = ref([])
 

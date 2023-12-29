@@ -53,7 +53,7 @@ export default defineComponent({
       <v-col class="v-col-auto">
         <h1>
           <span>{{ name }}</span>
-          <Avatar class="ml-4">{{ name }}</Avatar>
+          <Avatar :name="name" class="ml-4" />
         </h1>
       </v-col>
       <v-col align="end">

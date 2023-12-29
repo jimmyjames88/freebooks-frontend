@@ -61,7 +61,7 @@ export default defineComponent({
         >
         <template #item.name="{ item }">
             <router-link :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
-              <Avatar class="mr-4">{{ item.name }}</Avatar>
+              <Avatar :name="item.name" class="mr-4" />
               {{ item.name }}
             </router-link>
           </template>

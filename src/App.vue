@@ -90,9 +90,22 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+.document {
+  background-color: #ffffff;
+  padding: 1.5rem;
+
+  .line-items .v-row {
+    align-items: center;
+    
+    &:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+  }
+}
+
 .v-application.primary--text {
-    color: #9A8F99 !important;
-    caret-color: #9A8F99 !important;
+  color: #9A8F99 !important;
+  caret-color: #9A8F99 !important;
 }
 
 .d-print-none {

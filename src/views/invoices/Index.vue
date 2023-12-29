@@ -15,7 +15,7 @@ export default defineComponent({
   data: () => ({
     sortBy: [{
       key: 'updatedAt',
-      order: 'asc'
+      order: 'desc'
     }],
     headers: [{
       title: 'Ref',
@@ -92,8 +92,9 @@ export default defineComponent({
           </template>
           <template #item.client.name="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              <Avatar class="mr-4 d-none d-md-inline-flex">{{ item.client.name }}</Avatar>
-              {{ item.client.name }}
+              <Avatar :name="item.client?.name || undefined" class="mr-4 d-none d-md-inline-flex" />
+              <span v-if="item.client?.name">{{ item.client.name }}</span>
+              <em v-else>- Unassigned -</em>
             </router-link>
           </template>
           <template #item.date="{ item }">

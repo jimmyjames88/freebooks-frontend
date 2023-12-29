@@ -37,10 +37,7 @@ export default defineComponent({
 <template>
   <div>
     <v-row class="d-none d-sm-flex line-item-headers">
-      <v-col cols="2">
-        <h3>Type</h3>
-      </v-col>
-      <v-col cols="5">
+      <v-col cols="6">
         <h3>Description</h3>
       </v-col>
       <v-col cols="2">

@@ -4,21 +4,15 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'Avatar',
   inheritAttrs: false,
+  props: {
+    name: {
+      type: String,
+      required: false
+    }
+  },
   computed: {
-    defaultSlot(): string | undefined {
-      if (
-        !this.$slots.default
-        || !(typeof this.$slots?.default()[0].children === 'string')
-      ) {
-        return undefined
-      }
-      return this.$slots.default()[0].children as string
-    },
     letters(): string {
-      if (!!this.defaultSlot) {
-        return this.initials(this.$slots?.default()[0].children as string)
-      }
-      return ''
+      return this.name ? this.initials(this.name) : '?'
     }
   },
   methods: {

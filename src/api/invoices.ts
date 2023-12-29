@@ -16,8 +16,18 @@ export default {
       ...invoice
     })
   },
+
+  update(invoice: any) {
+    return axios.put(`${url}/${invoice.id}`, {
+      ...invoice
+    })
+  },
   
   show(invoiceId: string) {
     return axios.get(`${url}/${invoiceId}`)
+  },
+
+  latestRefNo() {
+    return axios.get(`${url}/latest-ref-no`)
   }
 }

@@ -7,6 +7,18 @@ export default defineComponent({
   name: 'Invoices/Show',
   components: { Avatar, Button, InvoiceStatus },
   data: () => ({
+    id: null,
+    lineItems: [] as {
+      type: string,
+      description: string,
+      rate: number,
+      quantity: number
+    }[],
+    notes: '',
+    refNo: '',
+    issueDate: null,
+    dueDate: null,
+    status: null,
     client: {
       id: null,
       name: '',
@@ -22,17 +34,6 @@ export default defineComponent({
       phone: '',
       website: '',
     },
-    lineItems: [] as {
-      type: string,
-      description: string,
-      rate: number,
-      quantity: number
-    }[],
-    notes: '',
-    refNo: '',
-    issueDate: null,
-    dueDate: null,
-    status: null
   }),
   computed: {
     subtotal(): string {
@@ -51,7 +52,8 @@ export default defineComponent({
   mounted() {
     API.invoices.show(this.$route.params.invoiceId)
       .then((response: AxiosResponse) => {
-        const { client, lineItems, notes, refNo, issueDate, dueDate, status } = response.data
+        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status } = response.data
+        this.id = id
         this.client = client
         this.lineItems = lineItems
         this.notes = notes
@@ -63,6 +65,9 @@ export default defineComponent({
       .catch((err: Error) => console.warn(err))
   },
   methods: {
+    download() {
+      console.log('downloading... todo')
+    },
     print() {
       window.print()
     }
@@ -77,7 +82,7 @@ export default defineComponent({
         <h1>&nbsp;</h1>
       </v-col>
       <v-col align="end">
-        <Button color="primary">
+        <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id }}">
           <v-icon>mdi-receipt-text-edit</v-icon> Edit
         </Button>
         <Button color="primary" disabled>
@@ -110,6 +115,7 @@ export default defineComponent({
           <h3>{{ issueDate }}</h3>
         </v-col>
       </v-row>
+      <v-divider class="my-4" />
       <v-row>
         <v-col>
           <h2>FreeBooks</h2>
@@ -189,17 +195,3 @@ export default defineComponent({
     </div>
   </v-container>
 </template>
-
-<style lang="scss" scoped>
-.document {
-  background-color: #ffffff;
-
-  :deep(.line-items) .v-row {
-    align-items: center;
-    
-    &:nth-child(odd) {
-      background-color: #f9f9f9;
-    }
-  }
-}
-</style>
