@@ -94,4 +94,25 @@ export default defineComponent({
     color: #9A8F99 !important;
     caret-color: #9A8F99 !important;
 }
+
+.d-print-none {
+    @media print {
+        display: none !important;
+    }
+}
+
+@media print {
+  .d-print-none,
+  .v-navigation-drawer,
+  .v-btn { 
+    display: none !important;
+  }
+  body,
+  .v-main,
+  .v-container,
+  .document {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
 </style>

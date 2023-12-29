@@ -1,13 +1,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import API from '@/api'
-import { Avatar, Button } from '@/components'
+import { Avatar, Button, InvoiceStatus } from '@/components'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Avatar, Button },
+  components: { Avatar, Button, InvoiceStatus },
   data: () => ({
     client: {
+      id: null,
       name: '',
       email: '',
       address: {
@@ -27,23 +28,43 @@ export default defineComponent({
       rate: number,
       quantity: number
     }[],
-    subtotal: 0,
-    tax: 0,
-    total: 0,
     notes: '',
     refNo: '',
-    date: null
+    issueDate: null,
+    dueDate: null,
+    status: null
   }),
+  computed: {
+    subtotal(): number {
+      const subtotal = this.lineItems.reduce((acc, item) => {
+        return acc + (item.rate * item.quantity)
+      }, 0)
+      return +subtotal.toFixed(2)
+    },
+    tax(): number {
+      const tax = this.lineItems.reduce((acc, item) => {
+        return acc + (item.rate * item.quantity)
+      }, 0) * 0.05
+      return +tax.toFixed(2)
+    },
+    total(): number {
+      const total = this.lineItems.reduce((acc, item) => {
+        return acc + (item.rate * item.quantity)
+      }, 0) * 1.05
+      return +total.toFixed(2)
+    }
+  },
   mounted() {
     API.invoices.show(this.$route.params.invoiceId)
       .then((response: AxiosResponse) => {
-        const { client, lineItems, total, notes, refNo, date } = response.data
+        const { client, lineItems, notes, refNo, issueDate, dueDate, status } = response.data
         this.client = client
         this.lineItems = lineItems
-        this.total = total
         this.notes = notes
         this.refNo = refNo
-        this.date = date
+        this.issueDate = issueDate
+        this.dueDate = dueDate
+        this.status = status
       })
       .catch((err: Error) => console.warn(err))
   }
@@ -52,13 +73,9 @@ export default defineComponent({
 
 <template>
   <v-container>
-    <v-row>
-      <v-col class="v-col-auto">
-        <h1 v-if="client">
-          {{ client.name }}
-          <Avatar>{{ client.name }}</Avatar>
-        </h1>
-        <h2># {{ refNo }}</h2>
+    <v-row class="d-print-none">
+      <v-col>
+        <h1>&nbsp;</h1>
       </v-col>
       <v-col align="end">
         <Button color="primary" disabled>
@@ -69,54 +86,92 @@ export default defineComponent({
         </Button>
       </v-col>
     </v-row>
-    <div class="document">
+    <div class="document pa-4 pa-sm-8">
       <v-row>
         <v-col>
-          <h1 class="title">FreeBooks</h1>
+          <h1 class="title">
+            Invoice <InvoiceStatus :status="status" class="d-print-none" /> 
+          </h1>
         </v-col>
         <v-col align="end">
-          <h1 class="title">Invoice</h1>
+          <h2># {{ refNo }}</h2>
+          <h3>{{ issueDate }}</h3>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <p>{{ client?.address?.line1 }}</p>
-          <p>{{ client?.address?.line2 }}</p>
-          <p>{{ client?.address?.city }}</p>
-          <p>{{ client?.address?.state }}</p>
-          <p>{{ client?.address?.postal }}</p>
-          <p>{{ client?.address?.country }}</p>
+          <h2>FreeBooks</h2>
+          <p>Address line 1</p>
+          <p>Address line 2</p>
+          <p>City, State, Postal</p>
+          <p>Country</p>
         </v-col>
-        <v-col>
-          <p>#{{ refNo }}</p>
-          <p>&nbsp;</p>
-          <p>
-            <strong>Issued: </strong>{{ date }}
-          </p>
+        <v-col align="end">
+          <div v-if="client">
+            <h2>
+              <router-link v-if="client.id" :to="{ name: 'Clients/Show', params: { clientId: client.id }}">
+                {{ client.name }}
+              </router-link>
+            </h2>
+            <p>{{ client?.address?.line1 }}</p>
+            <p>{{ client?.address?.line2 }}</p>
+            <p>
+              {{ client?.address?.city }},
+              {{ client?.address?.state }}
+              {{ client?.address?.postal }}
+            </p>
+            <p>{{ client?.address?.country }}</p>
+          </div>
+        </v-col>
+      </v-row>
+      <v-divider class="my-8" />
+      <v-row class="line-item-headers">
+        <v-col cols="12" sm="6">
+          <h3>Description</h3>
+        </v-col>
+        <v-col cols="4" sm="2" align="center">
+          <h3>Quantity</h3>
+        </v-col>
+        <v-col cols="4" sm="2" align="center">
+          <h3>Rate</h3>
+        </v-col>
+        <v-col cols="4" sm="2" align="end">
+          <h3>Total</h3>
         </v-col>
       </v-row>
       <v-row>
-        <v-col>
-          <p>{{ date }}</p>
-          <p>{{ refNo }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
+        <v-col class="line-items">
           <v-row v-for="(item, index) in lineItems" :key="`item-${index}`">
-            <v-col cols="6">{{ item.description }}</v-col>
-            <v-col cols="2">{{ item.quantity }}</v-col>
-            <v-col cols="2">{{ item.rate }}</v-col>
-            <v-col cols="2">{{ item.quantity * item.rate }}</v-col>
+            <v-col cols="12" sm="6">{{ item.description }}</v-col>
+            <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
+            <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
+            <v-col cols="4" sm="2" align="end">${{ (item.quantity * item.rate).toFixed(2) }}</v-col>
           </v-row>
         </v-col>
       </v-row>
+      <v-divider class="mt-8 mb-4" />
       <v-row>
-        <v-col>{{ notes }}</v-col>
         <v-col>
-          <p>{{ subtotal }}</p>
-          <p>{{ tax }}</p>
-          <p>{{ total }}</p>
+          <h3>Pay by: {{ dueDate }}</h3>
+          {{ notes }}
+        </v-col>
+        <v-col md="4">
+          <v-row>
+            <v-col>Subtotal</v-col>
+            <v-col align="end">${{ subtotal }}</v-col>
+          </v-row>
+          <v-row>
+            <v-col>Tax (5% GST)</v-col>
+            <v-col align="end">${{ tax }}</v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <h2>Total</h2>
+            </v-col>
+            <v-col align="end">
+              <h2 class="text-secondary">${{ total }}</h2>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </div>
@@ -126,6 +181,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .document {
   background-color: #ffffff;
-  padding: 0.5in 1in;
+
+  :deep(.line-items) .v-row {
+    align-items: center;
+    
+    &:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+  }
 }
 </style>

@@ -31,7 +31,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-chip :color="color" size="small">{{ status }}</v-chip>
+  <v-chip :color="color" size="small" v-bind="$attrs">{{ status }}</v-chip>
 </template>
 
 <style lang="scss" scoped>

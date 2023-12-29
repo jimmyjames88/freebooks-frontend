@@ -26,19 +26,24 @@ export default defineComponent({
     {
       title: 'Client',
       sortable: true,
-      key: 'client.name'
+      key: 'client.name',
+      mobile: true
     },
     {
       title: 'Issued',
       sortable: true,
-      key: 'issueDate'
+      key: 'issueDate',
+      mobile: true
     },
     {
       title: 'Status',
-      key: 'status'
+      sortable: true,
+      key: 'status',
+      mobile: true
     },
     {
       title: 'Total',
+      sortable: true,
       align: 'end',
       key: 'total',
     },
@@ -48,6 +53,13 @@ export default defineComponent({
       sortable: false 
     }]
   }),
+  computed: {
+    responsiveHeaders() {
+      if (this.$vuetify.display.smAndDown)
+        return this.headers.filter(header => header.mobile)
+      return this.headers
+    }
+  }
 })
 </script>
 
@@ -67,7 +79,7 @@ export default defineComponent({
       <v-col>
         <DataTable
           class="pa-4"
-          :headers="headers"
+          :headers="responsiveHeaders"
           :sort-by="sortBy"
           :items="items"
           :items-length="itemsLength"
@@ -80,7 +92,7 @@ export default defineComponent({
           </template>
           <template #item.client.name="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              <Avatar class="mr-4">{{ item.client.name }}</Avatar>
+              <Avatar class="mr-4 d-none d-md-inline-flex">{{ item.client.name }}</Avatar>
               {{ item.client.name }}
             </router-link>
           </template>
