@@ -77,12 +77,25 @@ export default defineComponent({
         <h1>&nbsp;</h1>
       </v-col>
       <v-col align="end">
-        <Button color="primary" @click="print">
-          <v-icon>mdi-printer</v-icon> Print
+        <Button color="primary">
+          <v-icon>mdi-receipt-text-edit</v-icon> Edit
         </Button>
         <Button color="primary" disabled>
           <v-icon>mdi-email</v-icon> Send
         </Button>
+        <v-menu>
+          <template #activator="{ props }">
+            <v-btn icon="mdi-dots-vertical" v-bind="props" flat color="transparent"></v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="print">
+              <v-icon>mdi-printer</v-icon> Print
+            </v-list-item>
+            <v-list-item @click="download" disabled>
+              <v-icon>mdi-download</v-icon> Download
+            </v-list-item>
+          </v-list>  
+        </v-menu>
       </v-col>
     </v-row>
     <div class="document pa-4 pa-sm-8">
