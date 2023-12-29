@@ -67,6 +67,11 @@ export default defineComponent({
         this.status = status
       })
       .catch((err: Error) => console.warn(err))
+  },
+  methods: {
+    print() {
+      window.print()
+    }
   }
 })
 </script>
@@ -78,7 +83,7 @@ export default defineComponent({
         <h1>&nbsp;</h1>
       </v-col>
       <v-col align="end">
-        <Button color="primary" disabled>
+        <Button color="primary" @click="print">
           <v-icon>mdi-printer</v-icon> Print
         </Button>
         <Button color="primary" disabled>
