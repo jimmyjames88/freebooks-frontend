@@ -35,23 +35,17 @@ export default defineComponent({
     status: null
   }),
   computed: {
-    subtotal(): number {
+    subtotal(): string {
       const subtotal = this.lineItems.reduce((acc, item) => {
         return acc + (item.rate * item.quantity)
       }, 0)
-      return +subtotal.toFixed(2)
+      return subtotal.toFixed(2)
     },
-    tax(): number {
-      const tax = this.lineItems.reduce((acc, item) => {
-        return acc + (item.rate * item.quantity)
-      }, 0) * 0.05
-      return +tax.toFixed(2)
+    tax(): string {
+      return (+this.subtotal * 0.05).toFixed(2)
     },
-    total(): number {
-      const total = this.lineItems.reduce((acc, item) => {
-        return acc + (item.rate * item.quantity)
-      }, 0) * 1.05
-      return +total.toFixed(2)
+    total(): string {
+      return (+this.subtotal + +this.tax).toFixed(2)
     }
   },
   mounted() {

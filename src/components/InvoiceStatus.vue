@@ -11,9 +11,9 @@ export default defineComponent({
     color() {
       switch (this.status) {
         case 'DRAFT':
-          return 'secondary'
+          return 'light'
         case 'SENT':
-          return 'info'
+          return 'success'
         case 'PARTIAL':
           return 'indigo'
         case 'PAID':
