@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 
@@ -14,7 +15,7 @@ export default defineComponent({
       refNo: string,
       issueDate: Date,
       dueDate: Date,
-      lineItems: any[], // TODO: type this
+      lineItems: _LineItem[],
       notes: string
     } | undefined,
     loading: boolean
@@ -45,19 +46,11 @@ export default defineComponent({
         this.loading = false
       }
     },
-    async submitForm(data: {
-      clientId: number | undefined, 
-      refNo: string,
-      issueDate: Date,
-      dueDate: Date,
-      lineItems: any[], 
-      notes: string
-    }) {
+    async submitForm(data: Partial<_Invoice>) {
       try {
         this.loading = true
-        console.log('DATA', data)
         await API.invoices.update({ 
-          id: this.formData.id, 
+          id: this.formData?.id,
           ...data 
         })
         this.$router.push({ name: 'Invoices/Show', params: { invoiceId: data.id }})

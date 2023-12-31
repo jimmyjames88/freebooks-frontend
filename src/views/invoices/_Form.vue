@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { _Client, _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { AutoComplete, Button, LineItems, TextField, TextArea } from '../../components';
 
@@ -7,7 +8,7 @@ import { AutoComplete, Button, LineItems, TextField, TextArea } from '../../comp
 export default defineComponent({
   components: { AutoComplete, Button, LineItems, TextField, TextArea },
   data: (): {
-    clients: any[], // TODO: type this
+    clients: _Client[],
     clientId: number | undefined,
     latestRefNo: string | undefined,
     refNo: string,
@@ -23,7 +24,7 @@ export default defineComponent({
     }[],
     notes: string
   } => ({
-    clients: [] as any[],
+    clients: [],
     clientId: undefined,
     latestRefNo: undefined,
     refNo: '',
@@ -58,11 +59,11 @@ export default defineComponent({
     },
   },
   computed: {
-    clientList(): any {
-      return this.clients.map((client: any) => ({
+    clientList(): _Client[] {
+      return this.clients.map((client: _Client) => ({
         value: client.id,
         title: client.name
-      })).sort((a: any, b: any) => {
+      })).sort((a: _Client, b: _Client) => {
         if (a.title.toLowerCase() < b.title.toLowerCase()) return -1
         if (a.title.toLowerCase() > b.title.toLowerCase()) return 1
         return 0

@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { AxiosResponse, AxiosError } from 'axios'
 
 async function apiEndpointWarning() {
   console.error(`Provide api function reference as parameter on DataTableComposable in the setup()
@@ -18,10 +19,10 @@ export default function DataTableComposable(apiEndpoint: Function = apiEndpointW
   const loadItems = (filters: any = undefined, search: string = '') => {
     loading.value = true
     apiEndpoint({ ...filters, search })
-      .then((response: any) => {
+      .then((response: AxiosResponse) => {
         itemsLength.value = response.data.total
         items.value = response.data.items
-      }).catch((err: any) => {
+      }).catch((err: AxiosError) => {
         console.warn(err)
       }).finally(() => {
         loading.value = false

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { SubmitEventPromise } from 'vuetify'
 import validator from 'validator'
 import { mapActions } from 'pinia'
 import { useAuthStore } from '@/stores/Auth'
@@ -35,9 +36,9 @@ export default defineComponent({
   methods: {
     ...mapActions(useAuthStore, ['login']),
 
-    async submit(event: Event) {
+    async submit(event: SubmitEventPromise) {
       this.loading = true
-      const results: any = await event
+      const results = await event
       this.loading = false
       this.password = ''
       if (results.valid) {
@@ -54,7 +55,6 @@ export default defineComponent({
       <div>
         <Logo />
       </div>
-      
     </template>
     <template #right>
       <v-form @submit.prevent="submit" validate-on="submit">

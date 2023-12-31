@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { _Client } from '@jimmyjames88/freebooks-types'
 
 const url = `${import.meta.env.VITE_API}/clients`
 
@@ -15,27 +16,23 @@ export default {
     return axios.get(`${url}/list`)
   },
 
-  show(clientId: string) {
+  show(clientId: number) {
     return axios.get(`${url}/${clientId}`)
   },
 
-  store(client: any) {
+  store(client: _Client) {
     return axios.post(`${url}`, {
       ...client
     })
   },
 
-  edit(clientId: string) {
-    return axios.get(`${url}/${clientId}/edit`)
-  },
-
-  update(client: any) {
+  update(client: _Client) {
     return axios.put(`${url}/${client.id}`, {
       ...client
     })
   },
 
-  destroy(clientId: string) {
+  destroy(clientId: number) {
     return axios.delete(`${url}/${clientId}`)
   }
 }

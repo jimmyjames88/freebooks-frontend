@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 
@@ -12,14 +13,7 @@ export default defineComponent({
   }),
 
   methods: {
-    async submitForm(data: {
-      clientId: number | undefined, 
-      refNo: string,
-      issueDate: Date,
-      dueDate: Date,
-      lineItems: any[], 
-      notes: string
-    }) {
+    async submitForm(data: Partial<_Invoice>) {
       try {
         this.loading = true
         const response = await API.invoices.store({ ...data })

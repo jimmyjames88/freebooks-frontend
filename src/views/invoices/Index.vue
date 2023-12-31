@@ -104,7 +104,7 @@ export default defineComponent({
             <InvoiceStatus :status="item.status" />
           </template>
           <template #item.total="{ item }">
-            {{ item.total }}
+            ${{ item.total.toFixed(2) }}
           </template>
           <template #item.actions="{ item }">
             <v-btn flat size="xs">

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { _Invoice } from '@jimmyjames88/freebooks-types'
 
 const url = `${import.meta.env.VITE_API}/invoices`
 
@@ -11,19 +12,19 @@ export default {
     })
   },
 
-  store(invoice: any) {
+  store(invoice: _Invoice) {
     return axios.post(`${url}`, {
       ...invoice
     })
   },
 
-  update(invoice: any) {
+  update(invoice: _Invoice) {
     return axios.put(`${url}/${invoice.id}`, {
       ...invoice
     })
   },
   
-  show(invoiceId: string) {
+  show(invoiceId: string | number) {
     return axios.get(`${url}/${invoiceId}`)
   },
 
