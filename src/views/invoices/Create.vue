@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useToast } from 'vue-toastification';
 import { _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
@@ -17,7 +18,8 @@ export default defineComponent({
       try {
         this.loading = true
         const response = await API.invoices.store({ ...data })
-        const { id } = response.data        
+        const { id } = response.data
+        useToast().success('Invoice created')
         this.$router.push({ name: 'Invoices/Show', params: { invoiceId: id }})
       } catch(e) {
         console.error(e)
