@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Client, _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Client, _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { AutoComplete, Button, LineItems, TextField, TextArea } from '../../components';
 
@@ -16,12 +16,7 @@ export default defineComponent({
     issueDatePicker: boolean,
     dueDate: Date | undefined,
     dueDatePicker: boolean,
-    lineItems: {
-      type: string,
-      description: string,
-      rate: number | null,
-      quantity: number | null
-    }[],
+    lineItems: _LineItem[],
     notes: string
   } => ({
     clients: [],
@@ -83,6 +78,12 @@ export default defineComponent({
     },
     total(): string {
       return (parseFloat(this.subtotal) + parseFloat(this.tax)).toFixed(2)
+    },
+    noEmptyLineItems() {
+      return this.lineItems.filter((lineItem: _LineItem) => {
+        const { description, rate, quantity } = lineItem
+        return description || rate || quantity
+      })
     }
   },
   methods: {
@@ -93,8 +94,11 @@ export default defineComponent({
       this.refNo = refNo
       this.issueDate = issueDate
       this.dueDate = dueDate
-      this.lineItems = lineItems
       this.notes = notes
+
+      if (lineItems.length > 0) {
+        this.lineItems = lineItems
+      }
     },
     async loadClientList() {
       await API.clients.list().then((response: AxiosResponse) => {
@@ -124,9 +128,13 @@ export default defineComponent({
         refNo: this.refNo,
         issueDate: this.issueDate,
         dueDate: this.dueDate,
-        lineItems: this.lineItems,
+        lineItems: this.noEmptyLineItems,
         notes: this.notes
       })
+    },
+    goBack() {
+      // todo add confirmation if form is dirty
+      this.$router.go(-1)
     }
   }
 })
@@ -230,7 +238,7 @@ export default defineComponent({
         <Button color="secondary" type="submit">
           <v-icon>mdi-content-save</v-icon> Save
         </Button>
-        <Button color="transparent">
+        <Button color="transparent" @click="goBack">
           <v-icon>mdi-close-circle</v-icon> Cancel
         </Button>
       </v-col>
