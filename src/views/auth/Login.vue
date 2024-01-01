@@ -1,11 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { SubmitEventPromise } from 'vuetify'
-import validator from 'validator'
 import { mapActions } from 'pinia'
 import { useAuthStore } from '@/stores/Auth'
 import { Button, GradientContainer, Logo, TextField } from '@/components'
-import { RouteLocationRaw } from 'vue-router'
 
 export default defineComponent({
   name: 'Login',
@@ -63,7 +61,7 @@ export default defineComponent({
         <Button type="submit" color="secondary" :loading="loading">
           <v-icon>mdi-login</v-icon> Sign in
         </Button>
-        <Button color="transparent" to="/">
+        <Button color="transparent" :to="{ name: 'Auth/Register' }">
           <v-icon>mdi-account-plus</v-icon> Sign up!
         </Button>
         <Button color="transparent" to="/">
