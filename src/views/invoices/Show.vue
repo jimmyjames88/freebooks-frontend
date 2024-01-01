@@ -1,7 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { AxiosResponse } from 'axios'
 import API from '@/api'
 import { Avatar, Button, InvoiceStatus } from '@/components'
+import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Invoices/Show',
@@ -85,8 +87,8 @@ export default defineComponent({
         <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id }}">
           <v-icon>mdi-receipt-text-edit</v-icon> Edit
         </Button>
-        <Button color="primary" disabled>
-          <v-icon>mdi-email</v-icon> Send
+        <Button color="primary" :disabled="!client.id">
+          <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend'  }}
         </Button>
         <v-menu>
           <template #activator="{ props }">

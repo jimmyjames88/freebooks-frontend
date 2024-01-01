@@ -9,18 +9,16 @@ export default defineComponent({
   },
   computed: {
     color() {
-      switch (this.status) {
-        case 'DRAFT':
+      switch (this.status?.toLowerCase()) {
+        case 'draft':
           return 'light'
-        case 'SENT':
+        case 'sent':
           return 'success'
-        case 'PARTIAL':
+        case 'partial':
           return 'indigo'
-        case 'PAID':
+        case 'paid':
           return 'success'
-        case 'PASTDUE':
-          return 'warning'
-        case 'VOID':
+        case 'void':
           return 'color-6'
         default:
           return 'secondary'
@@ -35,6 +33,10 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+.v-chip {
+  text-transform: uppercase;
+}
+
 .v-avatar {
   width: 40px;
   height: 40px;
