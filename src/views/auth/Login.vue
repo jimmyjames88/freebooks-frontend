@@ -40,7 +40,7 @@ export default defineComponent({
       this.loading = false
       this.password = ''
       if (results.valid) {
-        this.$router.push({ name: 'Clients/Index' })
+        this.$router.push({ name: 'Dashboard' })
       }
     }
   }

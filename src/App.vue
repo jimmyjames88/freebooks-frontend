@@ -1,4 +1,3 @@
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapActions, mapWritableState } from 'pinia'
@@ -6,12 +5,6 @@ import { useAuthStore } from './stores/Auth'
 
 export default defineComponent({
   name: 'App',
-
-  data () {
-    return {
-      //
-    }
-  },
 
   computed: {
     ...mapWritableState(useAuthStore, ['loggedIn'])
@@ -48,7 +41,11 @@ export default defineComponent({
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-view-dashboard" value="dashboard">
+          <v-list-item
+            prepend-icon="mdi-view-dashboard"
+            value="dashboard"
+            :to="{ name: 'Dashboard' }"  
+          >
             <h3>Dashboard</h3>
           </v-list-item>
           <v-list-item prepend-icon="mdi-account-group"

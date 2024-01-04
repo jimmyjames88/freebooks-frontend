@@ -49,6 +49,12 @@ export default defineComponent({
     },
     total(): string {
       return (+this.subtotal + +this.tax).toFixed(2)
+    },
+    pastDue(): boolean {
+      if (!this.dueDate) return false
+      const dueDate = new Date(this.dueDate)
+      const today = new Date()
+      return dueDate < today
     }
   },
   mounted() {
@@ -109,12 +115,17 @@ export default defineComponent({
       <v-row>
         <v-col>
           <h1 class="title">
-            Invoice <InvoiceStatus :status="status" class="d-print-none" /> 
+            Invoice
+            <InvoiceStatus :status="status" class="d-print-none" /> 
+            <v-chip class="ml-1" color="primary" size="small">
+              PAST DUE
+            </v-chip>
           </h1>
+          <h3># {{ refNo }}</h3>
         </v-col>
         <v-col align="end">
-          <h2># {{ refNo }}</h2>
-          <h3>{{ issueDate }}</h3>
+          <h3>Issued: {{ issueDate }}</h3>
+          <h3>Pay by: {{ dueDate }}</h3>
         </v-col>
       </v-row>
       <v-divider class="my-4" />
@@ -150,10 +161,10 @@ export default defineComponent({
           <h3>Description</h3>
         </v-col>
         <v-col cols="4" sm="2" align="center">
-          <h3>Quantity</h3>
+          <h3>Rate</h3>
         </v-col>
         <v-col cols="4" sm="2" align="center">
-          <h3>Rate</h3>
+          <h3>Quantity</h3>
         </v-col>
         <v-col cols="4" sm="2" align="end">
           <h3>Total</h3>
@@ -163,8 +174,8 @@ export default defineComponent({
         <v-col class="line-items">
           <v-row v-for="(item, index) in lineItems" :key="`item-${index}`">
             <v-col cols="12" sm="6">{{ item.description }}</v-col>
-            <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
             <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
+            <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
             <v-col cols="4" sm="2" align="end">${{ (item.quantity * item.rate).toFixed(2) }}</v-col>
           </v-row>
         </v-col>
@@ -172,7 +183,6 @@ export default defineComponent({
       <v-divider class="mt-8 mb-4" />
       <v-row>
         <v-col>
-          <h3>Pay by: {{ dueDate }}</h3>
           {{ notes }}
         </v-col>
         <v-col md="4">

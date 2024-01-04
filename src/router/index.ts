@@ -3,6 +3,11 @@ import { useAuthStore } from '@/stores/Auth'
 
 const routes = [
   {
+    path: '/',
+    name: 'Dashboard',
+    component: () => import('../views/dashboard/Index.vue')
+  },
+  {
     path: '/auth/login',
     name: 'Auth/Login',
     component: () => import('../views/auth/Login.vue'),
@@ -76,7 +81,7 @@ router.beforeEach((to, from, next) => {
     return next({ name: 'Auth/Login' })
   } 
   if (to.name === 'Auth/Login' && authStore.loggedIn) {
-    return next({ name: 'Clients/Index' })
+    return next({ name: 'Dashboard' })
   }
   next()
 })
