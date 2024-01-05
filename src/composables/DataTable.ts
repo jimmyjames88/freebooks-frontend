@@ -9,7 +9,7 @@ async function apiEndpointWarning() {
 
 export default function DataTableComposable(apiEndpoint: Function = apiEndpointWarning) {
   const loading = ref(true)
-  const  itemsLength = ref(0)
+  const itemsLength = ref(0)
   const sortBy = ref([{
     key: 'updatedAt',
     order: 'desc'

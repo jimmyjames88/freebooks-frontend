@@ -4,12 +4,26 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'AutoComplete',
   inheritAttrs: false,
+  emits: ['update:modelValue'],
   props: {
+    modelValue: {
+      type: Number
+    },
     label: {
       type: String
     },
     class: {
       type: String
+    }
+  },
+  computed: {
+    value: {
+      get(): number | undefined {
+        return this.modelValue
+      },
+      set(value: number) {
+        this.$emit('update:modelValue', value)
+      }
     }
   }
 })
@@ -18,7 +32,7 @@ export default defineComponent({
 <template>
   <div class="text-field">
     <label v-if="label">{{ label }}</label>
-    <v-autocomplete v-bind="$attrs" />
+    <v-autocomplete v-bind="$attrs" v-model="value" />
   </div>
 </template>
 

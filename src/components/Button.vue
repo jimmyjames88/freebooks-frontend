@@ -26,6 +26,14 @@ export default defineComponent({
 
   &.bg-transparent {
     color: rgba(var(--v-theme-primary)) !important;
+
+    &.v-btn--disabled {
+      opacity: 0.3;
+
+      :deep(.v-btn__overlay) {
+        opacity: 0 !important;
+      }
+    }
   }
 }
 </style>

@@ -9,8 +9,8 @@ export default defineComponent({
   name: 'Invoices/Index',
   components: { Avatar, Button, DataTable, InvoiceStatus, TextField },
   setup(){
-    const { items, itemsLength, sortBy, loadItems } = DataTableComposable(API.invoices.index)
-    return { items, itemsLength, sortBy, loadItems }
+    const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.invoices.index)
+    return { items, itemsLength, sortBy, loadItems, loading }
   },
   data: () => ({
     sortBy: [{
@@ -84,6 +84,7 @@ export default defineComponent({
           :items="items"
           :items-length="itemsLength"
           @load-items="loadItems"
+          :loading="loading"
         >
           <template #item.refNo="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">

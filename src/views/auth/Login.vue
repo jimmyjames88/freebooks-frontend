@@ -64,9 +64,9 @@ export default defineComponent({
         <Button color="transparent" :to="{ name: 'Auth/Register' }">
           <v-icon>mdi-account-plus</v-icon> Sign up!
         </Button>
-        <Button color="transparent" to="/">
+        <!-- <Button color="transparent" to="/" disabled>
           <v-icon>mdi-lock</v-icon> Forgot
-        </Button>
+        </Button> -->
       </v-form>
     </template>
   </GradientContainer>

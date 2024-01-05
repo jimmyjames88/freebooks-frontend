@@ -4,11 +4,12 @@ import { useToast } from 'vue-toastification';
 import { _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
+import { Spinner } from '@/components'
 
 
 export default defineComponent({
   name: 'Invoices/Edit',
-  components: { InvoiceForm },
+  components: { InvoiceForm, Spinner },
   data: (): {
     formData: {
       id: number | undefined,
@@ -67,7 +68,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container>
+  <Spinner v-if="loading" />
+  <v-container v-show="!loading">
     <v-row>
       <v-col>
         <h1 class="title">Editing Invoice</h1>

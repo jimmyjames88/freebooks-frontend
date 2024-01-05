@@ -2,13 +2,28 @@
 import { defineComponent } from 'vue'
 import { _Client, _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import { AutoComplete, Button, LineItems, TextField, TextArea } from '../../components';
+import { 
+  AutoComplete,
+  Button,
+  ClientSelect,
+  LineItems,
+  Spinner,
+  TextField,
+  TextArea
+} from '../../components';
 
 
 export default defineComponent({
-  components: { AutoComplete, Button, LineItems, TextField, TextArea },
+  components: { 
+    AutoComplete,
+    Button,
+    ClientSelect,
+    LineItems,
+    Spinner,
+    TextField,
+    TextArea
+  },
   data: (): {
-    clients: _Client[],
     clientId: number | undefined,
     latestRefNo: string | undefined,
     refNo: string,
@@ -17,9 +32,9 @@ export default defineComponent({
     dueDate: Date | undefined,
     dueDatePicker: boolean,
     lineItems: _LineItem[],
-    notes: string
+    notes: string,
+    submitting: boolean
   } => ({
-    clients: [],
     clientId: undefined,
     latestRefNo: undefined,
     refNo: '',
@@ -30,11 +45,11 @@ export default defineComponent({
     lineItems: [
       { type: '', description: '', rate: null, quantity: null }
     ],
-    notes: ''
+    notes: '',
+    submitting: false
   }),
   mounted() {
     this.loadLatestRefNo()
-    this.loadClientList()
   },
   watch: {
     formData: {
@@ -54,16 +69,6 @@ export default defineComponent({
     },
   },
   computed: {
-    clientList(): _Client[] {
-      return this.clients.map((client: _Client) => ({
-        value: client.id,
-        title: client.name
-      })).sort((a: _Client, b: _Client) => {
-        if (a.title.toLowerCase() < b.title.toLowerCase()) return -1
-        if (a.title.toLowerCase() > b.title.toLowerCase()) return 1
-        return 0
-      })
-    },
     subtotal(): string {
       const sub = this.lineItems.reduce((acc, lineItem) => {
         const rate = Number(lineItem.rate || 0)
@@ -100,15 +105,6 @@ export default defineComponent({
         this.lineItems = lineItems
       }
     },
-    async loadClientList() {
-      await API.clients.list().then((response: AxiosResponse) => {
-        this.clients = response.data
-        if (this.$route.query.clientId)
-          this.clientId = Number(this.$route.query.clientId)
-      }).catch((err: AxiosError) => {
-        console.warn(err)
-      })
-    },
     async loadLatestRefNo() {
       await API.invoices.latestRefNo().then((response: AxiosResponse) => {
         if(response.data.refNo !== '0')
@@ -123,6 +119,7 @@ export default defineComponent({
       return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
     },
     submitForm() {
+      this.submitting = true
       this.$emit('submitForm', {
         clientId: this.clientId,
         refNo: this.refNo,
@@ -145,14 +142,7 @@ export default defineComponent({
     <div class="document">
       <v-row>
         <v-col cols="12" sm="8" md="6">
-          <AutoComplete 
-            v-model="clientId"
-            :items="clientList"
-            label="Client" 
-            variant="outlined" 
-            prepend-inner-icon="mdi-account" 
-            clearable 
-          />
+          <ClientSelect v-model="clientId" />
           <router-link :to="{ name: 'Clients/Create' }" class="ml-2">
             <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
           </router-link>
@@ -235,10 +225,10 @@ export default defineComponent({
     </div>
     <v-row class="mt-2">
       <v-col align="end">
-        <Button color="secondary" type="submit">
+        <Button color="secondary" type="submit" :loading="submitting">
           <v-icon>mdi-content-save</v-icon> Save
         </Button>
-        <Button color="transparent" @click="goBack">
+        <Button color="transparent" @click="goBack" :disabled="submitting">
           <v-icon>mdi-close-circle</v-icon> Cancel
         </Button>
       </v-col>

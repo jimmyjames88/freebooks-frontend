@@ -2,12 +2,12 @@
 import { defineComponent } from 'vue';
 import { AxiosResponse } from 'axios';
 import API from '@/api'
-import { Avatar, Button, InvoiceCards } from '@/components'
+import { Avatar, Button, InvoiceCards, Spinner } from '@/components'
 
 
 export default defineComponent({
-  name: 'Client.Show',
-  components: { Avatar, Button, InvoiceCards },
+  name: 'Clients/Show',
+  components: { Avatar, Button, InvoiceCards, Spinner },
   data: () => ({
     loading: true,
     id: null,
@@ -48,7 +48,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container>
+  <Spinner v-if="loading" />
+  <v-container v-else>
     <v-row justify="start" align="center">
       <v-col class="v-col-auto">
         <h1>

@@ -28,6 +28,10 @@ export default {
     return axios.get(`${url}/${invoiceId}`)
   },
 
+  destroy(invoiceId: string | number) {
+    return axios.delete(`${url}/${invoiceId}`)
+  },
+
   latestRefNo() {
     return axios.get(`${url}/latest-ref-no`)
   }

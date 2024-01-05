@@ -2,13 +2,14 @@
 import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import API from '@/api'
-import { Avatar, Button, InvoiceStatus } from '@/components'
+import { Avatar, Button, InvoiceStatus, Spinner } from '@/components'
 import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Avatar, Button, InvoiceStatus },
+  components: { Avatar, Button, InvoiceStatus, Spinner },
   data: () => ({
+    loading: true,
     id: null,
     lineItems: [] as {
       type: string,
@@ -58,6 +59,7 @@ export default defineComponent({
     }
   },
   mounted() {
+    this.loading = true
     API.invoices.show(this.$route.params.invoiceId)
       .then((response: AxiosResponse) => {
         const { id, client, lineItems, notes, refNo, issueDate, dueDate, status } = response.data
@@ -71,6 +73,7 @@ export default defineComponent({
         this.status = status
       })
       .catch((err: Error) => console.warn(err))
+      .finally(() => this.loading = false)
   },
   methods: {
     download() {
@@ -84,7 +87,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-container>
+  <Spinner v-if="loading" />
+  <v-container v-else>
     <v-row class="d-print-none">
       <v-col>
         <h1>&nbsp;</h1>
@@ -106,6 +110,9 @@ export default defineComponent({
             </v-list-item>
             <v-list-item @click="download" disabled>
               <v-icon>mdi-download</v-icon> Download
+            </v-list-item>
+            <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id }}">
+              <v-icon>mdi-delete</v-icon> Delete
             </v-list-item>
           </v-list>  
         </v-menu>

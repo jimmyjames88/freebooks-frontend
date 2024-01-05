@@ -9,22 +9,16 @@ import InvoiceForm from './_Form.vue'
 export default defineComponent({
   name: 'Invoices/Create',
   components: { InvoiceForm },
-  data: () => ({
-    loading: false
-  }),
 
   methods: {
     async submitForm(data: Partial<_Invoice>) {
       try {
-        this.loading = true
         const response = await API.invoices.store({ ...data })
         const { id } = response.data
         useToast().success('Invoice created')
         this.$router.push({ name: 'Invoices/Show', params: { invoiceId: id }})
       } catch(e) {
         console.error(e)
-      } finally {
-        this.loading = false
       }
     }
   }
@@ -38,9 +32,6 @@ export default defineComponent({
         <h1 class="title">New Invoice</h1>
       </v-col>
     </v-row>
-    <InvoiceForm
-      :loading="loading"
-      @submitForm="submitForm"
-    />
+    <InvoiceForm @submitForm="submitForm" />
   </v-container>
 </template>
