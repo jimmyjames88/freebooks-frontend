@@ -26,6 +26,16 @@ const mockClientResponse = {
 
 vi.spyOn(API.clients, 'show').mockResolvedValue({ data: mockClientResponse })
 
+// Mock the ResizeObserver
+const ResizeObserverMock = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+// Stub the global ResizeObserver
+vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+
 describe('Show.vue', () => {
   const vuetify = createVuetify()
   const $route = { params: { clientId: 1 }}

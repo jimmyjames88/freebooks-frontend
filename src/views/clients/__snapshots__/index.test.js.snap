@@ -14,13 +14,13 @@ exports[`Index.vue > Renders properly 1`] = `
   </div>
   <div class=\\"v-row\\">
     <div class=\\"v-col\\">
-      <div class=\\"v-table v-table--has-top v-table--has-bottom v-theme--light v-table--density-default v-data-table\\">
+      <div class=\\"v-table v-table--has-top v-table--has-bottom v-theme--light v-table--density-default v-data-table v-data-table--loading pa-4\\">
         <div class=\\"v-container v-locale--is-ltr\\">
           <div class=\\"v-row\\">
             <div class=\\"v-col-sm-6 v-col-md-4 v-col-12\\">
               <div data-v-5dc27b7c=\\"\\" class=\\"mt-n4 text-field\\">
                 <!--v-if-->
-                <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--density-default v-locale--is-ltr v-text-field v-text-field--plain-underlined\\">
+                <div data-v-5dc27b7c=\\"\\" class=\\"v-input v-input--horizontal v-input--density-default v-locale--is-ltr v-text-field v-input--plain-underlined\\">
                   <!---->
                   <div class=\\"v-input__control\\">
                     <div class=\\"v-field v-field--appended v-field--single-line v-field--no-label v-field--variant-underlined v-theme--light v-locale--is-ltr\\">
@@ -72,30 +72,48 @@ exports[`Index.vue > Renders properly 1`] = `
             <!---->
             <thead class=\\"v-data-table__thead\\" role=\\"rowgroup\\">
               <tr>
-                <th class=\\"v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable v-data-table__th v-data-table__th--sortable\\">
+                <th class=\\"v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable v-data-table-headers--loading\\" colspan=\\"1\\" rowspan=\\"1\\">
                   <div class=\\"v-data-table-header__content\\"><span>Name</span><i class=\\"mdi-arrow-up mdi v-icon notranslate v-theme--light v-icon--size-default v-data-table-header__sort-icon\\" aria-hidden=\\"true\\"></i>
                     <!---->
                   </div>
                 </th>
-                <th class=\\"v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable v-data-table__th v-data-table__th--sortable\\">
+                <th class=\\"v-data-table__td v-data-table-column--align-start v-data-table__th v-data-table__th--sortable v-data-table-headers--loading\\" colspan=\\"1\\" rowspan=\\"1\\">
                   <div class=\\"v-data-table-header__content\\"><span>Email</span><i class=\\"mdi-arrow-up mdi v-icon notranslate v-theme--light v-icon--size-default v-data-table-header__sort-icon\\" aria-hidden=\\"true\\"></i>
                     <!---->
                   </div>
                 </th>
-                <th class=\\"v-data-table__td v-data-table-column--align-end v-data-table__th v-data-table__th\\">
-                  <div class=\\"v-data-table-header__content\\"><span>Actions</span>
+                <th class=\\"v-data-table__td v-data-table-column--align-end v-data-table__th v-data-table-headers--loading\\" colspan=\\"1\\" rowspan=\\"1\\">
+                  <div class=\\"v-data-table-header__content\\"><span><!----></span>
                     <!---->
                     <!---->
                   </div>
                 </th>
               </tr>
-              <!---->
+              <tr class=\\"v-data-table-progress\\">
+                <th colspan=\\"3\\">
+                  <div class=\\"v-data-table-progress__loader\\">
+                    <div class=\\"v-progress-linear v-progress-linear--absolute v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 2px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"false\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
+                      <!---->
+                      <div class=\\"v-progress-linear__background\\" style=\\"width: 100%;\\"></div>
+                      <transition-stub name=\\"fade-transition\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+                        <div class=\\"v-progress-linear__indeterminate\\">
+                          <div class=\\"v-progress-linear__indeterminate long\\"></div>
+                          <div class=\\"v-progress-linear__indeterminate short\\"></div>
+                        </div>
+                      </transition-stub>
+                      <!---->
+                    </div>
+                  </div>
+                </th>
+              </tr>
             </thead>
             <!---->
             <tbody class=\\"v-data-table__tbody\\" role=\\"rowgroup\\">
-              <tr class=\\"v-data-table-rows-no-data\\">
-                <td colspan=\\"3\\">No data available</td>
+              <!---->
+              <tr class=\\"v-data-table-rows-loading\\">
+                <td colspan=\\"3\\">Loading items...</td>
               </tr>
+              <!---->
             </tbody>
             <!---->
             <!---->
@@ -108,7 +126,7 @@ exports[`Index.vue > Renders properly 1`] = `
             <div class=\\"v-input v-input--horizontal v-input--center-affix v-input--density-compact v-locale--is-ltr v-input--dirty v-text-field v-select v-select--single v-select--selected\\">
               <!---->
               <div class=\\"v-input__control\\">
-                <div class=\\"v-field v-field--active v-field--appended v-field--center-affix v-field--dirty v-field--no-label v-field--variant-outlined v-theme--light v-locale--is-ltr\\" role=\\"button\\" aria-haspopup=\\"menu\\" aria-expanded=\\"false\\" aria-owns=\\"v-menu-5\\">
+                <div class=\\"v-field v-field--active v-field--appended v-field--center-affix v-field--dirty v-field--no-label v-field--variant-outlined v-theme--light v-locale--is-ltr\\" role=\\"combobox\\" aria-haspopup=\\"listbox\\" aria-expanded=\\"false\\" aria-owns=\\"v-menu-5\\">
                   <div class=\\"v-field__overlay\\"></div>
                   <div class=\\"v-field__loader\\">
                     <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
@@ -157,24 +175,31 @@ exports[`Index.vue > Renders properly 1`] = `
           <div class=\\"v-data-table-footer__info\\">
             <div>0-NaN of NaN</div>
           </div>
-          <div class=\\"v-data-table-footer__pagination\\"><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" aria-label=\\"First page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
-              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-first mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
-              <!---->
-              <!---->
-            </button><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" aria-label=\\"Previous page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
-              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-left mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
-              <!---->
-              <!---->
-            </button>
-            <!----><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" aria-label=\\"Next page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
-              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-right mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
-              <!---->
-              <!---->
-            </button><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-default v-btn--size-default v-btn--variant-plain\\" aria-label=\\"Last page\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
-              <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-last mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
-              <!---->
-              <!---->
-            </button>
+          <div class=\\"v-data-table-footer__pagination\\">
+            <nav class=\\"v-pagination v-theme--light\\" role=\\"navigation\\" aria-label=\\"Pagination Navigation\\" data-test=\\"v-pagination-root\\">
+              <ul class=\\"v-pagination__list\\">
+                <li class=\\"v-pagination__first\\" data-test=\\"v-pagination-first\\"><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-comfortable v-btn--rounded v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" arialabel=\\"First page\\" ariadisabled=\\"true\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+                    <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-first mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+                    <!---->
+                    <!---->
+                  </button></li>
+                <li class=\\"v-pagination__prev\\" data-test=\\"v-pagination-prev\\"><button type=\\"button\\" class=\\"v-btn v-btn--disabled v-btn--icon v-theme--light v-btn--density-comfortable v-btn--rounded v-btn--size-default v-btn--variant-plain\\" disabled=\\"\\" arialabel=\\"Previous page\\" ariadisabled=\\"true\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+                    <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-left mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+                    <!---->
+                    <!---->
+                  </button></li>
+                <li class=\\"v-pagination__next\\" data-test=\\"v-pagination-next\\"><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-comfortable v-btn--rounded v-btn--size-default v-btn--variant-plain\\" arialabel=\\"Next page\\" ariadisabled=\\"false\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+                    <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-chevron-right mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+                    <!---->
+                    <!---->
+                  </button></li>
+                <li class=\\"v-pagination__last\\" data-test=\\"v-pagination-last\\"><button type=\\"button\\" class=\\"v-btn v-btn--icon v-theme--light v-btn--density-comfortable v-btn--rounded v-btn--size-default v-btn--variant-plain\\" arialabel=\\"Last page\\" ariadisabled=\\"false\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+                    <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-page-last mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i></span>
+                    <!---->
+                    <!---->
+                  </button></li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

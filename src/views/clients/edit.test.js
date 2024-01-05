@@ -23,7 +23,7 @@ const mockClientResponse = {
   }
 }
 
-vi.spyOn(API.clients, 'edit').mockResolvedValue({ data: mockClientResponse })
+vi.spyOn(API.clients, 'index').mockResolvedValue({ data: mockClientResponse })
 vi.spyOn(API.clients, 'update').mockResolvedValue({ data: mockClientResponse })
 
 describe('Edit.vue', () => {

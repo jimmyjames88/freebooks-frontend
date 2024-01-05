@@ -17,9 +17,8 @@ describe('AuthStore', () => {
   // test the login action
   it('should login', async () => {
     const authStore = useAuthStore()
-
-    axios.post.mockResolvedValue({data: {}})
-    const x = await authStore.login('test@example.com', 'helloworld')
+    axios.post.mockResolvedValue({ status: 200, data: { token: '123' }})
+    await authStore.login('test@example.com', 'helloworld')
     expect(authStore.loggedIn).toBe(true)
   })
 })
