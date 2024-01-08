@@ -30,9 +30,9 @@ export default defineComponent({
       mobile: true
     },
     {
-      title: 'Issued',
+      title: 'Due by',
       sortable: true,
-      key: 'issueDate',
+      key: 'dueDate',
       mobile: true
     },
     {
@@ -58,6 +58,11 @@ export default defineComponent({
       if (this.$vuetify.display.smAndDown)
         return this.headers.filter(header => header.mobile)
       return this.headers
+    }
+  },
+  methods: {
+    formatDate(date: string) {
+      return new Date(date).toLocaleDateString()
     }
   }
 })
@@ -98,8 +103,8 @@ export default defineComponent({
               <em v-else>- Unassigned -</em>
             </router-link>
           </template>
-          <template #item.date="{ item }">
-            {{ item.date }}
+          <template #item.dueDate="{ item }">
+            {{ formatDate(item.dueDate) }}
           </template>
           <template #item.status="{ item }">
             <InvoiceStatus :status="item.status" />
