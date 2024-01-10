@@ -7,7 +7,8 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
-    "test": "vitest --coverage"
+    "test": "vitest --coverage",
+    "host": "vite --host"
   },
   "dependencies": {
     "@jimmyjames88/freebooks-types": "^1.0.0",

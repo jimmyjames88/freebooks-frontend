@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { useAuthStore } from './auth'
+import useAuthStore from './Auth'
 import axios from 'axios'
 
 vi.mock('axios')

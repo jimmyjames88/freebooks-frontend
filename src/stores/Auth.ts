@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import API from '@/api'
 import { _User } from '@jimmyjames88/freebooks-types'
 
-export const useAuthStore = defineStore('auth', {
+const useAuthStore = defineStore('auth', {
   state: () => ({
     loggedIn: false
   }),
@@ -55,3 +55,5 @@ export const useAuthStore = defineStore('auth', {
     }
   }
 })
+
+export default useAuthStore

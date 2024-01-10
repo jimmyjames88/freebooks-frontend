@@ -2,12 +2,12 @@
 import { defineComponent } from 'vue'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
-import { Avatar, Button, DataTable, InvoiceStatus } from '@/components'
+import { Avatar, Button, DataTable, Header, InvoiceStatus } from '@/components'
 import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Avatar, Button, DataTable, InvoiceStatus, TextField },
+  components: { Avatar, Button, DataTable, Header, InvoiceStatus, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.invoices.index)
     return { items, itemsLength, sortBy, loadItems, loading }
@@ -69,17 +69,31 @@ export default defineComponent({
 </script>
 
 <template>
+  <Header title="Invoices">
+    <template #desktop>
+      <Button color="primary" :to="{ name: 'Invoices/Create' }">
+        <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
+      </Button>
+    </template>
+    <template #mobile>
+      <v-list>
+        <v-list-item :to="{ name: 'Invoices/Create' }" prepend-icon="mdi-receipt-text-plus">
+          New Invoice
+        </v-list-item>
+      </v-list>
+    </template>
+  </Header>
+  <!-- <v-row justify="start" align="center">
+    <v-col>
+      <h1 class="title">Invoices</h1>
+    </v-col>
+    <v-col align="end">
+      <Button color="primary" :to="{ name: 'Invoices/Create' }">
+        <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
+      </Button>
+    </v-col>
+  </v-row> -->
   <v-container>
-    <v-row justify="start" align="center">
-      <v-col>
-        <h1 class="title">Invoices</h1>
-      </v-col>
-      <v-col align="end">
-        <Button color="primary" :to="{ name: 'Invoices/Create' }">
-          <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
-        </Button>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col>
         <DataTable

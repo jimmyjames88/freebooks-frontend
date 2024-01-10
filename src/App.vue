@@ -1,18 +1,28 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapActions, mapWritableState } from 'pinia'
-import { useAuthStore } from './stores/Auth'
+import { mapActions, mapState, mapWritableState } from 'pinia'
+import { useAppStore, useAuthStore } from './stores'
 
 export default defineComponent({
   name: 'App',
-
+  data: () => ({
+    open: false
+  }),
   computed: {
-    ...mapWritableState(useAuthStore, ['loggedIn'])
+    ...mapWritableState(useAuthStore, ['loggedIn']),
+    ...mapState(useAppStore, ['navOpen']),
+    showNav: {
+      get(): boolean {
+        return this.$vuetify.display.mdAndUp || this.navOpen
+      },
+      set(value: boolean) {
+        this.open = value
+      }
+    }
   },
-
   methods: {
     ...mapActions(useAuthStore, ['logout']),
-
+    ...mapActions(useAppStore, ['toggleNav']),
     async handleLogout() {
       this.logout()
       this.$router.push({ name: 'Auth/Login '})
@@ -26,10 +36,10 @@ export default defineComponent({
     <v-layout>
       <v-navigation-drawer
         v-if="loggedIn"
-        expand-on-hover
-        rail
         color="primary"
-      >
+        v-model="showNav"
+        @update:model-value="toggleNav"
+        mobile-breakpoint="md">
         <v-list>
           <v-list-item
             prepend-avatar="https://randomuser.me/api/portraits/men/81.jpg"
@@ -69,15 +79,10 @@ export default defineComponent({
           <v-list-item disabled prepend-icon="mdi-finance" value="reports">
             <h3>Reports</h3>
           </v-list-item>
+          <v-list-item prepend-icon="mdi-logout" value="logout" @click="handleLogout">
+            <h3>Logout</h3>
+          </v-list-item>
         </v-list>
-        <template #append>
-          <v-list density="compact" nav>
-            <v-list-item prepend-icon="mdi-logout"
-              title="Logout"
-              value="logout"
-              @click="handleLogout" />
-          </v-list>
-        </template>
       </v-navigation-drawer>
       <v-main>
         <router-view />
@@ -87,6 +92,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+@import 'vuetify/lib/styles/settings/_variables';
+
 .document {
   background-color: #ffffff;
   padding: 1.5rem;
@@ -103,6 +110,12 @@ export default defineComponent({
 .v-application.primary--text {
   color: #9A8F99 !important;
   caret-color: #9A8F99 !important;
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .v-main > .v-container {
+    padding: 0.5rem;
+  }
 }
 
 .d-print-none {

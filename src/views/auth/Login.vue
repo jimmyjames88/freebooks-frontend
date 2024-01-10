@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { SubmitEventPromise } from 'vuetify'
 import { mapActions } from 'pinia'
-import { useAuthStore } from '@/stores/Auth'
+import { useAuthStore } from '@/stores'
 import { Button, GradientContainer, Logo, TextField } from '@/components'
 
 export default defineComponent({

@@ -1,13 +1,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import API from '@/api'
-import DataTableComposable from '../../composables/DataTable'
-import { Avatar, Button, DataTable } from '@/components'
-import TextField from '../../components/TextField.vue'
+import DataTableComposable from '@/composables/DataTable'
+import { Avatar, Button, DataTable, Header, TextField } from '@/components'
 
 export default defineComponent({
   name: 'Clients/Index',
-  components: { Avatar, Button, DataTable, TextField },
+  components: { Avatar, Button, DataTable, Header, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.clients.index)
     return { items, itemsLength, sortBy, loadItems, loading }
@@ -38,17 +37,21 @@ export default defineComponent({
 </script>
 
 <template>
+  <Header title="Clients">
+    <template #desktop>
+      <Button color="primary" :to="{ name: 'Clients/Create' }">
+        <v-icon>mdi-account-plus</v-icon> Add Client
+      </Button>
+    </template>
+    <template #mobile>
+      <v-list>
+        <v-list-item :to="{ name: 'Clients/Create' }" prepend-icon="mdi-account-plus">
+          Add Client
+        </v-list-item>
+      </v-list>
+    </template>
+  </Header>
   <v-container>
-    <v-row justify="start" align="center">
-      <v-col>
-        <h1 class="title">Clients</h1>
-      </v-col>
-      <v-col align="end">
-        <Button color="primary" :to="{ name: 'Clients/Create' }">
-          <v-icon>mdi-account-plus</v-icon> Add Client
-        </Button>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col>
         <DataTable

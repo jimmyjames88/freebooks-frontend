@@ -4,11 +4,12 @@ import { useToast } from 'vue-toastification';
 import { _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
+import { Header } from '@/components'
 
 
 export default defineComponent({
   name: 'Invoices/Create',
-  components: { InvoiceForm },
+  components: { Header, InvoiceForm },
 
   methods: {
     async submitForm(data: Partial<_Invoice>) {
@@ -26,12 +27,8 @@ export default defineComponent({
 </script>
 
 <template>
+  <Header title="New Invoice" />
   <v-container>
-    <v-row>
-      <v-col>
-        <h1 class="title">New Invoice</h1>
-      </v-col>
-    </v-row>
     <InvoiceForm @submitForm="submitForm" />
   </v-container>
 </template>

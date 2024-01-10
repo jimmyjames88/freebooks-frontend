@@ -4,7 +4,7 @@ import { SubmitEventPromise } from 'vuetify'
 import { useToast } from 'vue-toastification'
 import { mapActions } from 'pinia'
 import API from '@/api'
-import { useAuthStore } from '@/stores/Auth'
+import { useAuthStore } from '@/stores'
 import { Button, GradientContainer, TextField } from '@/components'
 
 export default defineComponent({

@@ -1,20 +1,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { OutstandingRevenue, PastDueInvoices } from '@/components'
+import { OutstandingRevenue, Header, PastDueInvoices } from '@/components'
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { OutstandingRevenue, PastDueInvoices }
+  components: { OutstandingRevenue, Header, PastDueInvoices }
 })
 </script>
 
 <template>
+  <Header title="Dashboard" />
   <v-container>
-    <v-row>
-      <v-col>
-        <h1>Dashboard</h1>
-      </v-col>
-    </v-row>
     <v-row>
       <v-col>
         <h2>Outstanding revenue</h2>

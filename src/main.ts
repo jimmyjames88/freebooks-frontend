@@ -7,7 +7,7 @@ import Toast from 'vue-toastification';
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
-import { useAuthStore } from './stores/Auth'
+import { useAuthStore } from './stores'
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 
