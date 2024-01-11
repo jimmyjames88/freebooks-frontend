@@ -50,7 +50,7 @@ export default defineComponent({
 <template>
   <Spinner v-if="loading" />
   <template v-else>
-    <Header :title="name">
+    <Header title="Client">
       <template #title>
         <h1>
           <span>{{ name }}</span>
@@ -71,38 +71,15 @@ export default defineComponent({
       </template>
     </Header>
     <v-container>
-      <!-- <v-row justify="start" align="center">
-        <v-col class="v-col-auto">
-          <h1>
-            <span>{{ name }}</span>
-            <Avatar :name="name" class="ml-4" />
-          </h1>
+      <v-row class="d-md-none">
+        <v-col class="d-flex align-center flex-column">
+          <Avatar :name="name" jumbo />
+          <h2 class="mt-4">{{ name }}</h2>
         </v-col>
-        <v-col align="end">
-          <Button color="primary" :to="{ name: 'Invoices/Create', query: { clientId: id }}">
-            <v-icon>mdi-receipt-text-plus</v-icon> New Invoice
-          </Button>
-          <Button color="primary" disabled>
-            <v-icon>mdi-file-document-plus</v-icon>New Estimate
-          </Button>
-          <Button icon color="transparent" flat size="small">
-            <v-icon>mdi-dots-vertical</v-icon>
-            <v-menu activator="parent">
-              <v-list>
-                <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: id }}">
-                  <v-list-item-title>Edit</v-list-item-title>
-                </v-list-item>
-                <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: id }}">
-                  <v-list-item-title>Delete</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </Button>
-        </v-col>
-      </v-row> -->
+      </v-row>
       <v-divider class="my-4" />
       <v-row>
-        <v-col cols="12" md="6" lg="4" xl="3">
+        <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Contact</h3>
           <v-list bgColor="transparent" class="ml-n4">
             <v-list-item :href="`mailto:${email}`">
@@ -119,7 +96,7 @@ export default defineComponent({
             </v-list-item>
           </v-list>
         </v-col>
-        <v-col cols="12" md="6" lg="4" xl="3">
+        <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Address</h3>
           <v-list bgColor="transparent" class="ml-n4">
             <v-list-item>

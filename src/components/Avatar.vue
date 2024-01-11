@@ -8,6 +8,10 @@ export default defineComponent({
     name: {
       type: String,
       required: false
+    },
+    jumbo: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -46,7 +50,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-avatar v-bind="$attrs" :class="stringToColor(letters)">
+  <v-avatar v-bind="$attrs" :class="[stringToColor(letters), { jumbo }]">
     <span class="text-h6">
       {{ letters }}
     </span>
@@ -64,6 +68,15 @@ export default defineComponent({
     font-family: 'Fira Sans' !important;
     text-transform: uppercase !important;
     font-size: 1.125rem !important;
+  }
+
+  &.jumbo {
+    width: 96px;
+    height: 96px;
+
+    .text-h6 {
+      font-size: 2.75rem !important;
+    }
   }
 
   &.color {

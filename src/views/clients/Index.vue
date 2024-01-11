@@ -33,6 +33,20 @@ export default defineComponent({
       sortable: false
     }]
   }),
+  computed: {
+    responsiveHeaders() {
+      if (this.$vuetify.display.xs) {
+        return this.headers.filter(header => {
+          return [ 'name' ].includes(header.key)
+        })
+      } else if (this.$vuetify.display.sm) {
+        return this.headers.filter(header => {
+          return [ 'name', 'email', 'actions' ].includes(header.key)
+        })
+      }
+      return this.headers
+    }
+  }
 })
 </script>
 
@@ -56,7 +70,7 @@ export default defineComponent({
       <v-col>
         <DataTable
           class="pa-4"
-          :headers="headers"
+          :headers="responsiveHeaders"
           :sort-by="sortBy"
           :items="items"
           :items-length="itemsLength"

@@ -40,7 +40,9 @@ export default defineComponent({
   }),
   computed: {
     headerTitle(): string {
-      return this.$vuetify.display.mdAndUp ? '' : 'Invoice'
+      let title = this.$vuetify.display.mdAndUp ? '' : 'Invoice'
+      title += this.refNo ? ` #${this.refNo}` : ''
+      return title
     },
     subtotal(): string {
       const subtotal = this.lineItems.reduce((acc, item) => {

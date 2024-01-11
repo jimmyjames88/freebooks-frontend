@@ -2,9 +2,11 @@
 import { defineComponent } from 'vue'
 import { mapActions, mapState, mapWritableState } from 'pinia'
 import { useAppStore, useAuthStore } from './stores'
+import { Avatar } from './components'
 
 export default defineComponent({
   name: 'App',
+  components: { Avatar },
   data: () => ({
     open: false
   }),
@@ -36,16 +38,21 @@ export default defineComponent({
     <v-layout>
       <v-navigation-drawer
         v-if="loggedIn"
+        :rail="$vuetify.display.mdAndUp"
+        expand-on-hover
         color="primary"
         v-model="showNav"
         @update:model-value="toggleNav"
         mobile-breakpoint="md">
         <v-list>
           <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/men/81.jpg"
-            title="James Allen"
+            title="Freebooks Ltd."
             subtitle="me@james-allen.ca"
-          ></v-list-item>
+          >
+            <template #prepend>
+              <Avatar name="James Allen" class="ml-n2" />
+            </template>
+          </v-list-item>
         </v-list>
 
         <v-divider></v-divider>

@@ -27,19 +27,11 @@ export default defineComponent({
       title: 'Client',
       sortable: true,
       key: 'client.name',
-      mobile: true
     },
     {
       title: 'Due by',
       sortable: true,
       key: 'dueDate',
-      mobile: true
-    },
-    {
-      title: 'Status',
-      sortable: true,
-      key: 'status',
-      mobile: true
     },
     {
       title: 'Total',
@@ -55,8 +47,15 @@ export default defineComponent({
   }),
   computed: {
     responsiveHeaders() {
-      if (this.$vuetify.display.smAndDown)
-        return this.headers.filter(header => header.mobile)
+      if (this.$vuetify.display.xs) {
+        return this.headers.filter(header => {
+          return [ 'client.name', 'total' ].includes(header.key)
+        })
+      } else if (this.$vuetify.display.sm) {
+        return this.headers.filter(header => {
+          return [ 'client.name', 'dueDate', 'total' ].includes(header.key)
+        })
+      }
       return this.headers
     }
   },
@@ -112,7 +111,7 @@ export default defineComponent({
           </template>
           <template #item.client.name="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              <Avatar :name="item.client?.name || undefined" class="mr-4 d-none d-md-inline-flex" />
+              <Avatar :name="item.client?.name || undefined" class="mr-4" />
               <span v-if="item.client?.name">{{ item.client.name }}</span>
               <em v-else>- Unassigned -</em>
             </router-link>
@@ -120,10 +119,8 @@ export default defineComponent({
           <template #item.dueDate="{ item }">
             {{ formatDate(item.dueDate) }}
           </template>
-          <template #item.status="{ item }">
-            <InvoiceStatus :status="item.status" />
-          </template>
           <template #item.total="{ item }">
+            <InvoiceStatus :status="item.status" />
             ${{ item.total.toFixed(2) }}
           </template>
           <template #item.actions="{ item }">
