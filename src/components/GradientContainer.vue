@@ -26,6 +26,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+@import 'vuetify/lib/styles/settings/_variables';
+
 .gradient-container {
   color: #FFFFFF; 
   min-height: 100dvh; 
@@ -56,19 +58,39 @@ export default defineComponent({
     position: relative;
     z-index: 2;
     display: flex;
-    gap: 4rem;
+    flex-direction: column;
+    gap: 0rem;
     min-height: 100dvh;
+    justify-content: center;
     align-items: center;
     
-    .left {
-      width: 50%;
+    .left, .right {
       display: flex;
-      justify-content: flex-end;
-      align-items: center;
+      width: 400px;
+      max-width: 100%;
+      justify-content: center;
+      padding: 1rem;
+
+      > :deep(.v-form) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .gradient-container > .content {
+    flex-direction: row;
+    .left, .right {
+      width: 50%;
+    }
+
+    .left {
+      justify-content: end;
     }
 
     .right {
-      width: 50%;
+      justify-content: start;
     }
   }
 }
