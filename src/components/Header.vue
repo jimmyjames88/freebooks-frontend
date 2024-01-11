@@ -34,7 +34,7 @@ export default defineComponent({
   <v-app-bar
     v-else
     color="primary"
-    prominent
+    flat
   >
     <v-app-bar-nav-icon variant="text" @click.stop="toggleNav()" />
     <v-toolbar-title>
