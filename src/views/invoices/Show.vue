@@ -40,7 +40,8 @@ export default defineComponent({
   }),
   computed: {
     headerTitle(): string {
-      let title = this.$vuetify.display.mdAndUp ? '' : 'Invoice'
+      if (this.$vuetify.display.mdAndUp) return ''
+      let title = 'Invoice'
       title += this.refNo ? ` #${this.refNo}` : ''
       return title
     },
@@ -161,14 +162,14 @@ export default defineComponent({
         </v-row>
         <v-divider class="my-4" />
         <v-row>
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <h2>FreeBooks</h2>
             <p>Address line 1</p>
             <p>Address line 2</p>
             <p>City, State, Postal</p>
             <p>Country</p>
           </v-col><!-- TODO -->
-          <v-col cols="12" md="6">
+          <v-col cols="12" sm="6">
             <div v-if="client">
               <h2>
                 <router-link v-if="client.id" :to="{ name: 'Clients/Show', params: { clientId: client.id }}">
