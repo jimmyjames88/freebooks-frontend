@@ -134,7 +134,8 @@ export default defineComponent({
 @media print {
   .d-print-none,
   .v-navigation-drawer,
-  .v-btn { 
+  .v-btn,
+  .v-overlay-container { 
     display: none !important;
   }
   body,
