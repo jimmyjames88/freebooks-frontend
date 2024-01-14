@@ -3,12 +3,38 @@ import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import API from '@/api'
 import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
-import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
+import { _InvoiceStatus, _LineItem, _User } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Invoices/Show',
   components: { Avatar, Button, Header, InvoiceStatus, Spinner },
-  data: () => ({
+  data: (): {
+    loading: boolean,
+    id: number | null,
+    lineItems: _LineItem[],
+    notes: string,
+    refNo: string,
+    issueDate: Date | null,
+    dueDate: Date | null,
+    status: _InvoiceStatus | null,
+    user: Partial<_User>,
+    client: {
+      id: number | null,
+      name: string,
+      email: string,
+      address: {
+        line1: string,
+        line2: string,
+        city: string,
+        state: string,
+        postal: string,
+        country: string
+      },
+      phone: string,
+      website: string,
+    },
+  
+  } => ({
     loading: true,
     id: null,
     lineItems: [] as {
@@ -22,6 +48,21 @@ export default defineComponent({
     issueDate: null,
     dueDate: null,
     status: null,
+    user: {
+      profile: {
+        displayName: '',
+        displayEmail: '',
+        phone: '',
+        address: {
+          line1: '',
+          line2: '',
+          city: '',
+          state: '',
+          postal: '',
+          country: ''
+        }
+      }
+    },
     client: {
       id: null,
       name: '',
@@ -66,9 +107,10 @@ export default defineComponent({
   },
   mounted() {
     this.loading = true
-    API.invoices.show(this.$route.params.invoiceId)
+    
+    const invoice = API.invoices.show(this.$route.params.invoiceId)
       .then((response: AxiosResponse) => {
-        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status } = response.data
+        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status, user } = response.data
         this.id = id
         this.client = client
         this.lineItems = lineItems
@@ -77,6 +119,7 @@ export default defineComponent({
         this.issueDate = issueDate
         this.dueDate = dueDate
         this.status = status
+        this.user.profile = user.profile
       })
       .catch((err: Error) => console.warn(err))
       .finally(() => this.loading = false)
@@ -163,11 +206,17 @@ export default defineComponent({
         <v-divider class="my-4" />
         <v-row>
           <v-col cols="12" sm="6">
-            <h2>FreeBooks</h2>
-            <p>Address line 1</p>
-            <p>Address line 2</p>
-            <p>City, State, Postal</p>
-            <p>Country</p>
+            <template v-if="user.profile">
+              <h2>{{ user.profile.displayName }}</h2>
+              <p v-if="user.profile.address?.line1">{{ user.profile.address.line1 }}</p>
+              <p v-if="user.profile.address?.line2">{{ user.profile.address.line2 }}</p>
+              <p>
+                <span v-if="user.profile.address?.city">{{ user.profile.address.city }}, </span>
+                <span v-if="user.profile.address?.state">{{ user.profile.address.state }}, </span>
+                <span v-if="user.profile.address?.postal">{{ user.profile.address.postal }}</span>
+              </p>
+              <p v-if="user.profile.address?.country">{{ user.profile.address.country }}</p>
+            </template>
           </v-col><!-- TODO -->
           <v-col cols="12" sm="6">
             <div v-if="client">

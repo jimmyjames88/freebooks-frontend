@@ -29,21 +29,21 @@ export default defineComponent({
     }
   }),
   computed: {
-    ...mapState(useAuthStore, ['userId'])
+    ...mapState(useAuthStore, ['user'])
   },
   mounted() {
     this.loadUser()
   },
   methods: {
     loadUser() {
-      API.users.show(Number(this.userId))
+      API.users.getProfile(Number(this.user?.id))
         .then((res: AxiosResponse) => {
-          this.profile = res.data.profile
+          this.profile = res.data
         })
     },
     save() {
       const user: Partial<_User> = {
-        id: Number(this.userId),
+        id: Number(this.user?.id),
         profile: this.profile as _Profile
       }
       API.users.update(user).then(() => {
@@ -82,37 +82,37 @@ export default defineComponent({
     <v-row>
       <v-col cols="12">
         <TextField
-          v-model="profile.address?.line1"
+          v-model="profile.address.line1"
           label="Address Line 1"
         />
       </v-col>
       <v-col cols="12">
         <TextField
-          v-model="profile.address?.line2"
+          v-model="profile.address.line2"
           label="Address Line 2"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.address?.city"
+          v-model="profile.address.city"
           label="City"
         />
       </v-col>
       <v-col cols="12" md="4">
         <TextField
-          v-model="profile.address?.state"
+          v-model="profile.address.state"
           label="State"
         />
       </v-col>
       <v-col cols="12" md="2">
         <TextField
-          v-model="profile.address?.postal"
+          v-model="profile.address.postal"
           label="Postal"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.address?.country"
+          v-model="profile.address.country"
           label="Country"
         />
       </v-col>
