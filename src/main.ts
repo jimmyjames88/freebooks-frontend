@@ -16,13 +16,6 @@ loadFonts()
 
 export const pinia = createPinia()
 
-const token = Cookies.get('token')
-if (token) {
-  useAuthStore(pinia).loggedIn = true
-  const { userId } = decodeJWT(token)
-  useAuthStore(pinia).userId = userId
-}
-
 axios.interceptors.request.use(
   config => {
     const token = Cookies.get('token')
@@ -45,6 +38,14 @@ axios.interceptors.response.use(
     return Promise.reject(err)
   }
 )
+
+// If token exists, attempt to load the user
+const token = Cookies.get('token')
+if (token) {
+  useAuthStore(pinia).loggedIn = true
+  const { userId } = decodeJWT(token)
+  useAuthStore(pinia).loadUser(userId)
+}
 
 createApp(App)
   .use(vuetify)

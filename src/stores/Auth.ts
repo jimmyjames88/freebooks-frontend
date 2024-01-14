@@ -3,12 +3,25 @@ import Cookies from 'js-cookie'
 import API from '@/api'
 import { _User } from '@jimmyjames88/freebooks-types'
 
+interface _State {
+  loggedIn: boolean
+  user?: _User
+}
+
 const useAuthStore = defineStore('auth', {
-  state: () => ({
+  state: (): _State => ({
     loggedIn: false,
-    userId: undefined
+    user: undefined
   }),
   actions: {
+    async loadUser(userId: number) {
+      const response = await API.users.show(userId)
+      if (response.status === 200) {
+        this.user = response.data
+        return true
+      }
+      return false
+    },
     async login(email: string, password: string) {
       try {
         const response = await API.auth.login(email, password)
@@ -16,7 +29,7 @@ const useAuthStore = defineStore('auth', {
           const { token, user } = response.data
           Cookies.set('token', token)
           this.loggedIn = true
-          this.userId = user.id
+          this.user = user
           return true
         }
       } catch {
