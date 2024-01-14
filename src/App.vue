@@ -128,17 +128,12 @@ export default defineComponent({
   }
 }
 
-.d-print-none {
-    @media print {
-        display: none !important;
-    }
-}
-
 @media print {
   .d-print-none,
   .v-navigation-drawer,
   .v-btn,
-  .v-overlay-container { 
+  .v-overlay-container,
+  header.v-toolbar { 
     display: none !important;
   }
   body,
