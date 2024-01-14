@@ -86,6 +86,9 @@ export default defineComponent({
           <v-list-item disabled prepend-icon="mdi-finance" value="reports">
             <h3>Reports</h3>
           </v-list-item>
+          <v-list-item value="settings" prepend-icon="mdi-cog" :to="{ name: 'Settings' }">
+            <h3>Settings</h3>
+          </v-list-item>
           <v-list-item prepend-icon="mdi-logout" value="logout" @click="handleLogout">
             <h3>Logout</h3>
           </v-list-item>

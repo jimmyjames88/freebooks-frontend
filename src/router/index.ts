@@ -85,6 +85,12 @@ const routes = [
     name: 'Invoices/Show',
     component: () => import('../views/invoices/Show.vue'),
     meta: { title: 'Invoice Details' }
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../views/settings/Index.vue'),
+    meta: { title: 'Settings' }
   }
 ]
 const router = createRouter({
