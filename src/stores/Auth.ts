@@ -5,16 +5,18 @@ import { _User } from '@jimmyjames88/freebooks-types'
 
 const useAuthStore = defineStore('auth', {
   state: () => ({
-    loggedIn: false
+    loggedIn: false,
+    userId: undefined
   }),
   actions: {
     async login(email: string, password: string) {
       try {
         const response = await API.auth.login(email, password)
         if (response.status === 200) {
-          const { token } = response.data
+          const { token, user } = response.data
           Cookies.set('token', token)
           this.loggedIn = true
+          this.userId = user.id
           return true
         }
       } catch {

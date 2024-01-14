@@ -8,6 +8,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { useAuthStore } from './stores'
+import { decodeJWT } from './utils'
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
 
@@ -15,7 +16,12 @@ loadFonts()
 
 export const pinia = createPinia()
 
-if (Cookies.get('token')) useAuthStore(pinia).loggedIn = true
+const token = Cookies.get('token')
+if (token) {
+  useAuthStore(pinia).loggedIn = true
+  const { userId } = decodeJWT(token)
+  useAuthStore(pinia).userId = userId
+}
 
 axios.interceptors.request.use(
   config => {
