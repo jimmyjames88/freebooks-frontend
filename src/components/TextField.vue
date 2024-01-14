@@ -46,7 +46,6 @@ export default defineComponent({
 
   :deep(.v-field__input) {
     color: #9A8F99; 
-    font-weight: 600;
     border-radius: 0;
 
     &::-webkit-outer-spin-button,
