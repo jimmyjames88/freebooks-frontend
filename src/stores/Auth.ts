@@ -5,15 +5,53 @@ import { _User } from '@jimmyjames88/freebooks-types'
 
 interface _State {
   loggedIn: boolean
-  user?: _User
+  user: Partial<_User>
 }
 
 const useAuthStore = defineStore('auth', {
   state: (): _State => ({
     loggedIn: false,
-    user: undefined
+    user: {
+      id: undefined,
+      email: '',
+      name: '',
+      profile: {
+        displayName: '',
+        displayEmail: '',
+        phone: '',
+        address: {
+          line1: '',
+          line2: '',
+          city: '',
+          state: '',
+          postal: '',
+          country: ''
+        }
+      }
+    }
   }),
   actions: {
+    // Is this necessary? - todo
+    
+    setUser(user: _User) {
+      const allowed = [ 
+      'id', 'email', 'name', 'profile', 'displayName', 'displayEmail',  'phone',
+      'address', 'line1', 'line2', 'city', 'state', 'postal', 'country'
+    ]
+
+      function addAllowed(target: any, source: any) {
+        Object.keys(source).filter(key => allowed.includes(key)).forEach(key => {
+          console.log(key)
+          if (typeof source[key] === 'object') {
+            addAllowed(target[key], source[key])
+            return
+          }
+          target[key] = source[key]
+        })
+      }
+
+      addAllowed(this.user, user)
+    },
     async loadUser(userId: number) {
       const response = await API.users.show(userId)
       if (response.status === 200) {

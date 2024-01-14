@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { mapWritableState, mapActions } from 'pinia'
 import { AxiosResponse } from 'axios'
-import { mapState } from 'pinia'
 import { _Profile, _User } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Button, TextField } from '@/components'
@@ -12,9 +12,9 @@ export default defineComponent({
   name: 'Settings/Profile',
   components: { Button, TextField },
   data: (): {
-    profile: _Profile
+    form: _Profile
   } => ({
-    profile: {
+    form: {
       displayName: '',
       displayEmail: '',
       phone: '',
@@ -29,25 +29,28 @@ export default defineComponent({
     }
   }),
   computed: {
-    ...mapState(useAuthStore, ['user'])
+    ...mapWritableState(useAuthStore, ['user'])
   },
   mounted() {
-    this.loadUser()
+    // Clone the user profile
+    this.form = JSON.parse(JSON.stringify(this.user.profile))
   },
   methods: {
-    loadUser() {
-      API.users.getProfile(Number(this.user?.id))
-        .then((res: AxiosResponse) => {
-          this.profile = res.data
-        })
-    },
+    ...mapActions(useAuthStore, ['setUser']),
     save() {
       const user: Partial<_User> = {
         id: Number(this.user?.id),
-        profile: this.profile as _Profile
+        profile: this.form
       }
-      API.users.update(user).then(() => {
-        useToast().success('Profile updated')
+      API.users.update(user).then((response: AxiosResponse) => {
+        if (response.status === 200) {
+          this.setUser(response.data)
+          useToast().success('Profile updated')
+          return
+        }
+        useToast().error('Error updating profile')
+      }).catch(() => {
+        useToast().error('Error updating profile')
       })
     }
   }
@@ -55,25 +58,25 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-form @submit.prevent="save">
+  <v-form v-if="user && user.profile" @submit.prevent="save">
     <v-row>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.displayName"
+          v-model="form.displayName"
           label="Display Name"
           hint="Displayed by default on documents"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.displayEmail"
+          v-model="form.displayEmail"
           label="Display Email"
           hint="Displayed by default on documents, not for logging in"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.phone"
+          v-model="form.phone"
           label="Phone"
         />
       </v-col>
@@ -82,37 +85,37 @@ export default defineComponent({
     <v-row>
       <v-col cols="12">
         <TextField
-          v-model="profile.address.line1"
+          v-model="form.address.line1"
           label="Address Line 1"
         />
       </v-col>
       <v-col cols="12">
         <TextField
-          v-model="profile.address.line2"
+          v-model="form.address.line2"
           label="Address Line 2"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.address.city"
+          v-model="form.address.city"
           label="City"
         />
       </v-col>
       <v-col cols="12" md="4">
         <TextField
-          v-model="profile.address.state"
+          v-model="form.address.state"
           label="State"
         />
       </v-col>
       <v-col cols="12" md="2">
         <TextField
-          v-model="profile.address.postal"
+          v-model="form.address.postal"
           label="Postal"
         />
       </v-col>
       <v-col cols="12" md="6">
         <TextField
-          v-model="profile.address.country"
+          v-model="form.address.country"
           label="Country"
         />
       </v-col>

@@ -7,11 +7,7 @@ export default {
   show(userId: number) {
     return axios.get(`${url}/${userId}`)
   },
-
-  getProfile(userId: number) {
-    return axios.get(`${url}/${userId}/profile`)
-  },
-
+  
   update(user: Partial<_User>) {
     return axios.put(`${url}/${user.id}`, {
       ...user
