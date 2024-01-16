@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import API from '@/api'
 import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
-import { _InvoiceStatus, _LineItem, _User } from '@jimmyjames88/freebooks-types'
+import { _InvoiceStatus, _LineItem, _Tax, _User } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Invoices/Show',
@@ -17,6 +17,7 @@ export default defineComponent({
     issueDate: Date | null,
     dueDate: Date | null,
     status: _InvoiceStatus | null,
+    taxes: _Tax[],
     user: Partial<_User>,
     client: {
       id: number | null,
@@ -48,6 +49,7 @@ export default defineComponent({
     issueDate: null,
     dueDate: null,
     status: null,
+    taxes: [],
     user: {
       profile: {
         displayName: '',
@@ -108,9 +110,9 @@ export default defineComponent({
   mounted() {
     this.loading = true
     
-    const invoice = API.invoices.show(this.$route.params.invoiceId)
+    API.invoices.show(Number(this.$route.params.invoiceId))
       .then((response: AxiosResponse) => {
-        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status, user } = response.data
+        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status, taxes, user } = response.data
         this.id = id
         this.client = client
         this.lineItems = lineItems
@@ -120,6 +122,7 @@ export default defineComponent({
         this.dueDate = dueDate
         this.status = status
         this.user.profile = user.profile
+        this.taxes = taxes
       })
       .catch((err: Error) => console.warn(err))
       .finally(() => this.loading = false)
@@ -191,7 +194,7 @@ export default defineComponent({
           <v-col>
             <h1 class="title">
               Invoice
-              <InvoiceStatus :status="status" class="d-print-none" /> 
+              <InvoiceStatus :status="(status as string)" class="d-print-none" /> 
               <v-chip class="ml-1" color="primary" size="small">
                 PAST DUE
               </v-chip><!-- TODO -->
@@ -271,9 +274,14 @@ export default defineComponent({
               <v-col>Subtotal</v-col>
               <v-col align="end">${{ subtotal }}</v-col>
             </v-row>
-            <v-row>
-              <v-col>Tax (5% GST)</v-col>
-              <v-col align="end">${{ tax }}</v-col>
+            <v-row v-for="tax in taxes">
+              <v-col cols="6">
+                {{ tax.name }}
+                <span v-if="tax.type === 'PERCENTAGE'">({{ tax.rate * 100 }}%)</span>
+              </v-col>
+              <v-col cols="6" align="end">
+                {{ tax.type === 'PERCENTAGE' ? '$' + (parseFloat(subtotal) * tax.rate).toFixed(2) : '$' + tax.rate.toFixed(2)  }}
+              </v-col>
             </v-row>
             <v-row>
               <v-col>

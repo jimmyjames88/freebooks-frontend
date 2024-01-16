@@ -33,6 +33,13 @@ export default defineComponent({
   min-height: 100dvh; 
   background-color: v-bind(bgColor);
 
+  :deep(.v-field) {
+    .v-field__append-inner,
+    .v-field__prepend-inner {
+      color: rgba(var(--v-theme-on-surface));
+    }
+  }
+
   :deep(.v-btn.bg-transparent) {
     color: rgba(var(--v-theme-on-primary)) !important;
   }

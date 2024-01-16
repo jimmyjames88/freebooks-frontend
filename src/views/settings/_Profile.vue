@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-form v-if="user && user.profile" @submit.prevent="save">
+  <v-form v-if="user && user.profile" @submit.prevent="save" class="mt-12">
     <v-row>
       <v-col cols="12" md="6">
         <TextField

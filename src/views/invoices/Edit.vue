@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification';
-import { _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
+import { _Invoice, _LineItem, _Tax } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 import { Header, Spinner } from '@/components'
@@ -12,14 +12,15 @@ export default defineComponent({
   components: { Header, InvoiceForm, Spinner },
   data: (): {
     formData: {
-      id: number | undefined,
-      clientId: number | undefined,
-      refNo: string,
-      issueDate: Date,
-      dueDate: Date,
-      lineItems: _LineItem[],
+      id: number | undefined
+      clientId: number | undefined
+      refNo: string
+      issueDate: Date
+      dueDate: Date
+      lineItems: _LineItem[]
       notes: string
-    } | undefined,
+      taxes: _Tax[]
+    } | undefined
     loading: boolean
   } => ({
     formData: undefined,
@@ -32,7 +33,7 @@ export default defineComponent({
     async loadInvoice() {
       try {
         const response = await API.invoices.show(this.$route.params.invoiceId)
-        const { id, clientId, refNo, issueDate, dueDate, lineItems, notes } = response.data
+        const { id, clientId, refNo, issueDate, dueDate, lineItems, notes, taxes } = response.data
         this.formData = {
           id,
           clientId,
@@ -40,7 +41,8 @@ export default defineComponent({
           issueDate,
           dueDate,
           lineItems,
-          notes
+          notes,
+          taxes
         }
       } catch(e) {
         console.error(e)
@@ -75,6 +77,7 @@ export default defineComponent({
       <InvoiceForm
         :formData="formData"
         :loading="loading"
+        editing
         @submitForm="submitForm"
       />
     </v-container>

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Client, _Invoice, _LineItem } from '@jimmyjames88/freebooks-types'
+import { AxiosError, AxiosResponse } from 'axios'
+import { _Client, _Invoice, _LineItem, _Tax } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { 
   AutoComplete,
@@ -33,6 +34,8 @@ export default defineComponent({
     dueDatePicker: boolean,
     lineItems: _LineItem[],
     notes: string,
+    taxes: _Tax[],
+    taxOptions: _Tax[],
     submitting: boolean
   } => ({
     clientId: undefined,
@@ -46,10 +49,13 @@ export default defineComponent({
       { type: '', description: '', rate: null, quantity: null }
     ],
     notes: '',
+    taxes: [],
+    taxOptions: [],
     submitting: false
   }),
   mounted() {
     this.loadLatestRefNo()
+    this.loadTaxOptions()
   },
   watch: {
     formData: {
@@ -59,6 +65,10 @@ export default defineComponent({
     }
   },
   props: {
+    editing: {
+      type: Boolean,
+      default: false
+    },
     formData: {
       type: Object,
       default: () => ({})
@@ -79,7 +89,12 @@ export default defineComponent({
       return sub.toFixed(2)
     },
     tax(): string {
-      return (parseFloat(this.subtotal) * 0.05).toFixed(2)
+      return this.taxes.reduce((acc, tax) => {
+        if (tax.type === 'PERCENTAGE') {
+          return Number(acc) + (Number(this.subtotal) * tax.rate)
+        }
+        return Number(acc) + tax.rate
+      }, 0).toFixed(2)
     },
     total(): string {
       return (parseFloat(this.subtotal) + parseFloat(this.tax)).toFixed(2)
@@ -89,26 +104,49 @@ export default defineComponent({
         const { description, rate, quantity } = lineItem
         return description || rate || quantity
       })
+    },
+    inactiveTaxOptions() {
+      return this.taxOptions.filter((tax: _Tax) => !this.taxes.find((t: _Tax) => t.id === tax.id))
     }
   },
   methods: {
     applyFormData() {
       if (!this.formData) return
-      const { clientId, refNo, issueDate, dueDate, lineItems, notes } = this.formData
+      const { clientId, refNo, issueDate, dueDate, lineItems, notes, taxes } = this.formData
       this.clientId = clientId
       this.refNo = refNo
       this.issueDate = issueDate
       this.dueDate = dueDate
       this.notes = notes
+      this.taxes = taxes
 
       if (lineItems.length > 0) {
         this.lineItems = lineItems
       }
     },
-    async loadLatestRefNo() {
-      await API.invoices.latestRefNo().then((response: AxiosResponse) => {
+    applyTax(tax: _Tax) {
+      // check if tax exists before applying
+      console.log('apply', tax)
+      if (this.taxes.find((t: _Tax) => t.id === tax.id)) return
+      this.taxes.push(tax)
+    },
+    removeTax(id: number) {
+      this.taxes = this.taxes.filter((tax: _Tax) => tax.id !== id)
+    },
+    loadLatestRefNo() {
+      API.invoices.latestRefNo().then((response: AxiosResponse) => {
         if(response.data.refNo !== '0')
           this.latestRefNo = response.data.refNo
+      }).catch((err: AxiosError) => {
+        console.warn(err)
+      })
+    },
+    loadTaxOptions() {
+      API.taxes.index().then((response: AxiosResponse) => {
+        this.taxOptions = response.data
+        // If not in edit mode, apply default taxes
+        if (!this.editing)
+          this.taxes = response.data.filter((tax: _Tax) => tax.default)
       }).catch((err: AxiosError) => {
         console.warn(err)
       })
@@ -126,7 +164,8 @@ export default defineComponent({
         issueDate: this.issueDate,
         dueDate: this.dueDate,
         lineItems: this.noEmptyLineItems,
-        notes: this.notes
+        notes: this.notes,
+        taxes: this.taxes
       })
     },
     goBack() {
@@ -160,7 +199,7 @@ export default defineComponent({
       <v-divider class="my-4" />
       <v-row>
         <v-col cols="12" sm="6" md="4" class="datepicker-col">
-          <v-menu v-model="issueDatePicker" :close-on-content-click="false" location="end" scrim="true">
+          <v-menu v-model="issueDatePicker" location="end" scrim="true">
             <template v-slot:activator="{ props }">
               <TextField
                 :value="formatDate(issueDate)"
@@ -208,10 +247,36 @@ export default defineComponent({
             <v-col cols="6">Subtotal</v-col>
             <v-col cols="6">${{ subtotal }}</v-col>
           </v-row>
-          <v-row>
-            <v-col cols="6">Tax</v-col>
-            <v-col cols="6">${{ tax }}</v-col>
+          <v-divider class="my-4" />
+          <v-row v-for="tax in taxes">
+            <v-col cols="6">
+              <v-btn icon size="small" variant="flat" @click="removeTax(tax.id)">
+                <v-icon color="primary">mdi-close</v-icon>
+              </v-btn>
+              {{ tax.name }}
+              <span v-if="tax.type === 'PERCENTAGE'">({{ tax.rate * 100 }}%)</span>
+            </v-col>
+            <v-col cols="6">
+              {{ tax.type === 'PERCENTAGE' ? '$' + (parseFloat(subtotal) * tax.rate).toFixed(2) : '$' + tax.rate.toFixed(2)  }}
+            </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-menu>
+                <template #activator="{ props }">
+                  <v-btn v-bind="props" variant="flat" color="transparent" :disabled="!inactiveTaxOptions.length">
+                    <v-icon>mdi-bank-plus</v-icon> Add tax
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item v-for="tax in inactiveTaxOptions" @click="applyTax(tax)">
+                    {{ tax.name }}/{{ tax.type }}/{{ tax.rate }}
+                  </v-list-item>
+                </v-list>
+              </v-menu> 
+            </v-col>
+          </v-row>
+          <v-divider class="my-4" />
           <v-row>
             <v-col cols="6">
               <h2>Total</h2>
