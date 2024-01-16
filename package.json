@@ -11,7 +11,7 @@
     "host": "vite --host"
   },
   "dependencies": {
-    "@jimmyjames88/freebooks-types": "^0.3.0",
+    "@jimmyjames88/freebooks-types": "^0.4.0",
     "@mdi/font": "^7.0.0",
     "@vuepic/vue-datepicker": "^6.0.3",
     "axios": "^1.4.0",
