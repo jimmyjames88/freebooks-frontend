@@ -59,7 +59,13 @@ export default defineComponent({
       :sm="sm"
       :md="md"
       :lg="lg">
-      <InvoiceCard v-bind="invoice" />
+      <InvoiceCard :id="invoice.id"
+        :client="invoice.client"
+        :refNo="invoice.refNo"
+        :status="invoice.status"
+        :dueDate="invoice.dueDate"
+        :total="invoice.total"  
+      />
     </v-col>
     <v-col v-if="showMoreText || showMoreTo" :cols="cols" :sm="sm" :md="md" :lg="lg">
       <v-card variant="flat" class="h-100 d-flex align-center justify-center" :to="showMoreTo">

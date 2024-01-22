@@ -3,6 +3,7 @@ import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import { _Client, _InvoiceStatus, _LineItem, _Payment, _Tax, _User } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
+import { formatDateMMDDYYYY } from '@/utils'
 import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
 
@@ -12,13 +13,13 @@ export default defineComponent({
   data: (): {
     loading: boolean,
     showPaymentDialog: boolean,
-    id?: number,
+    id: number,
     lineItems: _LineItem[],
     notes: string,
     refNo: string,
     issueDate: Date | null,
     dueDate: Date | null,
-    status: _InvoiceStatus | null,
+    status?: _InvoiceStatus,
     taxes: _Tax[],
     payments: _Payment[],
     user: Partial<_User>,
@@ -26,7 +27,7 @@ export default defineComponent({
 
   } => ({
     loading: true,
-    id: undefined,
+    id: -1,
     showPaymentDialog: false,
     lineItems: [] as {
       type: string,
@@ -38,7 +39,7 @@ export default defineComponent({
     refNo: '',
     issueDate: null,
     dueDate: null,
-    status: null,
+    status: undefined,
     taxes: [],
     payments: [],
     user: {
@@ -78,6 +79,9 @@ export default defineComponent({
       let title = 'Invoice'
       title += this.refNo ? ` #${this.refNo}` : ''
       return title
+    },
+    isSent() {
+      return this.status === _InvoiceStatus.DRAFT
     },
     subtotal(): string {
       const subtotal = this.lineItems.reduce((acc, item) => {
@@ -121,8 +125,8 @@ export default defineComponent({
         this.lineItems = lineItems
         this.notes = notes
         this.refNo = refNo
-        this.issueDate = issueDate
-        this.dueDate = dueDate
+        this.issueDate = new Date(issueDate)
+        this.dueDate = new Date(dueDate)
         this.status = status
         this.user.profile = user.profile
         this.taxes = taxes
@@ -138,6 +142,11 @@ export default defineComponent({
     },
     download() {
       console.log('downloading... todo')
+    },
+    formatDate(date: Date | null) {
+      if (date)
+        return formatDateMMDDYYYY(date)
+      return ''
     },
     print() {
       window.print()
@@ -155,7 +164,7 @@ export default defineComponent({
           <v-icon>mdi-cash-multiple</v-icon> Add payment
         </Button>
         <Button color="primary" :disabled="!client.id">
-          <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend' }}
+          <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
         </Button>
         <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id } }">
           <v-icon>mdi-receipt-text-edit</v-icon> Edit
@@ -185,7 +194,7 @@ export default defineComponent({
             <v-icon>mdi-receipt-text-edit</v-icon> Edit
           </v-list-item>
           <v-list-item>
-            <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend' }}
+            <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
           </v-list-item>
           <v-list-item @click="print">
             <v-icon>mdi-printer</v-icon> Print
@@ -205,16 +214,18 @@ export default defineComponent({
           <v-col>
             <h1 class="title">
               Invoice
-              <InvoiceStatus :status="(status as string)" class="d-print-none" />
-              <v-chip class="ml-1" color="primary" size="small">
-                PAST DUE
-              </v-chip><!-- TODO -->
+              <InvoiceStatus v-if="status"
+                v-model="status"
+                :invoice-id="id"
+                :dueDate="dueDate || undefined"
+                class="d-print-none"
+              />
             </h1>
             <h3># {{ refNo }}</h3>
           </v-col>
           <v-col align="end">
-            <h3>Issued: {{ issueDate }}</h3>
-            <h3>Pay by: {{ dueDate }}</h3>
+            <h3>Issued: {{ formatDate(issueDate) }}</h3>
+            <h3>Pay by: {{ formatDate(dueDate) }}</h3>
           </v-col>
         </v-row>
         <v-divider class="my-4" />
@@ -301,7 +312,7 @@ export default defineComponent({
             </template>
           </v-col>
         </v-row>
-        <v-divider class="mt-8 mb-4" />
+        <v-divider class="mt-16 mb-8" thickness="10" />
         <v-row>
           <v-col>
             {{ notes }}
@@ -325,10 +336,10 @@ export default defineComponent({
               <v-divider class="mt-4 mb-2" />
               <v-row>
                 <v-col>
-                  <h3>Total</h3>
+                  <h4>Total</h4>
                 </v-col>
                 <v-col align="end">
-                  <h3>${{ total }}</h3>
+                  <h4>${{ total }}</h4>
                 </v-col>
               </v-row>
               <v-row>

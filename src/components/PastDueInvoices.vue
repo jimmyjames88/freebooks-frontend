@@ -22,21 +22,27 @@ export default defineComponent({
     this.loadPastDueInvoices()
   },
   methods: {
-    loadPastDueInvoices() {
-      API.invoices.index({
-        itemsPerPage: 3,
-        filters: {
-          custom: {
-            pastDue: true
+    async loadPastDueInvoices() {
+      try {
+        const response = await API.invoices.index({
+          itemsPerPage: 3,
+          filters: {
+            custom: {
+              pastDue: true
+            }
           }
-        }
-      }).then((response: AxiosResponse) => {
-        this.pastDueInvoices = response.data.items
+        })
+        this.pastDueInvoices = response.data.items.map((invoice: _Invoice) => {
+          invoice.issueDate = new Date(invoice.issueDate)
+          invoice.dueDate = new Date(invoice.dueDate)
+          return invoice
+        })
         this.pastDueInvoicesCount = response.data.total
-      })
-      .finally(() => {
+      } catch (err) {
+        console.warn(err)
+      } finally {
         this.loading = false
-      })
+      }
     }
   }
 })
@@ -45,5 +51,9 @@ export default defineComponent({
 <template>
   <h2>Past due invoices</h2>
   <Spinner v-if="loading" />
-  <InvoiceCards v-else :invoices="pastDueInvoices" :showMoreText="`View all (${pastDueInvoicesCount})`" showMoreTo="#" />
+  <InvoiceCards v-else
+    :invoices="pastDueInvoices"
+    :showMoreText="`View all (${pastDueInvoicesCount})`"
+    showMoreTo="#"
+  />
 </template>

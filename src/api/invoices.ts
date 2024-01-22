@@ -18,7 +18,7 @@ export default {
     })
   },
 
-  update(invoice: _Invoice) {
+  update(invoice: Partial<_Invoice>) {
     return axios.put(`${url}/${invoice.id}`, {
       ...invoice
     })

@@ -28,7 +28,7 @@ export default defineComponent({
 
   mounted() {
     console.log(this.$route.params.clientId)
-    API.clients.show(this.$route.params.clientId)
+    API.clients.show(Number(this.$route.params.clientId))
       .then((response: AxiosResponse) => {
         const { id, name, email, address, phone, website, invoices } = response.data
         this.id = id
@@ -37,7 +37,11 @@ export default defineComponent({
         this.address = address
         this.phone = phone
         this.website = website
-        this.invoices = invoices
+        this.invoices = invoices.map((invoice: any) => {
+          invoice.issueDate = new Date(invoice.issueDate)
+          invoice.dueDate = new Date(invoice.dueDate)
+          return invoice
+        })
       })
       .catch((err: Error) => console.warn(err))
       .finally(() => { 

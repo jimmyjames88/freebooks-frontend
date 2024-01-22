@@ -1,27 +1,76 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue'
+import { _Invoice, _InvoiceStatus } from '@jimmyjames88/freebooks-types'
+import API from '@/api'
+import Button from './Button.vue'
+import PastDue from './PastDue.vue'
 
 export default defineComponent({
   name: 'InvoiceStatus',
   inheritAttrs: false,
+  components: { Button, PastDue },
   props: {
-    status: String,
+    dueDate: {
+      type: Date,
+      default: null
+    },
+    invoiceId: {
+      type: Number,
+      required: true
+    },
+    modelValue: {
+      type: String as PropType<_InvoiceStatus>,
+      required: true
+    },
+    smallPD: {
+      type: Boolean,
+      default: false
+    }
   },
+  data: (): {
+    showConfirmDialog: boolean
+    newStatus?: _InvoiceStatus
+  } => ({
+    showConfirmDialog: false,
+    newStatus: undefined
+  }),
   computed: {
-    color() {
-      switch (this.status?.toLowerCase()) {
-        case 'draft':
+    color(): string {
+      switch (this.modelValue) {
+        case _InvoiceStatus.DRAFT:
           return 'light'
-        case 'sent':
+        case _InvoiceStatus.SENT:
           return 'success'
-        case 'partial':
+        case _InvoiceStatus.PARTIAL:
           return 'indigo'
-        case 'paid':
+        case _InvoiceStatus.PAID:
           return 'success'
-        case 'void':
+        case _InvoiceStatus.VOID:
           return 'color-6'
         default:
           return 'secondary'
+      }
+    },
+    statuses(): _InvoiceStatus[] {
+      return Object.values(_InvoiceStatus)
+    }
+  },
+  methods: {
+    confirm(status: _InvoiceStatus) { // todo type
+      this.newStatus = status
+      this.showConfirmDialog = true
+    },
+    async save() {
+      try {
+        await API.invoices.update({
+          id: this.invoiceId,
+          status: this.newStatus
+        })
+        this.$emit('update:model-value', this.newStatus)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.showConfirmDialog = false
       }
     }
   }
@@ -29,7 +78,38 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-chip :color="color" size="small" v-bind="$attrs">{{ status }}</v-chip>
+  <v-menu>
+    <template #activator="{ props }">
+      <div class="d-inline-flex align-center">
+        <v-chip v-bind="{ ...$attrs, ...props }" :color="color" size="small">
+          {{ modelValue }}
+          <v-icon>mdi-menu-down</v-icon>
+        </v-chip>
+        <PastDue :dueDate="dueDate" :status="modelValue" :small="smallPD" />
+      </div>
+    </template>
+    <v-list>
+      <v-list-subheader>Change Invoice status</v-list-subheader>
+      <v-list-item v-for="status in statuses" 
+        :key="status"
+        @click="confirm(status)"
+      >
+        <v-list-item-title class="text-capitalize">{{ status }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
+  <v-dialog v-model="showConfirmDialog" width="500">
+    <v-card>
+      <v-card-title>Confirm</v-card-title>
+      <v-card-text>
+        Are you sure you want to change the status to {{ newStatus }}?
+      </v-card-text>
+      <v-card-actions align="end">
+        <Button @click="showConfirmDialog = false">Cancel</Button>
+        <Button color="primary" @click="save">Confirm</Button>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style lang="scss" scoped>

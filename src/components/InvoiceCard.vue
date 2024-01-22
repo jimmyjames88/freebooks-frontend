@@ -1,5 +1,7 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue'
+import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
+import { formatDateMMDDYYYY } from '@/utils'
 import InvoiceStatus from './InvoiceStatus.vue'
 
 export default defineComponent({
@@ -13,22 +15,30 @@ export default defineComponent({
     id: Number,
     client: Object,
     refNo: String,
-    status: String,
-    date: String,
+    status: {
+      type: String as PropType<_InvoiceStatus>,
+      required: true
+    },
+    dueDate: {
+      type: Date,
+      required: true
+    },
     total: Number
+  },
+  methods: {
+    formatDate: formatDateMMDDYYYY
   }
 })
 </script>
 
 <template>
   <v-skeleton-loader
-    v-if="loading"
+    v-if="loading || !id"
     class="mx-auto"
     type="heading, divider, paragraph"
   />
   <v-card v-else variant="flat" color="gray" :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
     <v-card-text>
-
       <v-row>
         <v-col>
           <h3 v-if="client">{{ client.name }}</h3>
@@ -37,12 +47,12 @@ export default defineComponent({
       </v-row>
       <v-row>
         <v-col>
-          <v-icon>mdi-calendar</v-icon> {{ date || 'January 1st, 2023' }}</v-col>
+          <v-icon>mdi-calendar</v-icon> {{ formatDate(dueDate) }}</v-col>
       </v-row>
       <v-divider class="my-4" />
       <v-row>
         <v-col class="on-surface">
-          <InvoiceStatus :status="status" /> 
+          <InvoiceStatus v-model="status" :invoiceId="id" :dueDate="dueDate" smallPD /> <!-- todo type-->
         </v-col>
         <v-col align="end">
           <h2 class="text-tertiary">${{ total || ' ---' }}</h2>

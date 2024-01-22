@@ -3,12 +3,12 @@ import { defineComponent } from 'vue'
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
-import { Avatar, Button, DataTable, Header, InvoiceStatus } from '@/components'
+import { Avatar, Button, DataTable, Header, InvoiceStatus, PastDue } from '@/components'
 import TextField from '../../components/TextField.vue'
 
 export default defineComponent({
   name: 'Invoices/Index',
-  components: { Avatar, Button, DataTable, Header, InvoiceStatus, TextField },
+  components: { Avatar, Button, DataTable, Header, InvoiceStatus, PastDue, TextField },
   setup(){
     const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.invoices.index)
     return { items, itemsLength, sortBy, loadItems, loading }
@@ -19,6 +19,12 @@ export default defineComponent({
       order: 'desc'
     }],
     headers: [{
+      title: 'Status',
+      align: 'start',
+      sortable: true,
+      key: 'status'
+    },
+    {
       title: 'Ref',
       align: 'start',
       sortable: true,
@@ -101,14 +107,23 @@ export default defineComponent({
           @load-items="loadItems"
           :loading="loading"
         >
+          <template #item.status="{ item }">
+            <InvoiceStatus :invoiceId="item.id"
+              :modelValue="item.status"
+              :dueDate="new Date(item.dueDate)"
+              smallPD
+            />
+          </template>
           <template #item.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              # {{ item.refNo }}
-            </router-link>
+            <div class="d-inline-flex align-center">
+              <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
+                # {{ item.refNo }}
+              </router-link>
+            </div>
           </template>
           <template #item.client.name="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              <Avatar :name="item.client?.name || undefined" class="mr-4" />
+              <Avatar :name="item.client?.name || undefined" class="mr-4 d-none d-sm-inline-flex" />
               <span v-if="item.client?.name">{{ item.client.name }}</span>
               <em v-else>- Unassigned -</em>
             </router-link>
@@ -117,7 +132,6 @@ export default defineComponent({
             {{ formattedDate(item.dueDate) }}
           </template>
           <template #item.total="{ item }">
-            <InvoiceStatus :status="item.status" />
             ${{ item.total.toFixed(2) }}
           </template>
           <template #item.actions="{ item }">
