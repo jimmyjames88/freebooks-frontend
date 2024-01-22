@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import DataTableComposable from '../../composables/DataTable'
 import { Avatar, Button, DataTable, Header, InvoiceStatus } from '@/components'
@@ -46,6 +47,7 @@ export default defineComponent({
     }]
   }),
   computed: {
+    formattedDate: () => formatDateMMDDYYYY,
     responsiveHeaders() {
       if (this.$vuetify.display.xs) {
         return this.headers.filter(header => {
@@ -59,11 +61,6 @@ export default defineComponent({
       return this.headers
     }
   },
-  methods: {
-    formatDate(date: string) {
-      return new Date(date).toLocaleDateString()
-    }
-  }
 })
 </script>
 
@@ -117,7 +114,7 @@ export default defineComponent({
             </router-link>
           </template>
           <template #item.dueDate="{ item }">
-            {{ formatDate(item.dueDate) }}
+            {{ formattedDate(item.dueDate) }}
           </template>
           <template #item.total="{ item }">
             <InvoiceStatus :status="item.status" />

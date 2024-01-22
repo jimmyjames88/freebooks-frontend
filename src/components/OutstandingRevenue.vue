@@ -22,8 +22,10 @@ export default defineComponent({
     await API.dashboard.outstandingRevenue()
       .then((response: AxiosResponse) => {
         const { revenue, pastDue } = response.data
+        setTimeout(() => {
+          this.pastDue = pastDue
+        }, 500)
         this.revenue = revenue
-        this.pastDue = pastDue
       })
       .catch((error: any) => {
         console.error(error)

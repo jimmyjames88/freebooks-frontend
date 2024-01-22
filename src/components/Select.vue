@@ -13,7 +13,7 @@ export default defineComponent({
 <template>
   <div class="select">
     <label v-if="label">{{ label }}</label>
-    <v-select v-bind="$attrs" variant="solo" flat>
+    <v-select v-bind="$attrs" flat>
       <slot />
     </v-select>
   </div>

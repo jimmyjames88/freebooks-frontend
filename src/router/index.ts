@@ -96,11 +96,19 @@ const routes = [
     path: '/settings/taxes/create',
     name: 'Settings/Taxes/Create',
     component: () => import('../views/settings/taxes/Create.vue'),
+    meta: { title: 'Create Tax' }
   },
   {
     path: '/settings/taxes/:taxId/edit',
     name: 'Settings/Taxes/Edit',
-    component: () => import('../views/settings/taxes/Edit.vue')
+    component: () => import('../views/settings/taxes/Edit.vue'),
+    meta: { title: 'Edit Tax' }
+  },
+  {
+    path: '/payments',
+    name: 'Payments/Index',
+    component: () => import('../views/payments/Index.vue'),
+    meta: { title: 'Payments' }
   }
 ]
 const router = createRouter({

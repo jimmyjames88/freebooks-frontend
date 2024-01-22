@@ -1,16 +1,18 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
+import { _Client, _InvoiceStatus, _LineItem, _Payment, _Tax, _User } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
-import { _InvoiceStatus, _LineItem, _Tax, _User } from '@jimmyjames88/freebooks-types'
+import PaymentDialog from '@/views/payments/_Dialog.vue'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Avatar, Button, Header, InvoiceStatus, Spinner },
+  components: { Avatar, Button, Header, InvoiceStatus, PaymentDialog, Spinner },
   data: (): {
     loading: boolean,
-    id: number | null,
+    showPaymentDialog: boolean,
+    id?: number,
     lineItems: _LineItem[],
     notes: string,
     refNo: string,
@@ -18,26 +20,14 @@ export default defineComponent({
     dueDate: Date | null,
     status: _InvoiceStatus | null,
     taxes: _Tax[],
+    payments: _Payment[],
     user: Partial<_User>,
-    client: {
-      id: number | null,
-      name: string,
-      email: string,
-      address: {
-        line1: string,
-        line2: string,
-        city: string,
-        state: string,
-        postal: string,
-        country: string
-      },
-      phone: string,
-      website: string,
-    },
-  
+    client: _Client
+
   } => ({
     loading: true,
-    id: null,
+    id: undefined,
+    showPaymentDialog: false,
     lineItems: [] as {
       type: string,
       description: string,
@@ -50,6 +40,7 @@ export default defineComponent({
     dueDate: null,
     status: null,
     taxes: [],
+    payments: [],
     user: {
       profile: {
         displayName: '',
@@ -66,7 +57,7 @@ export default defineComponent({
       }
     },
     client: {
-      id: null,
+      id: undefined,
       name: '',
       email: '',
       address: {
@@ -105,14 +96,26 @@ export default defineComponent({
       const dueDate = new Date(this.dueDate)
       const today = new Date()
       return dueDate < today
+    },
+    paymentTotal() {
+      return this.payments.reduce((acc, payment) => {
+        return acc + payment.amount
+      }, 0).toFixed(2)
+    },
+    amountDue() {
+      return (+this.total - +this.paymentTotal).toFixed(2)
     }
   },
   mounted() {
+    console.log('mounted')
     this.loading = true
-    
+
     API.invoices.show(Number(this.$route.params.invoiceId))
       .then((response: AxiosResponse) => {
-        const { id, client, lineItems, notes, refNo, issueDate, dueDate, status, taxes, user } = response.data
+        const {
+          id, client, lineItems, notes, refNo, issueDate, dueDate, status, taxes, user, payments
+        } = response.data
+
         this.id = id
         this.client = client
         this.lineItems = lineItems
@@ -123,11 +126,16 @@ export default defineComponent({
         this.status = status
         this.user.profile = user.profile
         this.taxes = taxes
+        this.payments.push(...payments)
       })
       .catch((err: Error) => console.warn(err))
       .finally(() => this.loading = false)
   },
   methods: {
+    addPayment(payment: _Payment) {
+      console.log('PAYMENT', payment)
+      this.payments.push(payment)
+    },
     download() {
       console.log('downloading... todo')
     },
@@ -143,11 +151,14 @@ export default defineComponent({
   <template v-else>
     <Header :title="headerTitle">
       <template #desktop>
-        <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id }}">
-          <v-icon>mdi-receipt-text-edit</v-icon> Edit
+        <Button color="primary" @click="showPaymentDialog = true">
+          <v-icon>mdi-cash-multiple</v-icon> Add payment
         </Button>
         <Button color="primary" :disabled="!client.id">
-          <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend'  }}
+          <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend' }}
+        </Button>
+        <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id } }">
+          <v-icon>mdi-receipt-text-edit</v-icon> Edit
         </Button>
         <v-menu>
           <template #activator="{ props }">
@@ -162,7 +173,7 @@ export default defineComponent({
             <v-list-item @click="download" disabled>
               <v-icon>mdi-download</v-icon> Download
             </v-list-item>
-            <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id }}">
+            <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id } }">
               <v-icon>mdi-delete</v-icon> Delete
             </v-list-item>
           </v-list>
@@ -170,11 +181,11 @@ export default defineComponent({
       </template>
       <template #mobile>
         <v-list>
-          <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: id }}">
+          <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: id } }">
             <v-icon>mdi-receipt-text-edit</v-icon> Edit
           </v-list-item>
           <v-list-item>
-            <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend'  }}
+            <v-icon>mdi-email</v-icon> {{ status === 'draft' ? 'Send' : 'Resend' }}
           </v-list-item>
           <v-list-item @click="print">
             <v-icon>mdi-printer</v-icon> Print
@@ -182,7 +193,7 @@ export default defineComponent({
           <v-list-item @click="download" disabled>
             <v-icon>mdi-download</v-icon> Download
           </v-list-item>
-          <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id }}">
+          <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id } }">
             <v-icon>mdi-delete</v-icon> Delete
           </v-list-item>
         </v-list>
@@ -194,7 +205,7 @@ export default defineComponent({
           <v-col>
             <h1 class="title">
               Invoice
-              <InvoiceStatus :status="(status as string)" class="d-print-none" /> 
+              <InvoiceStatus :status="(status as string)" class="d-print-none" />
               <v-chip class="ml-1" color="primary" size="small">
                 PAST DUE
               </v-chip><!-- TODO -->
@@ -224,7 +235,7 @@ export default defineComponent({
           <v-col cols="12" sm="6">
             <div v-if="client">
               <h2>
-                <router-link v-if="client.id" :to="{ name: 'Clients/Show', params: { clientId: client.id }}">
+                <router-link v-if="client.id" :to="{ name: 'Clients/Show', params: { clientId: client.id } }">
                   {{ client.name }}
                 </router-link>
               </h2>
@@ -254,14 +265,40 @@ export default defineComponent({
             <h3>Total</h3>
           </v-col>
         </v-row>
+
+        <v-row v-for="(item, index) in lineItems" :key="`item-${index}`" class="line-item">
+          <v-col cols="12" sm="6">{{ item.description }}</v-col>
+          <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
+          <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
+          <v-col cols="4" sm="2" align="end">${{ (item.quantity * item.rate).toFixed(2) }}</v-col>
+        </v-row>
+
         <v-row>
-          <v-col class="line-items">
-            <v-row v-for="(item, index) in lineItems" :key="`item-${index}`">
-              <v-col cols="12" sm="6">{{ item.description }}</v-col>
-              <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
-              <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
-              <v-col cols="4" sm="2" align="end">${{ (item.quantity * item.rate).toFixed(2) }}</v-col>
-            </v-row>
+          <v-col>
+            <template v-if="payments.length">
+              <v-divider class="mt-8 mb-4" />
+              <h2>Payments</h2>
+              <v-row>
+                <v-col>
+                  <h3>Date</h3>
+                </v-col>
+                <v-col>
+                  <h3>Description</h3>
+                </v-col>
+                <v-col>
+                  <h3>Type</h3>
+                </v-col>
+                <v-col align="end">
+                  <h3>Amount</h3>
+                </v-col>
+              </v-row>
+              <v-row v-for="(payment, index) in payments" :key="`payment-${index}`" class="line-item">
+                <v-col>{{ payment.date }}</v-col>
+                <v-col>{{ payment.description }}</v-col>
+                <v-col>{{ payment.type }}</v-col>
+                <v-col align="end">${{ payment.amount.toFixed(2) }}</v-col>
+              </v-row>
+            </template>
           </v-col>
         </v-row>
         <v-divider class="mt-8 mb-4" />
@@ -280,20 +317,47 @@ export default defineComponent({
                 <span v-if="tax.type === 'PERCENTAGE'">({{ tax.rate * 100 }}%)</span>
               </v-col>
               <v-col cols="6" align="end">
-                {{ tax.type === 'PERCENTAGE' ? '$' + (parseFloat(subtotal) * tax.rate).toFixed(2) : '$' + tax.rate.toFixed(2)  }}
+                {{ tax.type === 'PERCENTAGE' ? '$' + (parseFloat(subtotal) * tax.rate).toFixed(2) : '$' +
+                  tax.rate.toFixed(2) }}
               </v-col>
             </v-row>
+            <template v-if="payments.length">
+              <v-divider class="mt-4 mb-2" />
+              <v-row>
+                <v-col>
+                  <h3>Total</h3>
+                </v-col>
+                <v-col align="end">
+                  <h3>${{ total }}</h3>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  Less amount paid
+                </v-col>
+                <v-col align="end">
+                  <h4 class="text-secondary">(${{ paymentTotal }})</h4>
+                </v-col>
+              </v-row>
+            </template>
+            <v-divider class="mt-4 mb-2" />
             <v-row>
               <v-col>
-                <h2>Total</h2>
+                <h2>Amount due</h2>
               </v-col>
               <v-col align="end">
-                <h2 class="text-secondary">${{ total }}</h2>
+                <h2 class="text-tertiary">${{ amountDue }}</h2>
               </v-col>
             </v-row>
           </v-col>
         </v-row>
       </div>
     </v-container>
+    <PaymentDialog  v-if="showPaymentDialog"
+      :invoiceId="id"
+      :clientId="client.id"
+      @saved="addPayment"
+      @close="showPaymentDialog = false"
+    />
   </template>
 </template>

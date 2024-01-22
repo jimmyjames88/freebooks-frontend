@@ -27,7 +27,7 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue
+        return this.modelValue || undefined
       },
       set(value: number) {
         this.$emit('update:modelValue', value)

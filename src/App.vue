@@ -80,8 +80,14 @@ export default defineComponent({
           <v-list-item disabled prepend-icon="mdi-file-document" value="estimates">
             <h3>Estimates</h3>
           </v-list-item>
-          <v-list-item disabled prepend-icon="mdi-cash-multiple" value="expenses">
+          <v-list-item disabled prepend-icon="mdi-cash" value="expenses">
             <h3>Expenses</h3>
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-cash-multiple" 
+            value="payments"
+            :to="{ name: 'Payments/Index' }"
+          >
+            <h3>Payments</h3>
           </v-list-item>
           <v-list-item disabled prepend-icon="mdi-finance" value="reports">
             <h3>Reports</h3>
@@ -108,7 +114,7 @@ export default defineComponent({
   background-color: #ffffff;
   padding: 1.5rem;
 
-  .line-items .v-row {
+  .line-item.v-row {
     align-items: center;
     
     &:nth-child(odd) {
@@ -139,7 +145,7 @@ export default defineComponent({
   body,
   .v-main,
   .v-container,
-  .document {
+  .v-container .document {
     padding: 0 !important;
     margin: 0 !important;
   }
