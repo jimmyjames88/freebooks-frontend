@@ -108,8 +108,8 @@ export default defineComponent({
           :loading="loading"
         >
           <template #item.status="{ item }">
-            <InvoiceStatus :invoiceId="item.id"
-              :modelValue="item.status"
+            <InvoiceStatus v-model="item.status"
+              :invoiceId="item.id"
               :dueDate="new Date(item.dueDate)"
               smallPD
             />
