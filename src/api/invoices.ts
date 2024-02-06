@@ -1,38 +1,48 @@
 import axios from 'axios'
-import { _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Collection, _Invoice } from '@jimmyjames88/freebooks-types'
+import Invoice from '@/classes/Invoice'
 
-const url = `${import.meta.env.VITE_API}/invoices`
+const URL = `${import.meta.env.VITE_API}/invoices`
+
+interface _InvoiceFilters {
+  groupBy?: any[]
+  itemsPerPage?: number
+  page?: number
+  search?: string
+  sortBy?: any[]
+}
 
 export default {
-  index(filters: any) {
-    return axios.get(`${url}/`, {
-      params: {
-        ...filters
-      }
-    })
+  async index(filters: _InvoiceFilters): Promise<_Collection<Invoice>>{
+    const response = await axios.get(`${URL}/`, { params: filters })
+    return {
+      items: response.data.items.map((invoice: _Invoice) => new Invoice(invoice)),
+      total: response.data.total
+    }
   },
 
-  store(invoice: _Invoice) {
-    return axios.post(`${url}`, {
-      ...invoice
-    })
+  async store(invoice: _Invoice): Promise<Invoice> {
+    const response = await axios.post(`${URL}`, invoice)
+    return new Invoice(response.data)
   },
 
-  update(invoice: Partial<_Invoice>) {
-    return axios.put(`${url}/${invoice.id}`, {
-      ...invoice
-    })
+  async update(invoice: Partial<_Invoice>): Promise<Invoice> {
+    const response = await axios.put(`${URL}/${invoice.id}`, invoice)
+    return new Invoice(response.data)
   },
   
-  show(invoiceId: string | number) {
-    return axios.get(`${url}/${invoiceId}`)
+  async show(invoiceId: string | number): Promise<Invoice> {
+    const response = await axios.get(`${URL}/${invoiceId}`)
+    return new Invoice(response.data)
   },
 
-  destroy(invoiceId: string | number) {
-    return axios.delete(`${url}/${invoiceId}`)
+  async destroy(invoiceId: string | number): Promise<void> {
+    await axios.delete(`${URL}/${invoiceId}`)
+    return
   },
 
-  latestRefNo() {
-    return axios.get(`${url}/latest-ref-no`)
+  async latestRefNo(): Promise<string> {
+    const response = await axios.get(`${URL}/latest-ref-no`)
+    return response.data.refNo
   }
 }
