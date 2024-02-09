@@ -9,4 +9,5 @@ export default {
   store(payment: Partial<_Payment>) { return axios.post(`${url}`, payment) },
   update(payment: _Payment) { return axios.put(`${url}/${payment.id}`, payment) },
   destroy(paymentId: number) { return axios.delete(`${url}/${paymentId}`) },
+  types() { return axios.get(`${url}/types`) }
 }

@@ -1,89 +1,95 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { _Invoice, _Payment, _PaymentType } from '@jimmyjames88/freebooks-types'
-import { Button, ClientSelect, Select, TextField } from '@/components'
+import { Button, ClientSelect, InvoiceSelect, PaymentTypeSelect, Select, TextField } from '@/components'
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import { useToast } from 'vue-toastification'
+import Invoice from '@/classes/Invoice'
+import Payment from '@/classes/Payment'
+import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
   name: 'Payments/_Dialog',
   inheritAttrs: false,
-  components: { Button, ClientSelect, Select, TextField },
+  components: { Button, ClientSelect, InvoiceSelect, PaymentTypeSelect, Select, TextField },
   emits: ['close', 'saved'],
+  setup() {
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
+  },
   props: {
-    clientId: {
+    ClientId: {
       type: Number,
       default: undefined
     },
-    invoiceId: {
+    disableAPI: {
+      type: Boolean,
+      default: false
+    },
+    InvoiceId: {
       type: Number,
       default: undefined
-    }
+    },
   },
-  mounted() {
-    this.form.clientId = this.clientId
-    this.form.invoiceId = this.invoiceId
-  },
-  watch: {
-    'form.clientId'(to) {
-      if (to) {
-        API.invoices.index({ clientId: to }).then(response => {
-          this.invoices = response.data.items
-        })
-      }
-      return this.invoices = []
+  data: (): {
+    showDatePicker: boolean,
+    form: Partial<_Payment>,
+    invoices: _Invoice[]
+  } => ({
+    showDatePicker: false,
+    invoices: [],
+    form: {
+      date: new Date(),
+      ClientId: undefined,
+      InvoiceId: undefined,
+      paymentTypeId: undefined,
+      amount: 0,
+      description: ''
     }
+  }),
+  async mounted() {
+    this.form.InvoiceId = this.InvoiceId
+    this.form.ClientId = this.ClientId
   },
   computed: {
     formattedDate: () => formatDateMMDDYYYY,
-    clientInvoices() {
-      if (this.form.clientId) {
-        return this.invoices.map((invoice: _Invoice) => {
-          if (invoice.clientId === this.form.clientId) {
-            return {
-              title: `#${invoice.refNo} - $${invoice.total}`,
-              value: invoice.id
-            }
-          }
-        })
-      }
-      return []
-    },
     submittable() {
-      return this.form.clientId
-        && this.form.invoiceId
+      return this.form.ClientId
+        && this.form.InvoiceId
         && this.form.amount
-        && this.form.type
-    },
-    formattedPaymentTypes() {
-      return this.types.map((type: _PaymentType) => ({
-        value: type.id,
-        title: type.name,
-        icon: type.icon
-      }))
+        && this.form.paymentTypeId
     }
   },
   methods: {
     close() {
       this.form = {
         date: new Date(),
-        clientId: undefined,
-        invoiceId: undefined,
+        ClientId: undefined,
+        InvoiceId: undefined,
         amount: 0,
-        type: undefined,
+        paymentTypeId: undefined,
         description: ''
       }
       this.$emit('close')
     },
     async save() {
+      if (this.disableAPI) {
+        // this.form.amount = Number(this.form.amount)
+        // this.Invoice.Payments.push(this.form)
+        const payment = new Payment({ ...this.form, ClientId: this.Invoice.Client?.id })
+        this.Invoice.Payments?.push(payment)
+        this.close()
+        return
+      }
+
       try {
-        const { clientId, invoiceId, amount, type, description, date } = this.form
+        const { ClientId, InvoiceId, paymentTypeId, amount, description, date } = this.form
         const response = await API.payments.store({
-          clientId,
-          invoiceId,
+          ClientId,
+          InvoiceId,
+          paymentTypeId,
           amount: Number(amount),
-          type,
           description,
           date  
         })
@@ -97,46 +103,7 @@ export default defineComponent({
         console.error(err)
       }
     }
-  },
-  data: (): {
-    showDatePicker: boolean,
-    form: Partial<_Payment>,
-    invoices: _Invoice[],
-    types: _PaymentType[],
-  } => ({
-    showDatePicker: false,
-    invoices: [],
-    form: {
-      date: new Date(),
-      clientId: undefined,
-      invoiceId: undefined,
-      amount: 0,
-      type: undefined,
-      description: ''
-    },
-    types: [
-      {
-        id: 1,
-        name: 'Cash',
-        icon: 'mdi-cash'
-      },
-      {
-        id: 2,
-        name: 'Check',
-        icon: 'mdi-check'
-      },
-      {
-        id: 3,
-        name: 'Credit Card',
-        icon: 'mdi-credit-card'
-      },
-      {
-        id: 4,
-        name: 'PayPal',
-        icon: 'mdi-paypal'
-      }
-    ]
-  })
+  }
 })
 </script>
 
@@ -144,16 +111,18 @@ export default defineComponent({
   <v-dialog :model-value="true" v-bind="$attrs" persistent width="500">
     <v-card>
       <v-card-text>
-        <v-form @submit.prevent="">
-          <v-row v-show="!clientId && !invoiceId">
+        <v-form @submit.prevent>
+          <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <ClientSelect v-model="form.clientId" :disabled="!!clientId" />
+              <ClientSelect v-model="form.ClientId" :disabled="!!ClientId" />
             </v-col>
           </v-row>
-          <v-row v-show="!clientId && !invoiceId">
+          <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <Select v-model="form.invoiceId" :items="clientInvoices" label="Invoice" variant="outlined"
-                :disabled="!clientInvoices.length || !!invoiceId" />
+              <InvoiceSelect v-model="form.InvoiceId"
+                :disabled="!form.ClientId"
+                :ClientId="form.ClientId"
+              />
             </v-col>
           </v-row>
           <v-row>
@@ -180,7 +149,7 @@ export default defineComponent({
           </v-row>
           <v-row>
             <v-col>
-              <Select v-model="form.type" :items="formattedPaymentTypes" label="Type" variant="outlined" />
+              <PaymentTypeSelect v-model="form.paymentTypeId" />
             </v-col>
           </v-row>
         </v-form>

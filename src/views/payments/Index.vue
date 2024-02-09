@@ -87,7 +87,7 @@ export default defineComponent({
     </template>
     <template #mobile>
       <v-list>
-        <v-list-item prepend-icon="mdi-cash-plus">
+        <v-list-item prepend-icon="mdi-cash-plus" @click="showPaymentDialog = true">
           Add Payment
         </v-list-item>
       </v-list>
@@ -106,7 +106,7 @@ export default defineComponent({
           :loading="loading"
         >
           <template #item.invoice.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.invoice.id }}">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.invoice.id }}">
               #{{ item.invoice.refNo }}
             </router-link>
           </template>
@@ -131,13 +131,13 @@ export default defineComponent({
                   <v-list-item>
                     <v-list-item-title>New Estimate</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: item.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Delete', params: { ClientId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>
