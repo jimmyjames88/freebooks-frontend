@@ -25,9 +25,9 @@ export default defineComponent({
   methods: {
     save() {
       const { name, email, phone, website, address } = this
-      API.clients.store({  name, email, phone, website, address }).then((response: AxiosResponse) => {
+      API.clients.store({ name, email, phone, website, address }).then((response: AxiosResponse) => {
         useToast().success('Client created successfully')
-        this.$router.push({ name: 'Clients/Show', params: { ClientId: response.data.id } })
+        this.$router.push({ name: 'Clients/Show', params: { clientId: response.data.id } })
       }).catch((err: AxiosError) => {
         console.warn(err)
       })
