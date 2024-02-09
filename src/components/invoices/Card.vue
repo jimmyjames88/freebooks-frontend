@@ -2,10 +2,10 @@
 import { defineComponent, PropType } from 'vue'
 import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 import { formatDateMMDDYYYY } from '@/utils'
-import InvoiceStatus from './InvoiceStatus.vue'
+import InvoiceStatus from './Status.vue'
 
 export default defineComponent({
-  name: 'InvoiceCard',
+  name: 'Invoices.Card',
   components: { InvoiceStatus },
   props: {
     loading: {

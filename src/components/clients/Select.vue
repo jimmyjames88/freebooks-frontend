@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { _Client, _Collection } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import AutoComplete from './AutoComplete.vue'
+import { AutoComplete } from '@/components'
 
 interface _SelectItem {
   value: number
@@ -15,7 +15,7 @@ interface _ClientListItem {
 }
 
 export default defineComponent({
-  name: 'ClientSelect',
+  name: 'Clients.Select',
   inheritAttrs: false,
   components: { AutoComplete },
   props: ['modelValue'],

@@ -1,10 +1,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { OutstandingRevenue, Header, PastDueInvoices } from '@/components'
+import { Header } from '@/components'
+import PastDueInvoices from './PastDueInvoices.vue'
+import OutstandingRevenue from './OutstandingRevenue.vue'
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { OutstandingRevenue, Header, PastDueInvoices }
+  components: { Header, PastDueInvoices, OutstandingRevenue }
 })
 </script>
 

@@ -1,9 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { AxiosResponse } from 'axios'
 import { _Collection, _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import AutoComplete from './AutoComplete.vue'
+import { AutoComplete } from '@/components'
 import Invoice from '@/classes/Invoice'
 
 interface _SelectItem {
@@ -12,7 +11,7 @@ interface _SelectItem {
 }
 
 export default defineComponent({
-  name: 'InvoiceSelect',
+  name: 'Invoices.Select',
   inheritAttrs: false,
   components: { AutoComplete },
   emits: ['update:modelValue'],

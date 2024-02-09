@@ -3,7 +3,7 @@ import { defineComponent, PropType } from 'vue'
 import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
-  name: 'PastDue',
+  name: 'Invoices.PastDue',
   inheritAttrs: false,
   props: {
     dueDate: {

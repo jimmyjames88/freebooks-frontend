@@ -6,7 +6,7 @@ import API from '@/api'
 import {
   AutoComplete, Button, ClientSelect, Spinner, TextField, TextArea
 } from '@/components';
-import { Expenses, InvoiceTotals, LineItems, Payments } from './components'
+import { Expenses, Totals, LineItems, Payments } from './components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
 import Invoice from '@/classes/Invoice'
@@ -19,7 +19,7 @@ export default defineComponent({
     return { Invoice, expensesTotal, subtotal, tax, total, paymentsTotal, amountDue }
   },
   components: {
-    AutoComplete, Button, ClientSelect, Expenses, ExpenseDialog, InvoiceTotals, LineItems,
+    AutoComplete, Button, ClientSelect, Expenses, ExpenseDialog, Totals, LineItems,
     PaymentDialog, Payments, Spinner, TextField, TextArea
   },
   emits: [ 'submitForm' ],
@@ -219,7 +219,7 @@ export default defineComponent({
           <TextArea v-model="Invoice.notes" label="Notes" variant="outlined" />
         </v-col>
         <v-col cols="12" sm="6" class="text-right mt-sm-4">
-          <InvoiceTotals />
+          <Totals />
         </v-col>
       </v-row>
     </div>

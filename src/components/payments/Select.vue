@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { _PaymentType } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import AutoComplete from './AutoComplete.vue'
+import { AutoComplete } from '@/components'
 
 interface _SelectItem {
   value: number
@@ -10,7 +10,7 @@ interface _SelectItem {
 }
 
 export default defineComponent({
-  name: 'PaymentTypeSelect',
+  name: 'Payments.Select',
   inheritAttrs: false,
   components: { AutoComplete },
   props: ['modelValue'],

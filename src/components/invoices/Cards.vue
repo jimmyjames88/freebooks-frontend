@@ -1,10 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { _Invoice } from '@jimmyjames88/freebooks-types'
-import InvoiceCard from './InvoiceCard.vue'
+import InvoiceCard from './Card.vue'
 
 export default defineComponent({
-  name: 'Cards',
+  name: 'Invoices.Cards',
   components: { InvoiceCard },
   props: {
     cols: {

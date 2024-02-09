@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
-  name: 'InvoiceTotals',
+  name: 'Invoices.Totals',
   setup() {
     const { amountDue, expensesTotal, Invoice, paymentsTotal, subtotal, tax, total } = InvoiceComposable()
     return { amountDue, expensesTotal, Invoice, paymentsTotal, subtotal, tax, total }

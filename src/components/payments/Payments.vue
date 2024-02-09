@@ -5,7 +5,7 @@ import Invoice from '@/classes/Invoice'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
-  name: 'Payments',
+  name: 'Payments.Payments',
   setup() {
     const { Invoice } = InvoiceComposable()
     return { Invoice }

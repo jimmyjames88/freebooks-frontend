@@ -1,16 +1,19 @@
 <script lang="ts">
 import { defineComponent, provide } from 'vue'
-import { _Client, _Invoice, _InvoiceStatus, _LineItem, _Payment, _Tax, _TaxType, _User } from '@jimmyjames88/freebooks-types'
+import {
+  _Client, _Invoice, _InvoiceStatus, _LineItem, _Payment, _Tax, _TaxType, _User
+} from '@jimmyjames88/freebooks-types'
+import {
+  Avatar, Button, Expenses, Header, InvoiceStatus, Totals, Payments, Spinner
+} from '@/components'
 import { formatDateMMDDYYYY } from '@/utils'
-import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
-import { Expenses, InvoiceTotals, Payments } from './components'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
 import Invoice from '@/classes/Invoice'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Avatar, Button, Expenses, Header, InvoiceStatus, InvoiceTotals, PaymentDialog, Payments, Spinner },
+  components: { Avatar, Button, Expenses, Header, InvoiceStatus, Totals, PaymentDialog, Payments, Spinner },
   setup() {
     const { 
       amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
@@ -232,7 +235,7 @@ export default defineComponent({
             {{ Invoice.notes }}
           </v-col>
           <v-col md="4">
-            <InvoiceTotals />
+            <Totals />
           </v-col>
         </v-row>
       </div>

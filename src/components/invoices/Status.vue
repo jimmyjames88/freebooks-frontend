@@ -2,12 +2,12 @@
 import { defineComponent, PropType } from 'vue'
 import { _Invoice, _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import Button from './Button.vue'
-import PastDue from './PastDue.vue'
+import { Button } from '@/components'
 import Invoice from '@/classes/Invoice'
+import PastDue from './PastDue.vue'
 
 export default defineComponent({
-  name: 'InvoiceStatus',
+  name: 'Invoices.Status',
   inheritAttrs: false,
   components: { Button, PastDue },
   props: {

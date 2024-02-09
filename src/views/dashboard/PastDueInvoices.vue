@@ -1,8 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { _Invoice } from '@jimmyjames88/freebooks-types'
-import InvoiceCards from './InvoiceCards.vue'
-import Spinner from './Spinner.vue'
+import { InvoiceCards, Spinner } from '@/components'
 import API from '@/api'
 
 export default defineComponent({

@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { Button, Select, TextField } from '@/components'
 
 export default defineComponent({
-  name: 'LineItem',
+  name: 'Invoices.LineItem',
   components: { Button, Select, TextField },
   emits: [
     'delete',

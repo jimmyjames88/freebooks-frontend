@@ -1,9 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { LineItem, TextField } from '@/components'
+import { TextField } from '@/components'
+import LineItem from './LineItem.vue'
 
 export default defineComponent({
-  name: 'LineItems',
+  name: 'Invoices.LineItems',
   components: { LineItem, TextField },
   props: [ 'lineItems' ],
 

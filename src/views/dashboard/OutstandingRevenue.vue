@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { AxiosResponse } from 'axios'
 import API from '@/api'
-import Spinner from './Spinner.vue'
+import { Spinner } from '@/components'
 
 export default defineComponent({
   name: 'OutstandingRevenue',
