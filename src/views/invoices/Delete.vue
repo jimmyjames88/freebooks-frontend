@@ -13,7 +13,7 @@ export default defineComponent({
   methods: {
     destroy() {
       this.submitting = true
-      const id = this.$route.params.invoiceId
+      const id = this.$route.params.InvoiceId
       API.invoices.destroy(id).then((response: AxiosResponse) => {
         if (response.status === 204) {
           useToast().success('Invoice deleted')

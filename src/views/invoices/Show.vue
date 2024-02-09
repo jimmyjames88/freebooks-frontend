@@ -1,144 +1,75 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { AxiosResponse } from 'axios'
-import { _Client, _InvoiceStatus, _LineItem, _Payment, _Tax, _User } from '@jimmyjames88/freebooks-types'
-import API from '@/api'
+import { defineComponent, provide } from 'vue'
+import { _Client, _Invoice, _InvoiceStatus, _LineItem, _Payment, _Tax, _TaxType, _User } from '@jimmyjames88/freebooks-types'
 import { formatDateMMDDYYYY } from '@/utils'
-import { Avatar, Button, Header, InvoiceStatus, Spinner } from '@/components'
+import { Avatar, Button, Expenses, Header, InvoiceStatus, InvoiceTotals, Payments, Spinner } from '@/components'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
+import Invoice from '@/classes/Invoice'
+import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
   name: 'Invoices/Show',
-  components: { Avatar, Button, Header, InvoiceStatus, PaymentDialog, Spinner },
+  components: { Avatar, Button, Expenses, Header, InvoiceStatus, InvoiceTotals, PaymentDialog, Payments, Spinner },
+  setup() {
+    const { 
+      amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
+    } = InvoiceComposable()
+
+    provide('Invoice', Invoice)
+    
+    return {
+      amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
+    }
+  },
   data: (): {
     loading: boolean,
     showPaymentDialog: boolean,
-    id: number,
-    lineItems: _LineItem[],
-    notes: string,
-    refNo: string,
-    issueDate: Date | null,
-    dueDate: Date | null,
-    status?: _InvoiceStatus,
-    taxes: _Tax[],
-    payments: _Payment[],
-    user: Partial<_User>,
-    client: _Client
-
+    // Invoice: Invoice
   } => ({
     loading: true,
-    id: -1,
     showPaymentDialog: false,
-    lineItems: [] as {
-      type: string,
-      description: string,
-      rate: number,
-      quantity: number
-    }[],
-    notes: '',
-    refNo: '',
-    issueDate: null,
-    dueDate: null,
-    status: undefined,
-    taxes: [],
-    payments: [],
-    user: {
-      profile: {
-        displayName: '',
-        displayEmail: '',
-        phone: '',
-        address: {
-          line1: '',
-          line2: '',
-          city: '',
-          state: '',
-          postal: '',
-          country: ''
-        }
-      }
-    },
-    client: {
-      id: undefined,
-      name: '',
-      email: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        state: '',
-        postal: '',
-        country: ''
-      },
-      phone: '',
-      website: '',
-    },
+    // Invoice: {
+    //   id: -1,
+    //   lineItems: [] as {
+    //     type: string,
+    //     description: string,
+    //     rate: number,
+    //     quantity: number
+    //   }[],
+    //   notes: '',
+    //   refNo: '',
+    //   issueDate: undefined,
+    //   dueDate: undefined,
+    //   status: undefined,
+    //   Taxes: [],
+    //   Payments: [],
+    //   Expenses: [],
+    //   User: {} as _User,
+    //   Client: {} as _Client,
+    // }
   }),
   computed: {
     headerTitle(): string {
       if (this.$vuetify.display.mdAndUp) return ''
       let title = 'Invoice'
-      title += this.refNo ? ` #${this.refNo}` : ''
+      title += this.Invoice.refNo ? ` #${this.Invoice.refNo}` : ''
       return title
-    },
-    isSent() {
-      return this.status === _InvoiceStatus.DRAFT
-    },
-    subtotal(): string {
-      const subtotal = this.lineItems.reduce((acc, item) => {
-        return acc + (item.rate * item.quantity)
-      }, 0)
-      return subtotal.toFixed(2)
-    },
-    tax(): string {
-      return (+this.subtotal * 0.05).toFixed(2)
-    },
-    total(): string {
-      return (+this.subtotal + +this.tax).toFixed(2)
-    },
-    pastDue(): boolean {
-      if (!this.dueDate) return false
-      const dueDate = new Date(this.dueDate)
-      const today = new Date()
-      return dueDate < today
-    },
-    paymentTotal() {
-      return this.payments.reduce((acc, payment) => {
-        return acc + payment.amount
-      }, 0).toFixed(2)
-    },
-    amountDue() {
-      return (+this.total - +this.paymentTotal).toFixed(2)
     }
   },
-  mounted() {
-    console.log('mounted')
+  async mounted() {
     this.loading = true
-
-    API.invoices.show(Number(this.$route.params.invoiceId))
-      .then((response: AxiosResponse) => {
-        const {
-          id, client, lineItems, notes, refNo, issueDate, dueDate, status, taxes, user, payments
-        } = response.data
-
-        this.id = id
-        this.client = client
-        this.lineItems = lineItems
-        this.notes = notes
-        this.refNo = refNo
-        this.issueDate = new Date(issueDate)
-        this.dueDate = new Date(dueDate)
-        this.status = status
-        this.user.profile = user.profile
-        this.taxes = taxes
-        this.payments.push(...payments)
-      })
-      .catch((err: Error) => console.warn(err))
-      .finally(() => this.loading = false)
+    try {
+      await this.loadInvoice(Number(this.$route.params.InvoiceId))
+    } catch (err) {
+      console.error(err)
+    } finally {
+      this.loading = false
+    }
   },
   methods: {
     addPayment(payment: _Payment) {
       console.log('PAYMENT', payment)
-      this.payments.push(payment)
+      this.Invoice.Payments?.push(payment)
     },
     download() {
       console.log('downloading... todo')
@@ -163,10 +94,10 @@ export default defineComponent({
         <Button color="primary" @click="showPaymentDialog = true">
           <v-icon>mdi-cash-multiple</v-icon> Add payment
         </Button>
-        <Button color="primary" :disabled="!client.id">
+        <Button color="primary" :disabled="!Invoice.Client?.id">
           <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
         </Button>
-        <Button color="primary" :to="{ name: 'Invoices/Edit', params: { invoiceId: id } }">
+        <Button color="primary" :to="{ name: 'Invoices/Edit', params: { InvoiceId: Invoice.id } }">
           <v-icon>mdi-receipt-text-edit</v-icon> Edit
         </Button>
         <v-menu>
@@ -182,7 +113,7 @@ export default defineComponent({
             <v-list-item @click="download" disabled>
               <v-icon>mdi-download</v-icon> Download
             </v-list-item>
-            <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id } }">
+            <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: id } }">
               <v-icon>mdi-delete</v-icon> Delete
             </v-list-item>
           </v-list>
@@ -190,7 +121,7 @@ export default defineComponent({
       </template>
       <template #mobile>
         <v-list>
-          <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: id } }">
+          <v-list-item :to="{ name: 'Invoices/Edit', params: { InvoiceId: id } }">
             <v-icon>mdi-receipt-text-edit</v-icon> Edit
           </v-list-item>
           <v-list-item>
@@ -202,7 +133,7 @@ export default defineComponent({
           <v-list-item @click="download" disabled>
             <v-icon>mdi-download</v-icon> Download
           </v-list-item>
-          <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: id } }">
+          <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: id } }">
             <v-icon>mdi-delete</v-icon> Delete
           </v-list-item>
         </v-list>
@@ -214,50 +145,50 @@ export default defineComponent({
           <v-col>
             <h1 class="title">
               Invoice
-              <InvoiceStatus v-if="status"
-                v-model="status"
-                :invoice-id="id"
-                :dueDate="dueDate || undefined"
+              <InvoiceStatus v-if="Invoice.status && Invoice.id"
+                v-model="Invoice.status"
+                :InvoiceId="Invoice.id"
+                :dueDate="Invoice.dueDate || undefined"
                 class="d-print-none"
               />
             </h1>
-            <h3># {{ refNo }}</h3>
+            <h3># {{ Invoice.refNo }}</h3>
           </v-col>
           <v-col align="end">
-            <h3>Issued: {{ formatDate(issueDate) }}</h3>
-            <h3>Pay by: {{ formatDate(dueDate) }}</h3>
+            <h3 v-if="Invoice.issueDate">Issued: {{ formatDate(Invoice.issueDate) }}</h3>
+            <h3 v-if="Invoice.dueDate">Pay by: {{ formatDate(Invoice.dueDate) }}</h3>
           </v-col>
         </v-row>
         <v-divider class="my-4" />
         <v-row>
           <v-col cols="12" sm="6">
-            <template v-if="user.profile">
-              <h2>{{ user.profile.displayName }}</h2>
-              <p v-if="user.profile.address?.line1">{{ user.profile.address.line1 }}</p>
-              <p v-if="user.profile.address?.line2">{{ user.profile.address.line2 }}</p>
+            <template v-if="Invoice.User?.Profile">
+              <h2>{{ Invoice.User.Profile.displayName }}</h2>
+              <p v-if="Invoice.User.Profile.address?.line1">{{ Invoice.User.Profile.address.line1 }}</p>
+              <p v-if="Invoice.User.Profile.address?.line2">{{ Invoice.User.Profile.address.line2 }}</p>
               <p>
-                <span v-if="user.profile.address?.city">{{ user.profile.address.city }}, </span>
-                <span v-if="user.profile.address?.state">{{ user.profile.address.state }}, </span>
-                <span v-if="user.profile.address?.postal">{{ user.profile.address.postal }}</span>
+                <span v-if="Invoice.User.Profile.address?.city">{{ Invoice.User.Profile.address.city }}, </span>
+                <span v-if="Invoice.User.Profile.address?.state">{{ Invoice.User.Profile.address.state }}, </span>
+                <span v-if="Invoice.User.Profile.address?.postal">{{ Invoice.User.Profile.address.postal }}</span>
               </p>
-              <p v-if="user.profile.address?.country">{{ user.profile.address.country }}</p>
+              <p v-if="Invoice.User.Profile.address?.country">{{ Invoice.User.Profile.address.country }}</p>
             </template>
           </v-col><!-- TODO -->
           <v-col cols="12" sm="6">
-            <div v-if="client">
+            <div v-if="Invoice.Client">
               <h2>
-                <router-link v-if="client.id" :to="{ name: 'Clients/Show', params: { clientId: client.id } }">
-                  {{ client.name }}
+                <router-link v-if="Invoice.Client.id" :to="{ name: 'Clients/Show', params: { ClientId: Invoice.Client.id } }">
+                  {{ Invoice.Client.name }}
                 </router-link>
               </h2>
-              <p>{{ client?.address?.line1 }}</p>
-              <p>{{ client?.address?.line2 }}</p>
+              <p>{{ Invoice.Client?.address?.line1 }}</p>
+              <p>{{ Invoice.Client?.address?.line2 }}</p>
               <p>
-                {{ client?.address?.city }},
-                {{ client?.address?.state }}
-                {{ client?.address?.postal }}
+                {{ Invoice.Client?.address?.city }},
+                {{ Invoice.Client?.address?.state }}
+                {{ Invoice.Client?.address?.postal }}
               </p>
-              <p>{{ client?.address?.country }}</p>
+              <p>{{ Invoice.Client?.address?.country }}</p>
             </div>
           </v-col>
         </v-row>
@@ -277,96 +208,37 @@ export default defineComponent({
           </v-col>
         </v-row>
 
-        <v-row v-for="(item, index) in lineItems" :key="`item-${index}`" class="line-item">
+        <v-row v-for="(item, index) in Invoice.lineItems" :key="`item-${index}`" class="line-item">
           <v-col cols="12" sm="6">{{ item.description }}</v-col>
           <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
           <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>
-          <v-col cols="4" sm="2" align="end">${{ (item.quantity * item.rate).toFixed(2) }}</v-col>
+          <v-col cols="4" sm="2" align="end">${{ ((item.quantity || 1) * (item.rate || 0)).toFixed(2) }}</v-col>
         </v-row>
 
-        <v-row>
-          <v-col>
-            <template v-if="payments.length">
-              <v-divider class="mt-8 mb-4" />
-              <h2>Payments</h2>
-              <v-row>
-                <v-col>
-                  <h3>Date</h3>
-                </v-col>
-                <v-col>
-                  <h3>Description</h3>
-                </v-col>
-                <v-col>
-                  <h3>Type</h3>
-                </v-col>
-                <v-col align="end">
-                  <h3>Amount</h3>
-                </v-col>
-              </v-row>
-              <v-row v-for="(payment, index) in payments" :key="`payment-${index}`" class="line-item">
-                <v-col>{{ payment.date }}</v-col>
-                <v-col>{{ payment.description }}</v-col>
-                <v-col>{{ payment.type }}</v-col>
-                <v-col align="end">${{ payment.amount.toFixed(2) }}</v-col>
-              </v-row>
-            </template>
-          </v-col>
-        </v-row>
+        <template v-if="Invoice.Expenses?.length">
+          <v-divider class="mt-8 mb-4" />
+          <Expenses :expenses="Invoice.Expenses" />
+        </template> 
+  
+        <template v-if="Invoice.Payments?.length">
+          <v-divider class="mt-8 mb-4" />
+          <Payments />
+        </template>
+
         <v-divider class="mt-16 mb-8" thickness="10" />
         <v-row>
           <v-col>
-            {{ notes }}
+            {{ Invoice.notes }}
           </v-col>
           <v-col md="4">
-            <v-row>
-              <v-col>Subtotal</v-col>
-              <v-col align="end">${{ subtotal }}</v-col>
-            </v-row>
-            <v-row v-for="tax in taxes">
-              <v-col cols="6">
-                {{ tax.name }}
-                <span v-if="tax.type === 'PERCENTAGE'">({{ tax.rate * 100 }}%)</span>
-              </v-col>
-              <v-col cols="6" align="end">
-                {{ tax.type === 'PERCENTAGE' ? '$' + (parseFloat(subtotal) * tax.rate).toFixed(2) : '$' +
-                  tax.rate.toFixed(2) }}
-              </v-col>
-            </v-row>
-            <template v-if="payments.length">
-              <v-divider class="mt-4 mb-2" />
-              <v-row>
-                <v-col>
-                  <h4>Total</h4>
-                </v-col>
-                <v-col align="end">
-                  <h4>${{ total }}</h4>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
-                  Less amount paid
-                </v-col>
-                <v-col align="end">
-                  <h4 class="text-secondary">(${{ paymentTotal }})</h4>
-                </v-col>
-              </v-row>
-            </template>
-            <v-divider class="mt-4 mb-2" />
-            <v-row>
-              <v-col>
-                <h2>Amount due</h2>
-              </v-col>
-              <v-col align="end">
-                <h2 class="text-tertiary">${{ amountDue }}</h2>
-              </v-col>
-            </v-row>
+            <InvoiceTotals />
           </v-col>
         </v-row>
       </div>
     </v-container>
     <PaymentDialog  v-if="showPaymentDialog"
-      :invoiceId="id"
-      :clientId="client.id"
+      :InvoiceId="Invoice.id"
+      :ClientId="Invoice.Client?.id"
       @saved="addPayment"
       @close="showPaymentDialog = false"
     />

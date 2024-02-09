@@ -20,8 +20,7 @@ export default defineComponent({
       required: true
     },
     dueDate: {
-      type: Date,
-      required: true
+      type: Date
     },
     total: Number
   },
@@ -37,7 +36,7 @@ export default defineComponent({
     class="mx-auto"
     type="heading, divider, paragraph"
   />
-  <v-card v-else variant="flat" color="gray" :to="{ name: 'Invoices/Show', params: { invoiceId: id }}">
+  <v-card v-else variant="flat" color="gray" :to="{ name: 'Invoices/Show', params: { InvoiceId: id }}">
     <v-card-text>
       <v-row>
         <v-col>
@@ -52,7 +51,7 @@ export default defineComponent({
       <v-divider class="my-4" />
       <v-row>
         <v-col class="on-surface">
-          <InvoiceStatus v-model="status" :invoiceId="id" :dueDate="dueDate" smallPD /> <!-- todo type-->
+          <InvoiceStatus v-model="status" :InvoiceId="id" :dueDate="dueDate" smallPD /> <!-- todo type-->
         </v-col>
         <v-col align="end">
           <h2 class="text-tertiary">${{ total || ' ---' }}</h2>

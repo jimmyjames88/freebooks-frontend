@@ -33,7 +33,7 @@ export default defineComponent({
     {
       title: 'Client',
       sortable: true,
-      key: 'client.name',
+      key: 'Client.name',
     },
     {
       title: 'Due by',
@@ -57,11 +57,11 @@ export default defineComponent({
     responsiveHeaders() {
       if (this.$vuetify.display.xs) {
         return this.headers.filter(header => {
-          return [ 'client.name', 'total' ].includes(header.key)
+          return [ 'Client.name', 'total' ].includes(header.key)
         })
       } else if (this.$vuetify.display.sm) {
         return this.headers.filter(header => {
-          return [ 'client.name', 'dueDate', 'total' ].includes(header.key)
+          return [ 'Client.name', 'dueDate', 'total' ].includes(header.key)
         })
       }
       return this.headers
@@ -109,22 +109,22 @@ export default defineComponent({
         >
           <template #item.status="{ item }">
             <InvoiceStatus v-model="item.status"
-              :invoiceId="item.id"
+              :InvoiceId="item.id"
               :dueDate="new Date(item.dueDate)"
               smallPD
             />
           </template>
           <template #item.refNo="{ item }">
             <div class="d-inline-flex align-center">
-              <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
+              <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.id }}">
                 # {{ item.refNo }}
               </router-link>
             </div>
           </template>
-          <template #item.client.name="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
-              <Avatar :name="item.client?.name || undefined" class="mr-4 d-none d-sm-inline-flex" />
-              <span v-if="item.client?.name">{{ item.client.name }}</span>
+          <template #item.Client.name="{ item }">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.id }}">
+              <Avatar :name="item.Client?.name || undefined" class="mr-4 d-none d-sm-inline-flex" />
+              <span v-if="item.Client?.name">{{ item.Client.name }}</span>
               <em v-else>- Unassigned -</em>
             </router-link>
           </template>
@@ -139,13 +139,13 @@ export default defineComponent({
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item :to="{ name: 'Invoices/Show', params: { invoiceId: item.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Show', params: { InvoiceId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Invoices/Edit', params: { invoiceId: item.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Edit', params: { InvoiceId: item.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Invoices/Delete', params: { invoiceId: item.id }}">
+                  <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>

@@ -60,7 +60,7 @@ export default defineComponent({
       :md="md"
       :lg="lg">
       <InvoiceCard :id="invoice.id"
-        :client="invoice.client"
+        :client="invoice.Client"
         :refNo="invoice.refNo"
         :status="invoice.status"
         :dueDate="invoice.dueDate"

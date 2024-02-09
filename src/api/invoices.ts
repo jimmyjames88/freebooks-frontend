@@ -1,15 +1,11 @@
 import axios from 'axios'
-import { _Collection, _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Collection, _DataTableFilters, _Invoice } from '@jimmyjames88/freebooks-types'
 import Invoice from '@/classes/Invoice'
 
 const URL = `${import.meta.env.VITE_API}/invoices`
 
-interface _InvoiceFilters {
-  groupBy?: any[]
-  itemsPerPage?: number
-  page?: number
-  search?: string
-  sortBy?: any[]
+interface _InvoiceFilters extends _DataTableFilters {
+  ClientId?: number
 }
 
 export default {
@@ -21,23 +17,23 @@ export default {
     }
   },
 
-  async store(invoice: _Invoice): Promise<Invoice> {
+  async store(invoice: Invoice): Promise<Invoice> {
     const response = await axios.post(`${URL}`, invoice)
     return new Invoice(response.data)
   },
 
-  async update(invoice: Partial<_Invoice>): Promise<Invoice> {
+  async update(invoice: Invoice): Promise<Invoice> {
     const response = await axios.put(`${URL}/${invoice.id}`, invoice)
     return new Invoice(response.data)
   },
   
-  async show(invoiceId: string | number): Promise<Invoice> {
-    const response = await axios.get(`${URL}/${invoiceId}`)
+  async show(InvoiceId: number): Promise<Invoice> {
+    const response = await axios.get(`${URL}/${InvoiceId}`)
     return new Invoice(response.data)
   },
 
-  async destroy(invoiceId: string | number): Promise<void> {
-    await axios.delete(`${URL}/${invoiceId}`)
+  async destroy(InvoiceId: number): Promise<void> {
+    await axios.delete(`${URL}/${InvoiceId}`)
     return
   },
 

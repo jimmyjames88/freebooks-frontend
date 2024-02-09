@@ -4,6 +4,7 @@ import { _Invoice, _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import Button from './Button.vue'
 import PastDue from './PastDue.vue'
+import Invoice from '@/classes/Invoice'
 
 export default defineComponent({
   name: 'InvoiceStatus',
@@ -14,7 +15,7 @@ export default defineComponent({
       type: Date,
       default: null
     },
-    invoiceId: {
+    InvoiceId: {
       type: Number,
       required: true
     },
@@ -62,10 +63,10 @@ export default defineComponent({
     },
     async save() {
       try {
-        await API.invoices.update({
-          id: this.invoiceId,
+        await API.invoices.update(new Invoice({
+          id: this.InvoiceId,
           status: this.newStatus
-        })
+        }))
         this.$emit('update:model-value', this.newStatus)
       } catch (error) {
         console.error(error)

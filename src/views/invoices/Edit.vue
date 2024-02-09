@@ -1,64 +1,43 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, provide } from 'vue'
 import { useToast } from 'vue-toastification';
-import { _Invoice, _LineItem, _Tax } from '@jimmyjames88/freebooks-types'
+import { _Expense, _Invoice, _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
-import { Header, Spinner } from '@/components'
+import { Header, InvoiceTotals, Spinner } from '@/components'
+import Invoice from '@/classes/Invoice';
+import InvoiceComposable from '@/composables/Invoice'
 
 
 export default defineComponent({
   name: 'Invoices/Edit',
   components: { Header, InvoiceForm, Spinner },
+  setup() {
+    const { loadInvoice, Invoice } = InvoiceComposable()
+    return { loadInvoice, Invoice }
+  },
   data: (): {
-    formData: {
-      id: number | undefined
-      clientId: number | undefined
-      refNo: string
-      issueDate: Date
-      dueDate: Date
-      lineItems: _LineItem[]
-      notes: string
-      taxes: _Tax[]
-    } | undefined
     loading: boolean
   } => ({
-    formData: undefined,
     loading: true
   }),
-  mounted() {
-    this.loadInvoice()
+  async mounted() {
+    this.loading = true
+    try {
+      await this.loadInvoice(Number(this.$route.params.InvoiceId))
+    } catch(err) {
+      console.error(err)
+    } finally {
+      this.loading = false
+    }
   },
   methods: {
-    async loadInvoice() {
-      try {
-        const response = await API.invoices.show(this.$route.params.invoiceId)
-        const { id, clientId, refNo, issueDate, dueDate, lineItems, notes, taxes } = response.data
-        this.formData = {
-          id,
-          clientId,
-          refNo,
-          issueDate,
-          dueDate,
-          lineItems,
-          notes,
-          taxes
-        }
-      } catch(e) {
-        console.error(e)
-      } finally {
-        this.loading = false
-      }
-    },
-    async submitForm(data: Partial<_Invoice>) {
+    async submitForm() {
       try {
         this.loading = true
-        await API.invoices.update({ 
-          id: this.formData?.id,
-          ...data 
-        })
+        const invoice = await API.invoices.update(new Invoice({ ...this.Invoice }))    
         useToast().success('Invoice saved')
-        this.$router.push({ name: 'Invoices/Show', params: { invoiceId: data.id }})
+        this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: invoice.id }})
       } catch(e) {
         console.error(e)
       } finally {
@@ -75,7 +54,7 @@ export default defineComponent({
     <Header title="Edit Invoice" />
     <v-container>
       <InvoiceForm
-        :formData="formData"
+        v-if="Invoice"
         :loading="loading"
         editing
         @submitForm="submitForm"
