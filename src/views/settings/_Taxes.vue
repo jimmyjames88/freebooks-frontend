@@ -9,9 +9,9 @@ export default defineComponent({
   name: 'Settings/Taxes',
   components: { Button, TextField },
   data: (): {
-    taxes: _Tax[]
+    Taxes: _Tax[]
   } => ({
-    taxes: []
+    Taxes: []
   }),
   mounted() {
     this.loadTaxes()
@@ -19,13 +19,13 @@ export default defineComponent({
   methods: {
     loadTaxes() {
       API.taxes.index().then((response) => {
-        this.taxes = response.data
+        this.Taxes = response.data
       })
     },
     destroy(taxId: number) {
       API.taxes.destroy(taxId).then(() => {
         // remove the tax from the list
-        this.taxes = this.taxes.filter((tax) => tax.id !== taxId)
+        this.Taxes = this.Taxes.filter((tax) => tax.id !== taxId)
         useToast().success('Tax deleted')
       })
     }
@@ -49,14 +49,14 @@ export default defineComponent({
       </tr>
     </thead>
     <tbody>
-      <tr v-for="tax in taxes">
+      <tr v-for="tax in Taxes">
         <td>{{ tax.name }}</td>
         <td v-if="tax.type === 'PERCENTAGE'">{{ tax.rate * 100 }}%</td>
         <td v-else>${{ tax.rate.toFixed(2) }}</td>
         <td>
           <v-icon v-if="tax.default">mdi-check</v-icon>
         </td>
-        <td align="end">
+        <td align="right">
           <v-menu>
             <template #activator="{ props }">
               <v-btn v-bind="props" icon flat size="small">
