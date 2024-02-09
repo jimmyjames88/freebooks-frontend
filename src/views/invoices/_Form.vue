@@ -1,12 +1,12 @@
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { AxiosError, AxiosResponse } from 'axios'
 import { _Client, _Invoice, _LineItem, _Payment, _Tax, _User } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import {
-  AutoComplete, Button, ClientSelect, Expenses, InvoiceTotals, LineItems, Payments, Spinner,
-  TextField, TextArea
-} from '../../components';
+  AutoComplete, Button, ClientSelect, Spinner, TextField, TextArea
+} from '@/components';
+import { Expenses, InvoiceTotals, LineItems, Payments } from './components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
 import Invoice from '@/classes/Invoice'

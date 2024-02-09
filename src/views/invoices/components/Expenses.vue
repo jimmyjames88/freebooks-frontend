@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { _Expense, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
-import { Button } from '.'
+import { Button } from '@/components'
 
 export default defineComponent({
     name: 'Expenses',

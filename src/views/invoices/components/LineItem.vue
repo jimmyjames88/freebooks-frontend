@@ -1,8 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Button from './Button.vue'
-import Select from './Select.vue'
-import TextField from './TextField.vue'
+import { Button, Select, TextField } from '@/components'
 
 export default defineComponent({
   name: 'LineItem',

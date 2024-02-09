@@ -3,10 +3,10 @@ import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification';
 import { _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
-import InvoiceForm from './_Form.vue'
 import { Header } from '@/components'
 import Invoice from '@/classes/Invoice'
 import InvoiceComposable from '@/composables/Invoice'
+import InvoiceForm from './_Form.vue'
 
 
 export default defineComponent({

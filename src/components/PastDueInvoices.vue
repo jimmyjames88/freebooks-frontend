@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { AxiosResponse } from 'axios'
 import { _Invoice } from '@jimmyjames88/freebooks-types'
 import InvoiceCards from './InvoiceCards.vue'
 import Spinner from './Spinner.vue'

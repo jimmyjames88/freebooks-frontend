@@ -2,9 +2,8 @@
 import { defineComponent } from 'vue'
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
-import DataTableComposable from '../../composables/DataTable'
-import { Avatar, Button, DataTable, Header, InvoiceStatus, PastDue } from '@/components'
-import TextField from '../../components/TextField.vue'
+import DataTableComposable from '@/composables/DataTable'
+import { Avatar, Button, DataTable, Header, InvoiceStatus, PastDue, TextField } from '@/components'
 
 export default defineComponent({
   name: 'Invoices/Index',

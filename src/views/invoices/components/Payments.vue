@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Invoice from '@/classes/Invoice'
 import { _Payment } from '@jimmyjames88/freebooks-types'
+import Invoice from '@/classes/Invoice'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
