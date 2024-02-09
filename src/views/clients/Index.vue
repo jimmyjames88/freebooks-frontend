@@ -78,7 +78,7 @@ export default defineComponent({
           :loading="loading"
         >
         <template #item.name="{ item }">
-            <router-link :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
+            <router-link :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
               <Avatar :name="item.name" class="mr-4" />
               {{ item.name }}
             </router-link>
@@ -94,13 +94,13 @@ export default defineComponent({
                   <v-list-item>
                     <v-list-item-title>New Estimate</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Show', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: item.id }}">
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Delete', params: { clientId: item.id }}">
+                  <v-list-item :to="{ name: 'Clients/Delete', params: { ClientId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>

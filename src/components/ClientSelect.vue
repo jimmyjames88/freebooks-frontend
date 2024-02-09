@@ -1,13 +1,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { AxiosError, AxiosResponse } from 'axios'
-import { _Client } from '@jimmyjames88/freebooks-types'
+import { _Client, _Collection } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import AutoComplete from './AutoComplete.vue'
 
 interface _SelectItem {
   value: number
   title: string
+}
+
+interface _ClientListItem {
+  id: number
+  name: string
 }
 
 export default defineComponent({
@@ -17,7 +21,7 @@ export default defineComponent({
   props: ['modelValue'],
   emits: ['update:modelValue'],
   data: (): {
-    clients: _Client[]
+    clients: _ClientListItem[]
   } => ({
     clients: [],
   }),
@@ -27,15 +31,16 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue || undefined
+        return this.modelValue?.id || 0
       },
-      set(value: number) {
-        this.$emit('update:modelValue', value)
+      async set(id: number) {
+        const client = await API.clients.show(id)
+        this.$emit('update:modelValue', client)
       }
     },
     clientList(): _SelectItem[] {
-      return this.clients.map((client: _Client) => ({
-        value: client.id,
+      return this.clients.map((client: _ClientListItem) => ({
+        value: Number(client.id),
         title: client.name
       })).sort((a: _SelectItem, b: _SelectItem) => {
         if (a.title.toLowerCase() < b.title.toLowerCase()) return -1
@@ -46,13 +51,12 @@ export default defineComponent({
   },
   methods: {
     async loadClients() {
-      await API.clients.list().then((response: AxiosResponse) => {
-        this.clients = response.data
-        if (this.$route.query.clientId)
-          this.value = Number(this.$route.query.clientId)
-      }).catch((err: AxiosError) => {
+      try {
+        const data: _Collection<{ id: number, name: string }> = await API.clients.list()
+        this.clients = data.items
+      } catch (err: any) {
         console.warn(err)
-      })
+      }
     },
   }
 })

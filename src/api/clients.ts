@@ -1,38 +1,41 @@
 import axios from 'axios'
-import { _Client } from '@jimmyjames88/freebooks-types'
+import { _Client, _Collection, _DataTableFilters } from '@jimmyjames88/freebooks-types'
+import Client from '@/classes/Client'
 
-const url = `${import.meta.env.VITE_API}/clients`
+const URL = `${import.meta.env.VITE_API}/clients`
 
 export default {
-  index(filters: any) {
-    return axios.get(`${url}/`, {
-      params: {
-        ...filters
-      }
-    })
+  async index(filters: _DataTableFilters): Promise<_Collection<Client>> {
+    const response = await axios.get(`${URL}/`, { params: filters })
+    return {
+      items: response.data.items.map((client: _Client) => new Client(client)),
+      total: response.data.total
+    }
   },
 
-  list() {
-    return axios.get(`${url}/list`)
+  async list(): Promise<_Collection<{ id: number, name: string }>> {
+    const response = await axios.get(`${URL}/list`)
+    const { items, total } = response.data
+    return { items, total }
   },
 
-  show(clientId: number) {
-    return axios.get(`${url}/${clientId}`)
+  async show(ClientId: number): Promise<Client> {
+    const response = await axios.get(`${URL}/${ClientId}`)
+    return new Client(response.data)
   },
 
-  store(client: _Client) {
-    return axios.post(`${url}`, {
-      ...client
-    })
+  async store(client: Client): Promise<Client> {
+    const response = await axios.post(`${URL}`, client)
+    return new Client(response.data)
   },
 
-  update(client: _Client) {
-    return axios.put(`${url}/${client.id}`, {
-      ...client
-    })
+  async update(client: _Client): Promise<Client> {
+    const response = await axios.put(`${URL}/${client.id}`, client)
+    return new Client(response.data)
   },
 
-  destroy(clientId: number) {
-    return axios.delete(`${url}/${clientId}`)
+  async destroy(ClientId: number): Promise<void> {
+    axios.delete(`${URL}/${ClientId}`)
+    return
   }
 }

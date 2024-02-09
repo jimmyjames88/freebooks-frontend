@@ -14,7 +14,7 @@ export default defineComponent({
   methods: {
     destroy() {
       this.submitting = true
-      const id = this.$route.params.clientId
+      const id = this.$route.params.ClientId
       API.clients.destroy(id).then((response: AxiosResponse) => {
         if (response.status === 204) {
           useToast().success('Client deleted')

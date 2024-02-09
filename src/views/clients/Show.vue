@@ -1,52 +1,59 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { AxiosResponse } from 'axios';
 import API from '@/api'
 import { Avatar, Button, Header, InvoiceCards, Spinner } from '@/components'
+import Client from '@/classes/Client'
 
 
 export default defineComponent({
   name: 'Clients/Show',
   components: { Avatar, Button, Header, InvoiceCards, Spinner },
-  data: () => ({
+  data: (): {
+    loading: boolean
+    Client: Client
+  } => ({
     loading: true,
-    id: null,
-    name: '',
-    email: '',
-    address: {
-      line1: '',
-      line2: '',
-      city: '',
-      state: '',
-      postal: '',
-      country: ''
-    },
-    phone: '',
-    website: '',
-    invoices: []
+    Client: {
+      id: undefined,
+      Invoices: [],
+      name: '',
+      email: '',
+      address: {
+        line1: '',
+        line2: '',
+        city: '',
+        state: '',
+        postal: '',
+        country: ''
+      },
+      phone: '',
+      website: ''
+    }
   }),
 
-  mounted() {
-    console.log(this.$route.params.clientId)
-    API.clients.show(Number(this.$route.params.clientId))
-      .then((response: AxiosResponse) => {
-        const { id, name, email, address, phone, website, invoices } = response.data
-        this.id = id
-        this.name = name
-        this.email = email
-        this.address = address
-        this.phone = phone
-        this.website = website
-        this.invoices = invoices.map((invoice: any) => {
-          invoice.issueDate = new Date(invoice.issueDate)
-          invoice.dueDate = new Date(invoice.dueDate)
-          return invoice
-        })
-      })
-      .catch((err: Error) => console.warn(err))
-      .finally(() => { 
-        this.loading = false
-      })
+  async mounted() {
+    this.loading = true
+    this.Client = await API.clients.show(Number(this.$route.params.ClientId))
+    this.loading = false
+    // API.clients.show(Number(this.$route.params.ClientId))
+    //   .then((response: AxiosResponse) => {
+    //     const { id, name, email, address, phone, website, invoices } = response.data
+    //     this.id = id
+    //     this.name = name
+    //     this.email = email
+    //     this.address = address
+    //     this.phone = phone
+    //     this.website = website
+    //     this.invoices = invoices.map((invoice: any) => {
+    //       invoice.issueDate = new Date(invoice.issueDate)
+    //       invoice.dueDate = new Date(invoice.dueDate)
+    //       return invoice
+    //     })
+    //   })
+    //   .catch((err: Error) => console.warn(err))
+    //   .finally(() => { 
+    //     this.loading = false
+    //   })
   }
 })
 </script>
@@ -57,18 +64,18 @@ export default defineComponent({
     <Header title="Client">
       <template #title>
         <h1>
-          <span>{{ name }}</span>
-          <Avatar :name="name" class="ml-4" />
+          <span>{{ Client.name }}</span>
+          <Avatar :name="Client.name" class="ml-4" />
         </h1>
       </template>
       <template #desktop>
-        <Button color="primary" :to="{ name: 'Clients/Edit', params: { clientId: id }}">
+        <Button color="primary" :to="{ name: 'Clients/Edit', params: { ClientId: Client.id }}">
           <v-icon>mdi-account-edit</v-icon> Edit Client
         </Button>
       </template>
       <template #mobile>
         <v-list>
-          <v-list-item :to="{ name: 'Clients/Edit', params: { clientId: id }}" prepend-icon="mdi-account-edit">
+          <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: Client.id }}" prepend-icon="mdi-account-edit">
             Edit Client
           </v-list-item>
         </v-list>
@@ -77,8 +84,8 @@ export default defineComponent({
     <v-container>
       <v-row class="d-md-none">
         <v-col class="d-flex align-center flex-column">
-          <Avatar :name="name" jumbo />
-          <h2 class="mt-4">{{ name }}</h2>
+          <Avatar :name="Client.name" jumbo />
+          <h2 class="mt-4">{{ Client.name }}</h2>
         </v-col>
       </v-row>
       <v-divider class="my-4" />
@@ -86,35 +93,35 @@ export default defineComponent({
         <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Contact</h3>
           <v-list bgColor="transparent" class="ml-n4">
-            <v-list-item :href="`mailto:${email}`">
+            <v-list-item :href="`mailto:${Client.email}`">
               <v-icon>mdi-email</v-icon>
-              {{ email }}
+              {{ Client.email }}
             </v-list-item>
-            <v-list-item :href="`tel:${phone}`">
+            <v-list-item :href="`tel:${Client.phone}`">
               <v-icon>mdi-phone</v-icon>
-              {{ phone }}
+              {{ Client.phone }}
             </v-list-item>
-            <v-list-item :href="website" target="_blank">
+            <v-list-item :href="Client.website" target="_blank">
               <v-icon>mdi-link</v-icon>
-              {{ website }}
+              {{ Client.website }}
             </v-list-item>
           </v-list>
         </v-col>
         <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Address</h3>
           <v-list bgColor="transparent" class="ml-n4">
-            <v-list-item>
-              <p>{{ address.line1 }}</p>
-              <p>{{ address.line2 }}</p>
-              <p>{{ address.city }}, {{ address.state }}, {{ address.country }}</p>
-              <p>{{ address.postal }}</p>
+            <v-list-item v-if="Client.address">
+              <p>{{ Client.address.line1 }}</p>
+              <p>{{ Client.address.line2 }}</p>
+              <p>{{ Client.address.city }}, {{ Client.address.state }}, {{ Client.address.country }}</p>
+              <p>{{ Client.address.postal }}</p>
             </v-list-item>
           </v-list>
         </v-col>
       </v-row>
       <v-divider class="my-4" />
       <h2>Recent Invoices</h2>
-      <InvoiceCards :invoices="invoices" />
+      <InvoiceCards :invoices="Client.Invoices" />
       <v-divider class="my-4" />
       <!-- <h2>Recent Estimates</h2>
       <v-row>

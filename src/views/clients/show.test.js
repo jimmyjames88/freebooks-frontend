@@ -38,7 +38,7 @@ vi.stubGlobal('ResizeObserver', ResizeObserverMock);
 
 describe('Show.vue', () => {
   const vuetify = createVuetify()
-  const $route = { params: { clientId: 1 }}
+  const $route = { params: { ClientId: 1 }}
   let wrapper
   const $router = {
     go: vi.fn()

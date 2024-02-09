@@ -24,7 +24,7 @@ export default defineComponent({
   }),
   async mounted() {
     // load data from clients.show endpoint
-    const response = await API.clients.show(this.$route.params.clientId)
+    const response = await API.clients.show(this.$route.params.ClientId)
     // set data properties
     const { id, name, email, phone, website, address } = response.data
     this.id = id
@@ -43,7 +43,7 @@ export default defineComponent({
     save() {
       const { id, name, email, phone, website, address } = this
       API.clients.update({  id, name, email, phone, website, address }).then(() => {
-        this.$router.push({ name: 'Clients/Show', params: { clientId: this.id } })
+        this.$router.push({ name: 'Clients/Show', params: { ClientId: this.id } })
       }).catch((err: AxiosError) => {
         console.warn(err)
       })
