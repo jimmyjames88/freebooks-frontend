@@ -2,10 +2,7 @@ import {
   _Client, _Expense, _Invoice, _InvoiceStatus, _LineItem, _Payment, _Tax, _User
 } from '@jimmyjames88/freebooks-types'
 import Client from './Client'
-// import User from './User'
-// import Tax from './Tax'
 import Expense from './Expense'
-// import Payment from './Payment'
 
 export default class Invoice implements _Invoice {
   public id!: number
