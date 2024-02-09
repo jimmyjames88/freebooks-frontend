@@ -38,7 +38,7 @@ export default defineComponent({
     <v-layout>
       <v-navigation-drawer
         v-if="loggedIn"
-        :rail="$vuetify.display.mdAndUp"
+        :rail="$vuetify.display.md || $vuetify.display.lg"
         expand-on-hover
         color="primary"
         v-model="showNav"
@@ -80,7 +80,10 @@ export default defineComponent({
           <v-list-item disabled prepend-icon="mdi-file-document" value="estimates">
             <h3>Estimates</h3>
           </v-list-item>
-          <v-list-item disabled prepend-icon="mdi-cash" value="expenses">
+          <v-list-item prepend-icon="mdi-cash"
+            value="expenses"
+            :to="{ name: 'Expenses/Index' }"
+          >
             <h3>Expenses</h3>
           </v-list-item>
           <v-list-item prepend-icon="mdi-cash-multiple" 

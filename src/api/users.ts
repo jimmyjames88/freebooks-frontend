@@ -4,8 +4,8 @@ import { _User } from '@jimmyjames88/freebooks-types'
 const url = `${import.meta.env.VITE_API}/users`
 
 export default {
-  show(userId: number) {
-    return axios.get(`${url}/${userId}`)
+  show(UserId: number) {
+    return axios.get(`${url}/${UserId}`)
   },
   
   update(user: Partial<_User>) {

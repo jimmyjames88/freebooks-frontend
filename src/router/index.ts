@@ -1,4 +1,4 @@
-import { NavigationHookAfter, RouteComponent, RouteLocation, createRouter, createWebHistory } from 'vue-router'
+import { RouteLocation, createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores'
 
 const routes = [
@@ -39,19 +39,19 @@ const routes = [
     meta: { title: 'Create Client' }
   },
   {
-    path: '/clients/:clientId/edit',
+    path: '/clients/:ClientId/edit',
     name: 'Clients/Edit',
     component: () => import('../views/clients/Edit.vue'),
     meta: { title: 'Edit Client' }
   },
   {
-    path: '/clients/:clientId/delete',
+    path: '/clients/:ClientId/delete',
     name: 'Clients/Delete',
     component: () => import('../views/clients/Delete.vue'),
     meta: { title: 'Delete Client' }
   },
   {
-    path: '/clients/:clientId',
+    path: '/clients/:ClientId',
     name: 'Clients/Show',
     component: () => import('../views/clients/Show.vue'),
     meta: { title: 'Client Details' }
@@ -69,19 +69,19 @@ const routes = [
     meta: { title: 'Create Invoice' }
   },
   {
-    path: '/invoices/:invoiceId/edit',
+    path: '/invoices/:InvoiceId/edit',
     name: 'Invoices/Edit',
     component: () => import('../views/invoices/Edit.vue'),
     meta: { title: 'Edit Invoice' }
   },
   {
-    path: '/invoices/:invoiceId/delete',
+    path: '/invoices/:InvoiceId/delete',
     name: 'Invoices/Delete',
     component: () => import('../views/invoices/Delete.vue'),
     meta: { title: 'Delete Invoice' }
   },
   {
-    path: '/invoices/:invoiceId',
+    path: '/invoices/:InvoiceId',
     name: 'Invoices/Show',
     component: () => import('../views/invoices/Show.vue'),
     meta: { title: 'Invoice Details' }
@@ -109,6 +109,12 @@ const routes = [
     name: 'Payments/Index',
     component: () => import('../views/payments/Index.vue'),
     meta: { title: 'Payments' }
+  },
+  {
+    path: '/expenses',
+    name: 'Expenses/Index',
+    component: () => import('../views/expenses/Index.vue'),
+    meta: { title: 'Expenses' }
   }
 ]
 const router = createRouter({
@@ -116,7 +122,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore()
   if (!to.meta.public && !authStore.loggedIn) {
     return next({ name: 'Auth/Login' })

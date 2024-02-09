@@ -43,8 +43,8 @@ axios.interceptors.response.use(
 const token = Cookies.get('token')
 if (token) {
   useAuthStore(pinia).loggedIn = true
-  const { userId } = decodeJWT(token)
-  useAuthStore(pinia).loadUser(userId)
+  const { UserId } = decodeJWT(token)
+  useAuthStore(pinia).loadUser(UserId)
 }
 
 createApp(App)

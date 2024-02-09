@@ -52,8 +52,8 @@ const useAuthStore = defineStore('auth', {
 
       addAllowed(this.user, user)
     },
-    async loadUser(userId: number) {
-      const response = await API.users.show(userId)
+    async loadUser(UserId: number) {
+      const response = await API.users.show(UserId)
       if (response.status === 200) {
         this.user = response.data
         return true
