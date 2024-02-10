@@ -13,6 +13,13 @@ export default defineComponent({
     searchTrigger: ''
   }),
 
+  props: {
+    itemsLength: {
+      type: Number,
+      required: true
+    }
+  },
+
   methods: {
     triggerSearch() {
       this.searchTrigger = Date.now().toString()  
@@ -23,6 +30,7 @@ export default defineComponent({
 
 <template>
   <v-data-table-server
+    :itemsLength="itemsLength"
     v-bind="$attrs"
     :search="searchTrigger"
     @update:options="$emit('loadItems', $event, search)"
