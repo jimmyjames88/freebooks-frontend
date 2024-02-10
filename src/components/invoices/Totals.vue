@@ -14,7 +14,7 @@ export default defineComponent({
 <template>
   <v-row>
     <v-col>Subtotal</v-col>
-    <v-col align="end">${{ subtotal }}</v-col>
+    <v-col align="end">${{ subtotal.toFixed(2) }}</v-col>
   </v-row>
   <v-row v-for="tax in Invoice.Taxes">
     <v-col cols="6">
