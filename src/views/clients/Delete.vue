@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useToast } from 'vue-toastification';
-import { AxiosError, AxiosResponse } from 'axios'
 import { Button, GradientContainer, TextField } from '@/components'
 import API from '@/api'
 
@@ -12,20 +11,19 @@ export default defineComponent({
     submitting: false
   }),
   methods: {
-    destroy() {
+    async destroy() {
       this.submitting = true
       const id = this.$route.params.ClientId
-      API.clients.destroy(id).then((response: AxiosResponse) => {
-        if (response.status === 204) {
-          useToast().success('Client deleted')
-          return this.$router.push({ name: 'Clients/Index' })
-        }
-        useToast().error('Something went wrong')
-      }).catch((err: AxiosError) => {
+      try {
+        await API.clients.destroy(Number(id))
+        useToast().success('Client deleted')
+        return this.$router.push({ name: 'Clients/Index' })
+      } catch (err) {
         console.warn(err)
-      }).finally(() => {
+        useToast().error('Something went wrong')
+      } finally {
         this.submitting = false
-      })
+      }
     },
     cancel() {
       this.$router.go(-1)

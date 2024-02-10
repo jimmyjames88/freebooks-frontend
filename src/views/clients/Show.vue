@@ -14,7 +14,7 @@ export default defineComponent({
   } => ({
     loading: true,
     Client: {
-      id: undefined,
+      id: null,
       Invoices: [],
       name: '',
       email: '',
