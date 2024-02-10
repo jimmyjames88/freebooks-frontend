@@ -5,7 +5,6 @@ import { Button, ClientSelect, InvoiceSelect, PaymentTypeSelect, Select, TextFie
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import { useToast } from 'vue-toastification'
-import Invoice from '@/classes/Invoice'
 import Payment from '@/classes/Payment'
 import InvoiceComposable from '@/composables/Invoice'
 

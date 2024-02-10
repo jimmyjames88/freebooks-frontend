@@ -28,29 +28,9 @@ export default defineComponent({
   data: (): {
     loading: boolean,
     showPaymentDialog: boolean,
-    // Invoice: Invoice
   } => ({
     loading: true,
     showPaymentDialog: false,
-    // Invoice: {
-    //   id: -1,
-    //   lineItems: [] as {
-    //     type: string,
-    //     description: string,
-    //     rate: number,
-    //     quantity: number
-    //   }[],
-    //   notes: '',
-    //   refNo: '',
-    //   issueDate: undefined,
-    //   dueDate: undefined,
-    //   status: undefined,
-    //   Taxes: [],
-    //   Payments: [],
-    //   Expenses: [],
-    //   User: {} as _User,
-    //   Client: {} as _Client,
-    // }
   }),
   computed: {
     headerTitle(): string {
@@ -117,7 +97,7 @@ export default defineComponent({
             <v-list-item @click="download" disabled>
               <v-icon>mdi-download</v-icon> Download
             </v-list-item>
-            <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: id } }">
+            <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: Invoice.id } }">
               <v-icon>mdi-delete</v-icon> Delete
             </v-list-item>
           </v-list>
@@ -125,7 +105,7 @@ export default defineComponent({
       </template>
       <template #mobile>
         <v-list>
-          <v-list-item :to="{ name: 'Invoices/Edit', params: { InvoiceId: id } }">
+          <v-list-item :to="{ name: 'Invoices/Edit', params: { InvoiceId: Invoice.id } }">
             <v-icon>mdi-receipt-text-edit</v-icon> Edit
           </v-list-item>
           <v-list-item>
@@ -137,7 +117,7 @@ export default defineComponent({
           <v-list-item @click="download" disabled>
             <v-icon>mdi-download</v-icon> Download
           </v-list-item>
-          <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: id } }">
+          <v-list-item :to="{ name: 'Invoices/Delete', params: { InvoiceId: Invoice.id } }">
             <v-icon>mdi-delete</v-icon> Delete
           </v-list-item>
         </v-list>

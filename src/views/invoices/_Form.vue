@@ -6,7 +6,7 @@ import API from '@/api'
 import {
   AutoComplete, Button, ClientSelect, Spinner, TextField, TextArea
 } from '@/components';
-import { Expenses, Totals, LineItems, Payments } from './components'
+import { Expenses, Totals, LineItems, Payments } from '@/components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
 import Invoice from '@/classes/Invoice'
@@ -66,7 +66,7 @@ export default defineComponent({
       })
     },
     inactiveTaxOptions() {
-      return this.taxOptions.filter((tax: _Tax) => !this.Invoice.Taxes.find((t: _Tax) => t.id === tax.id))
+      return this.taxOptions.filter((tax: _Tax) => !this.Invoice.Taxes?.find((t: _Tax) => t.id === tax.id))
     }
   },
   methods: {
@@ -89,11 +89,11 @@ export default defineComponent({
     applyTax(tax: _Tax) {
       // check if tax exists before applying
       console.log('apply', tax)
-      if (this.Invoice.Taxes.find((t: _Tax) => t.id === tax.id)) return
-      this.Invoice.Taxes.push(tax)
+      if (this.Invoice.Taxes?.find((t: _Tax) => t.id === tax.id)) return
+      this.Invoice.Taxes?.push(tax)
     },
     removeTax(id: number) {
-      this.Invoice.Taxes = this.Invoice.Taxes.filter((tax: _Tax) => tax.id !== id)
+      this.Invoice.Taxes = this.Invoice.Taxes?.filter((tax: _Tax) => tax.id !== id)
     },
     async loadLatestRefNo() {
       this.latestRefNo = await API.invoices.latestRefNo()

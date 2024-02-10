@@ -11,22 +11,23 @@ export default defineComponent({
     submitting: false
   }),
   methods: {
-    destroy() {
+    async destroy() {
       this.submitting = true
       const id = this.$route.params.InvoiceId
-      API.invoices.destroy(id).then((response: AxiosResponse) => {
+      
+      try {
+        const response = await API.invoices.destroy(Number(id))
         if (response.status === 204) {
           useToast().success('Invoice deleted')
           return this.$router.push({ name: 'Invoices/Index' })
         }
         useToast().error('Something went wrong')
-        console.warn(response.message, response)
-      }).catch((err: AxiosError) => {
+      } catch (err) {
         useToast().error('Something went wrong')
         console.warn(err)
-      }).finally(() => {
+      } finally {
         this.submitting = false
-      })
+      }
     },
     cancel() {
       this.$router.go(-1)

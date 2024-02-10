@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { _Collection, _DataTableFilters, _Invoice } from '@jimmyjames88/freebooks-types'
 import Invoice from '@/classes/Invoice'
 
@@ -32,9 +32,8 @@ export default {
     return new Invoice(response.data)
   },
 
-  async destroy(InvoiceId: number): Promise<void> {
-    await axios.delete(`${URL}/${InvoiceId}`)
-    return
+  async destroy(InvoiceId: number): Promise<AxiosResponse> {
+    return axios.delete(`${URL}/${InvoiceId}`)
   },
 
   async latestRefNo(): Promise<string> {
