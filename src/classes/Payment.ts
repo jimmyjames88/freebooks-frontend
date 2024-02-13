@@ -3,7 +3,7 @@ import { _Payment } from '@jimmyjames88/freebooks-types'
 export default class Payment implements Partial<_Payment> {
   public id!: number
   public UserId!: number
-  public ClientId!: number
+  public ClientId?: number
   public InvoiceId!: number
   public paymentTypeId!: number
   public date!: Date

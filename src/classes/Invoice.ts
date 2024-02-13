@@ -3,8 +3,14 @@ import {
 } from '@jimmyjames88/freebooks-types'
 import Client from './Client'
 import Expense from './Expense'
+import Payment from './Payment'
+import User from './User'
 
-export default class Invoice implements _Invoice {
+interface IInvoice extends Omit<
+  _Invoice,
+  'Expenses'  | 'Payments' | 'User' | 'Client'
+> {}
+export default class Invoice implements IInvoice {
   public id!: number
   public refNo!: string
   public issueDate?: Date
@@ -13,15 +19,15 @@ export default class Invoice implements _Invoice {
   public notes!: string
   public lineItems!: _LineItem[]
   public total!: number
-  public Taxes!: _Tax[]
-  public Expenses!: _Expense[]
-  public Payments!: _Payment[]
-  public User!: _User
-  public Client!: _Client
+  public Taxes?: _Tax[]
+  public Expenses?: Expense[]
+  public Payments?: Payment[]
+  public User!: User
+  public Client!: Client
   public readonly createdAt?: Date
   public readonly updatedAt?: Date
 
-  constructor(attrs: Partial<_Invoice>) {
+  constructor(attrs: Partial<Invoice>) {
     if (attrs.dueDate) attrs.dueDate = new Date(attrs.dueDate)
     if (attrs.issueDate) attrs.issueDate = new Date(attrs.issueDate)
     if (attrs.Client) attrs.Client = new Client(attrs.Client)
