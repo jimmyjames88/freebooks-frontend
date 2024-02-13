@@ -37,28 +37,26 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(useAuthStore, ['setUser']),
-    save() {
-      const user: Partial<_User> = {
+    async save() {
+      const data: Partial<User> = {
         id: Number(this.user?.id),
         profile: this.form
       }
-      API.users.update(user).then((response: AxiosResponse) => {
-        if (response.status === 200) {
-          this.setUser(response.data)
-          useToast().success('Profile updated')
-          return
-        }
+
+      try {
+        const user = await API.users.update(data)
+        this.setUser(user)
+        useToast().success('Profile updated')
+      } catch (e) {
         useToast().error('Error updating profile')
-      }).catch(() => {
-        useToast().error('Error updating profile')
-      })
+      }
     }
   }
 })
 </script>
 
 <template>
-  <v-form v-if="user && user.profile" @submit.prevent="save" class="mt-12">
+  <v-form v-if="user && user.Profile" @submit.prevent="save" class="mt-12">
     <v-row>
       <v-col cols="12" md="6">
         <TextField

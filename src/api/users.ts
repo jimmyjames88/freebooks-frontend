@@ -1,16 +1,16 @@
 import axios from 'axios'
-import { _User } from '@jimmyjames88/freebooks-types'
+import User from '@/classes/User'
 
 const url = `${import.meta.env.VITE_API}/users`
 
 export default {
-  show(UserId: number) {
-    return axios.get(`${url}/${UserId}`)
+  async show(UserId: number): Promise<User> {
+    const response = await axios.get(`${url}/${UserId}`)
+    return new User(response.data)
   },
   
-  update(user: Partial<_User>) {
-    return axios.put(`${url}/${user.id}`, {
-      ...user
-    })
+  async update(user: Partial<User>): Promise<User> {
+    const response = await axios.put(`${url}/${user.id}`, user)
+    return new User(response.data)
   }
 }

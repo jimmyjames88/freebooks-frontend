@@ -31,13 +31,13 @@ const useAuthStore = defineStore('auth', {
     }
   }),
   actions: {
-    // Is this necessary? - todo
+    // Is this necessary? - todo (probably not)
     
-    setUser(user: _User) {
+    setUser(user: User) {
       const allowed = [ 
-      'id', 'email', 'name', 'profile', 'displayName', 'displayEmail',  'phone',
-      'address', 'line1', 'line2', 'city', 'state', 'postal', 'country'
-    ]
+        'id', 'email', 'name', 'profile', 'displayName', 'displayEmail',  'phone',
+        'address', 'line1', 'line2', 'city', 'state', 'postal', 'country'
+      ]
 
       function addAllowed(target: any, source: any) {
         Object.keys(source).filter(key => allowed.includes(key)).forEach(key => {
@@ -53,12 +53,9 @@ const useAuthStore = defineStore('auth', {
       addAllowed(this.user, user)
     },
     async loadUser(UserId: number) {
-      const response = await API.users.show(UserId)
-      if (response.status === 200) {
-        this.user = response.data
-        return true
-      }
-      return false
+      const user = await API.users.show(UserId)
+      this.setUser(user)
+
     },
     async login(email: string, password: string) {
       try {
