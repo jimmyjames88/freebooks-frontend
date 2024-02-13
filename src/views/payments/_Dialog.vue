@@ -55,7 +55,7 @@ export default defineComponent({
     formattedDate: () => formatDateMMDDYYYY,
     submittable() {
       return this.form.ClientId
-        && this.form.InvoiceId
+        && (this.form.InvoiceId || this.disableAPI)
         && this.form.amount
         && this.form.paymentTypeId
     }
@@ -84,7 +84,7 @@ export default defineComponent({
 
       try {
         const { ClientId, InvoiceId, paymentTypeId, amount, description, date } = this.form
-        const response = await API.payments.store({
+        const payment = await API.payments.store({
           ClientId,
           InvoiceId,
           paymentTypeId,
@@ -92,8 +92,8 @@ export default defineComponent({
           description,
           date  
         })
-        if (response.data.id) {
-          this.$emit('saved', response.data as _Payment)
+        if (payment.id) {
+          this.$emit('saved', payment)
           useToast().success('Payment saved')
           this.close()
         }

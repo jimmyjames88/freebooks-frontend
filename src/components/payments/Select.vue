@@ -33,7 +33,7 @@ export default defineComponent({
       }
     },
     paymentTypesVListItems(): _SelectItem[] {
-      return this.paymentTypes.map((paymentType: _PaymentType) => ({
+      return this.paymentTypes?.map((paymentType: _PaymentType) => ({
         value: Number(paymentType.id),
         title: paymentType.name
       })).sort((a: _SelectItem, b: _SelectItem) => {
@@ -46,8 +46,9 @@ export default defineComponent({
   methods: {
     async loadPaymentTypes() {
       try {
-        const response = await API.payments.types()
-        this.paymentTypes = response.data
+        const data = await API.payments.types()
+        console.log('data', data)
+        this.paymentTypes = data.items
       } catch(err: any) {
         console.warn(err)
       }

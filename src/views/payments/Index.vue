@@ -32,12 +32,12 @@ export default defineComponent({
       title: 'Ref #',
       align: 'start',
       sortable: true,
-      key: 'invoice.refNo'
+      key: 'Invoice.refNo'
     },
     {
       title: 'Client',
       sortable: true,
-      key: 'client.name'
+      key: 'Client.name'
     },
     {
       title: 'Amount',
@@ -65,11 +65,11 @@ export default defineComponent({
     responsiveHeaders() {
       if (this.$vuetify.display.xs) {
         return this.headers.filter(header => {
-          return [ 'invoice.refNo', 'name', 'amount' ].includes(header.key)
+          return [ 'Invoice.refNo', 'name', 'amount' ].includes(header.key)
         })
       } else if (this.$vuetify.display.sm) {
         return this.headers.filter(header => {
-          return [ 'invoice.refNo', 'name', 'type', 'amount', 'actions' ].includes(header.key)
+          return [ 'Invoice.refNo', 'name', 'type', 'amount', 'actions' ].includes(header.key)
         })
       }
       return this.headers
@@ -105,14 +105,14 @@ export default defineComponent({
           @load-items="loadItems"
           :loading="loading"
         >
-          <template #item.invoice.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.invoice.id }}">
-              #{{ item.invoice.refNo }}
+          <template #item.Invoice.refNo="{ item }">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.Invoice.id }}">
+              #{{ item.Invoice.refNo }}
             </router-link>
           </template>
-          <template #item.client.name="{ item }">
-            <Avatar :name="item.client.name" class="mr-4" />
-            {{ item.client.name }}
+          <template #item.Client.name="{ item }">
+            <Avatar :name="item.Client.name" class="mr-4" />
+            {{ item.Client.name }}
           </template>
           <template #item.amount="{ item }">
             ${{ item.amount }}
