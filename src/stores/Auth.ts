@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 import API from '@/api'
-import { _User } from '@jimmyjames88/freebooks-types'
-
+import User from '@/classes/User'
 interface _State {
   loggedIn: boolean
-  user: Partial<_User>
+  user: Partial<User>
 }
 
 const useAuthStore = defineStore('auth', {
@@ -15,7 +14,7 @@ const useAuthStore = defineStore('auth', {
       id: undefined,
       email: '',
       name: '',
-      profile: {
+      Profile: {
         displayName: '',
         displayEmail: '',
         phone: '',
@@ -79,7 +78,7 @@ const useAuthStore = defineStore('auth', {
       return true
     },
 
-    async register(user: _User) {
+    async register(user: User) {
       try {
         const response = await API.auth.register(user)
         if (response.status === 201) {
