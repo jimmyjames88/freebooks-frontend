@@ -13,16 +13,16 @@ export default defineComponent({
   name: 'Invoices/Create',
   components: { Header, InvoiceForm },
   setup() {
-    const { resetInvoice } = InvoiceComposable()
-    return { resetInvoice }
+    const { resetInvoice, Invoice } = InvoiceComposable()
+    return { resetInvoice, Invoice }
   },
   beforeCreate() {
     this.resetInvoice()
   },
   methods: {
-    async submitForm(data: Partial<_Invoice>) {
+    async submitForm() {
       try {
-        const invoice = await API.invoices.store(new Invoice(data))
+        const invoice = await API.invoices.store(new Invoice(this.Invoice))
         const { id } = invoice
         useToast().success('Invoice created')
         this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: id }})

@@ -35,7 +35,7 @@ export default defineComponent({
     async submitForm() {
       try {
         this.loading = true
-        const invoice = await API.invoices.update(new Invoice({ ...this.Invoice }))    
+        const invoice = await API.invoices.update(new Invoice(this.Invoice))    
         useToast().success('Invoice saved')
         this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: invoice.id }})
       } catch(e) {
