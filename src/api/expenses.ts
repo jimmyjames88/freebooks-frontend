@@ -1,13 +1,19 @@
 import axios from 'axios'
-import { _Expense } from '@jimmyjames88/freebooks-types'
+import { _Collection, _DataTableFilters } from '@jimmyjames88/freebooks-types'
+import Expense from '@/classes/Expense'
 
 const url = `${import.meta.env.VITE_API}/expenses`
 
 export default {
-  index(params: any) { 
-    return axios.get(`${url}`, { params })
+  async index(params: _DataTableFilters): Promise<_Collection<Expense>> { 
+    const response = await axios.get(`${url}`, { params })
+    return {
+      items: response.data.items.map((expense: Expense) => new Expense(expense)),
+      total: response.data.total
+    }
   },
-  store(expense: Partial<_Expense>) {
-    return axios.post(`${url}`, expense)
+  async store(expense: Partial<Expense>): Promise<Expense> {
+    const response = await axios.post(`${url}`, expense)
+    return new Expense(response.data)
   }
 }

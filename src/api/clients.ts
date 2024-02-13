@@ -8,7 +8,7 @@ export default {
   async index(filters: _DataTableFilters): Promise<_Collection<Client>> {
     const response = await axios.get(`${URL}/`, { params: filters })
     return {
-      items: response.data.items.map((client: _Client) => new Client(client)),
+      items: response.data.items.map((client: Client) => new Client(client)),
       total: response.data.total
     }
   },
