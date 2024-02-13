@@ -12,7 +12,7 @@ export default {
   async index(filters: _InvoiceFilters): Promise<_Collection<Invoice>>{
     const response = await axios.get(`${URL}/`, { params: filters })
     return {
-      items: response.data.items.map((invoice: _Invoice) => new Invoice(invoice)),
+      items: response.data.items.map((invoice: Invoice) => new Invoice(invoice)),
       total: response.data.total
     }
   },

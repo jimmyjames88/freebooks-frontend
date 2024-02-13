@@ -1,9 +1,10 @@
 import { computed, ref } from 'vue'
-import { _Expense, _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
+import { _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceClass from '@/classes/Invoice'
 import Client from '@/classes/Client'
 import User from '@/classes/User'
+import Expense from '@/classes/Expense'
 
 const initialState: InvoiceClass = {
   id: 0,
@@ -36,7 +37,7 @@ export default function InvoiceComposable() {
   }
 
   const expensesTotal = computed(() => {
-    return Invoice.value.Expenses?.reduce((acc: number, expense: _Expense) => {
+    return Invoice.value.Expenses?.reduce((acc: number, expense: Expense) => {
       const tax = expense.Taxes?.reduce((acc: number, tax: _Tax) => {
         return acc + (tax.type === _TaxType.PERCENTAGE ? (expense.subtotal * tax.rate) : tax.rate)
       }, 0) || 0

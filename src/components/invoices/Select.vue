@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Collection, _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Collection } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { AutoComplete } from '@/components'
 import Invoice from '@/classes/Invoice'
@@ -16,7 +16,7 @@ export default defineComponent({
   components: { AutoComplete },
   emits: ['update:modelValue'],
   data: (): {
-    invoices: _Invoice[]
+    invoices: Invoice[]
   } => ({
     invoices: [],
   }),
@@ -56,7 +56,7 @@ export default defineComponent({
       }
     },
     invoiceList(): _SelectItem[] {
-      return this.invoices.map((invoice: _Invoice) => ({
+      return this.invoices.map((invoice: Invoice) => ({
         value: invoice.id,
         title: `#${invoice.refNo} - $${invoice.total} - ${invoice.dueDate}`
       })).sort((a: _SelectItem, b: _SelectItem) => {

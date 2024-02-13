@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Invoice, _Expense } from '@jimmyjames88/freebooks-types'
+import { _Invoice } from '@jimmyjames88/freebooks-types'
 import DataTableComposable from '@/composables/DataTable'
 import API from '@/api'
 import { 
