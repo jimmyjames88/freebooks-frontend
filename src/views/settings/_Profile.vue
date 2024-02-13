@@ -1,8 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapWritableState, mapActions } from 'pinia'
-import { AxiosResponse } from 'axios'
-import { _Profile, _User } from '@jimmyjames88/freebooks-types'
+import { _Profile } from '@jimmyjames88/freebooks-types'
+import User from '@/classes/User'
 import API from '@/api'
 import { Button, TextField } from '@/components'
 import { useAuthStore } from '@/stores'
@@ -33,14 +33,14 @@ export default defineComponent({
   },
   mounted() {
     // Clone the user profile
-    this.form = JSON.parse(JSON.stringify(this.user.profile))
+    this.form = JSON.parse(JSON.stringify(this.user.Profile))
   },
   methods: {
     ...mapActions(useAuthStore, ['setUser']),
     async save() {
       const data: Partial<User> = {
         id: Number(this.user?.id),
-        profile: this.form
+        Profile: this.form
       }
 
       try {

@@ -1,4 +1,4 @@
-import { _User } from '@jimmyjames88/freebooks-types'
+import { _Profile, _User } from '@jimmyjames88/freebooks-types'
 
 interface IUser extends _User {}
 
@@ -7,6 +7,7 @@ export default class User implements IUser {
   public name!: string
   public email!: string
   public password!: string
+  public Profile!: _Profile
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 
