@@ -31,6 +31,7 @@ export default defineComponent({
 <template>
   <v-data-table-server
     :itemsLength="itemsLength"
+    :items-per-page-options="[10, 25, 50, 100]"
     v-bind="$attrs"
     :search="searchTrigger"
     @update:options="$emit('loadItems', $event, search)"
@@ -62,9 +63,5 @@ export default defineComponent({
       </v-container>
     </template>
 
-    <template #bottom>
-      <v-divider />
-      <v-data-table-footer class="py-4" />
-    </template>
   </v-data-table-server>  
 </template>
