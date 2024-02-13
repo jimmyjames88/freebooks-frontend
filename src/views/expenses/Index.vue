@@ -38,7 +38,7 @@ export default defineComponent({
     {
       title: 'Invoice',
       sortable: true,
-      key: 'invoice.refNo'
+      key: 'Invoice.refNo'
     },
     {
       title: 'Description',
@@ -104,9 +104,9 @@ export default defineComponent({
           @load-items="loadItems"
           :loading="loading"
         >
-          <template #item.invoice.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.invoice.id }}">
-              #{{ item.invoice.refNo }}
+          <template #item.Invoice.refNo="{ item }">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.Invoice.id }}">
+              #{{ item.Invoice.refNo }}
             </router-link>
           </template>
           <template #item.date="{ item }">

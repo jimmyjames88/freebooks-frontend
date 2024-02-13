@@ -1,26 +1,27 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { _Expense, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
+import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
+import Expense from '@/classes/Expense'
 import { Button } from '@/components'
 
 export default defineComponent({
     name: 'Expenses',
     props: {
         expenses: {
-            type: Array as PropType<_Expense[]>,
+            type: Array as PropType<Expense[]>,
             required: true
         }
     },
     methods: {
-        taxTotal(amount: number, taxes: _Tax[]): number {
-            return taxes.reduce((acc, tax) => {
+        taxTotal(amount: number, taxes?: _Tax[]): number {
+            return taxes?.reduce((acc, tax) => {
                 if (tax.type === _TaxType.PERCENTAGE) {
                     return acc + (amount * tax.rate);
                 }
                 else {
                     return acc + tax.rate;
                 }
-            }, 0);
+            }, 0) || 0
         }
     },
     components: { Button }

@@ -51,8 +51,8 @@ export default defineComponent({
     formattedDate: () => formatDateMMDDYYYY,
     clientInvoices() {
       if (this.form.ClientId) {
-        return this.invoices.map((invoice: _Invoice) => {
-          if (invoice.ClientId === this.form.ClientId) {
+        return this.invoices.map((invoice: Invoice) => {
+          if (invoice.Client.id === this.form.ClientId) {
             return {
               title: `#${invoice.refNo} - $${invoice.total}`,
               value: invoice.id
@@ -104,15 +104,15 @@ export default defineComponent({
 
       try {
         const { InvoiceId, subtotal, paymentTypeId, description, date } = this.form
-        const response = await API.expenses.store({
+        const expense = await API.expenses.store({
           InvoiceId,
           subtotal: Number(subtotal),
           paymentTypeId,
           description: description || '',
           date: date || new Date()
         })
-        if (response.data.id) {
-          this.$emit('saved', response.data as _Expense)
+        if (expense.id) {
+          this.$emit('saved', expense)
           useToast().success('Expense saved')
           this.close()
         }
@@ -124,8 +124,8 @@ export default defineComponent({
   },
   data: (): {
     showDatePicker: boolean
-    form: Partial<_Expense> & Record<string, any>
-    invoices: _Invoice[]
+    form: Partial<Expense> & Record<string, any>
+    invoices: Invoice[]
     paymentTypes?: _PaymentType[]
   } => ({
     showDatePicker: false,
