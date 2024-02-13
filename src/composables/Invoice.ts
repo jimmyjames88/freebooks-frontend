@@ -1,8 +1,11 @@
 import { computed, ref } from 'vue'
-import { _Client, _Expense, _Invoice, _InvoiceStatus, _Tax, _TaxType, _User } from '@jimmyjames88/freebooks-types'
+import { _Expense, _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
+import InvoiceClass from '@/classes/Invoice'
+import Client from '@/classes/Client'
+import User from '@/classes/User'
 
-const initialState: _Invoice = {
+const initialState: InvoiceClass = {
   id: 0,
   refNo: '',
   notes: '',
@@ -14,11 +17,11 @@ const initialState: _Invoice = {
   Expenses: [],
   Payments: [],
   total: 0,
-  User: {} as _User,
-  Client: {} as _Client
+  User: {} as User,
+  Client: {} as Client
 } 
 
-const Invoice = ref<_Invoice>(initialState)
+const Invoice = ref<InvoiceClass>(initialState)
 
 export default function InvoiceComposable() {
 
