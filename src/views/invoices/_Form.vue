@@ -198,7 +198,7 @@ export default defineComponent({
       />
     </div>
     <div class="document mt-8">
-      <Payments v-if="Invoice.Payments?.length" />
+      <Payments v-if="Invoice.Payments?.length" deleteable />
       <v-row class="mt-4">
         <v-col align="end">
           <Button color="primary" @click="showPaymentDialog = true">

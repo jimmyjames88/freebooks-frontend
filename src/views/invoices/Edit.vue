@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification';
-import { _Expense, _Invoice, _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-types'
+import { _Invoice, _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 import { Header, Spinner } from '@/components'

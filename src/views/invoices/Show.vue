@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, provide } from 'vue'
 import {
-  _Client, _Invoice, _InvoiceStatus, _LineItem, _Payment, _Tax, _TaxType, _User
+  _Client, _Invoice, _InvoiceStatus, _LineItem, _Tax, _TaxType, _User
 } from '@jimmyjames88/freebooks-types'
 import {
   Avatar, Button, Expenses, Header, InvoiceStatus, Totals, Payments, Spinner
@@ -9,6 +9,7 @@ import {
 import { formatDateMMDDYYYY } from '@/utils'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
 import Invoice from '@/classes/Invoice'
+import Payment from '@/classes/Payment'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
@@ -51,7 +52,7 @@ export default defineComponent({
     }
   },
   methods: {
-    addPayment(payment: _Payment) {
+    addPayment(payment: Payment) {
       console.log('PAYMENT', payment)
       this.Invoice.Payments?.push(payment)
     },
@@ -75,9 +76,9 @@ export default defineComponent({
   <template v-else>
     <Header :title="headerTitle">
       <template #desktop>
-        <Button color="primary" @click="showPaymentDialog = true">
+        <!-- <Button color="primary" @click="showPaymentDialog = true">
           <v-icon>mdi-cash-multiple</v-icon> Add payment
-        </Button>
+        </Button> -->
         <Button color="primary" :disabled="!Invoice.Client?.id">
           <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
         </Button>
