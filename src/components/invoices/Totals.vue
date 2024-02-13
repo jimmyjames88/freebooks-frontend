@@ -33,7 +33,7 @@ export default defineComponent({
         <h4>Total</h4>
       </v-col>
       <v-col align="end">
-        <h4>${{ total }}</h4>
+        <h4>${{ total.toFixed(2) }}</h4>
       </v-col>
     </v-row>
     <v-row>
