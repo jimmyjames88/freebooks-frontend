@@ -4,10 +4,8 @@ import { useToast } from 'vue-toastification';
 import { _Invoice } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Header } from '@/components'
-import Invoice from '@/classes/Invoice'
 import InvoiceComposable from '@/composables/Invoice'
 import InvoiceForm from './_Form.vue'
-
 
 export default defineComponent({
   name: 'Invoices/Create',
@@ -22,7 +20,7 @@ export default defineComponent({
   methods: {
     async submitForm() {
       try {
-        const invoice = await API.invoices.store(new Invoice(this.Invoice))
+        const invoice = await API.invoices.store(this.Invoice)
         const { id } = invoice
         useToast().success('Invoice created')
         this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: id }})
