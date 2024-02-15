@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
-import { _Client } from '@jimmyjames88/freebooks-types'
+import Client from '@/classes/Client'
 import { Button, GradientContainer, TextField } from '@/components'
 import API from '@/api'
 
@@ -10,7 +10,7 @@ export default defineComponent({
   components: { Button, GradientContainer, TextField },
   data: (): {
     step: number,
-    form: Omit<_Client, 'id'>
+    form: Omit<Client, 'id'>
   } => ({
     step: 1,
     form: {

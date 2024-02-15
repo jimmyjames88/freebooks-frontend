@@ -24,7 +24,7 @@ export default {
     return new Client(response.data)
   },
 
-  async store(client: Client): Promise<Client> {
+  async store(client: Omit<Client, 'id'>): Promise<Client> {
     const response = await axios.post(`${URL}`, client)
     return new Client(response.data)
   },
