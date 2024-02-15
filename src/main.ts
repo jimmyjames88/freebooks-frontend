@@ -44,7 +44,7 @@ const token = Cookies.get('token')
 if (token) {
   useAuthStore(pinia).loggedIn = true
   const { UserId } = decodeJWT(token)
-  useAuthStore(pinia).loadUser(UserId)
+  await useAuthStore(pinia).loadUser(UserId)
 }
 
 createApp(App)

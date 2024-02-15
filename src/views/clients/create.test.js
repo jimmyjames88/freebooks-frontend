@@ -4,27 +4,33 @@ import { createVuetify } from "vuetify";
 import { vi } from 'vitest'
 import Create from './Create.vue'
 
+vi.mock('axios')
+
 describe('Create.vue', () => {
   const vuetify = createVuetify()
+  let wrapper
+  // mock vue $router
+  const $router = {
+    push: vi.fn(),
+    go: vi.fn()
+  }
 
-  it('Renders properly', async () => {
-    const wrapper = mount(Create, {
+  beforeEach(() => { 
+    wrapper = mount(Create, {
       global: {
         plugins: [vuetify],
+        mocks: { $router }
       },
     })
+
+  })
+  
+  it('Renders properly', async () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
 
   
   it('form submits the correct data', async () => {
-    const wrapper = mount(Create, {
-      // setup globals
-      global: {
-        plugins: [vuetify],
-      }
-    })
-
     const formData = {
       name: 'Test Name',
       email: 'test@example.com',
@@ -63,19 +69,7 @@ describe('Create.vue', () => {
   })
 
   it('goes back to last page when cancel button is clicked', async () => {
-    const $router = {
-      go: vitest.fn()
-    }
     const spy = vi.spyOn($router, 'go')
-
-    const wrapper = mount(Create, {
-      global: {
-        plugins: [vuetify],
-        mocks: {
-          $router
-        }
-      }
-    })
 
     // click cancel button
     const cancel = wrapper.findAll('button').at(0).trigger('click')
@@ -85,12 +79,6 @@ describe('Create.vue', () => {
   })
 
   it('goes to next step when next button is clicked', async () => {
-    const wrapper = mount(Create, {
-      global: {
-        plugins: [vuetify],
-      },
-    })
-
     // click next button
     const next = wrapper.findAll('button').at(1).trigger('click')
     await nextTick()
@@ -99,12 +87,6 @@ describe('Create.vue', () => {
   })
 
   it('goes to previous step when previous button is clicked', async () => {
-    const wrapper = mount(Create, {
-      global: {
-        plugins: [vuetify],
-      },
-    })
-
     // start on second step
     await wrapper.setData({ step: 2 })
 

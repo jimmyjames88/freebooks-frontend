@@ -1,12 +1,111 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Show.vue > Renders properly 1`] = `
-"<div class=\\"d-flex justify-center align-center h-100\\">
-  <div class=\\"v-progress-circular v-progress-circular--indeterminate v-theme--light v-progress-circular--size-x-large\\" role=\\"progressbar\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\"><svg style=\\"transform: rotate(calc(-90deg + 0deg));\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 45.714285714285715 45.714285714285715\\">
-      <circle class=\\"v-progress-circular__underlay\\" fill=\\"transparent\\" cx=\\"50%\\" cy=\\"50%\\" r=\\"20\\" stroke-width=\\"5.714285714285714\\" stroke-dasharray=\\"125.66370614359172\\" stroke-dashoffset=\\"0\\"></circle>
-      <circle class=\\"v-progress-circular__overlay\\" fill=\\"transparent\\" cx=\\"50%\\" cy=\\"50%\\" r=\\"20\\" stroke-width=\\"5.714285714285714\\" stroke-dasharray=\\"125.66370614359172\\" stroke-dashoffset=\\"125.66370614359172px\\"></circle>
-    </svg>
-    <!---->
+"<div data-v-c970699f=\\"\\" class=\\"v-container v-locale--is-ltr\\">
+  <div data-v-c970699f=\\"\\" class=\\"v-row\\">
+    <div data-v-c970699f=\\"\\" class=\\"v-col d-flex\\">
+      <div data-v-c970699f=\\"\\">
+        <h1><span></span>
+          <div data-v-69299821=\\"\\" class=\\"v-avatar v-theme--light v-avatar--density-default v-avatar--size-default v-avatar--variant-flat ml-4 color-1\\"><span data-v-69299821=\\"\\" class=\\"text-h6\\">?</span>
+            <!----><span class=\\"v-avatar__underlay\\"></span>
+          </div>
+        </h1>
+      </div>
+      <div data-v-c970699f=\\"\\" class=\\"ml-auto\\"><a data-v-3c9d0845=\\"\\" class=\\"v-btn v-btn--flat v-theme--light bg-primary v-btn--density-default v-btn--size-default v-btn--variant-elevated\\"><span class=\\"v-btn__overlay\\"></span><span class=\\"v-btn__underlay\\"></span>
+          <!----><span class=\\"v-btn__content\\" data-no-activator=\\"\\"><i class=\\"mdi-account-edit mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i> Edit Client </span>
+          <!---->
+          <!---->
+        </a></div>
+    </div>
   </div>
+</div>
+<div class=\\"v-container v-locale--is-ltr\\">
+  <div class=\\"v-row d-md-none\\">
+    <div class=\\"v-col d-flex align-center flex-column\\">
+      <div data-v-69299821=\\"\\" class=\\"v-avatar v-theme--light v-avatar--density-default v-avatar--size-default v-avatar--variant-flat color-1 jumbo\\"><span data-v-69299821=\\"\\" class=\\"text-h6\\">?</span>
+        <!----><span class=\\"v-avatar__underlay\\"></span>
+      </div>
+      <h2 class=\\"mt-4\\"></h2>
+    </div>
+  </div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+  <div class=\\"v-row\\">
+    <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12 text-center text-md-left\\">
+      <h3>Contact</h3>
+      <div class=\\"v-list v-theme--light bg-transparent v-list--density-default v-list--one-line ml-n4\\" tabindex=\\"0\\" role=\\"listbox\\"><a class=\\"v-list-item v-list-item--link v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" href=\\"mailto:undefined\\" tabindex=\\"-2\\"><span class=\\"v-list-item__overlay\\"></span><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-email mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i>
+          </div>
+          <!---->
+        </a><a class=\\"v-list-item v-list-item--link v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" href=\\"tel:undefined\\" tabindex=\\"-2\\"><span class=\\"v-list-item__overlay\\"></span><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-phone mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i>
+          </div>
+          <!---->
+        </a>
+        <div class=\\"v-list-item v-theme--light v-list-item--density-default v-list-item--one-line v-list-item--variant-text\\" target=\\"_blank\\">
+          <!----><span class=\\"v-list-item__underlay\\"></span>
+          <!---->
+          <div class=\\"v-list-item__content\\" data-no-activator=\\"\\">
+            <!---->
+            <!----><i class=\\"mdi-link mdi v-icon notranslate v-theme--light v-icon--size-default\\" aria-hidden=\\"true\\"></i>
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+    <div class=\\"v-col-md-6 v-col-lg-4 v-col-xl-3 v-col-12 text-center text-md-left\\">
+      <h3>Address</h3>
+      <div class=\\"v-list v-theme--light bg-transparent v-list--density-default v-list--one-line ml-n4\\" tabindex=\\"0\\" role=\\"listbox\\">
+        <!--v-if-->
+      </div>
+    </div>
+  </div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+  <h2>Recent Invoices</h2>
+  <div class=\\"v-row\\">
+    <div class=\\"v-col-sm-4 v-col-md-3 v-col-lg-3 v-col-12\\"><a class=\\"v-card v-card--link v-theme--light v-card--density-default v-card--variant-flat h-100 d-flex align-center justify-center\\">
+        <!---->
+        <div class=\\"v-card__loader\\">
+          <div class=\\"v-progress-linear v-theme--light v-locale--is-ltr\\" style=\\"top: 0px; height: 0px; --v-progress-linear-height: 2px; left: 50%; transform: translateX(-50%);\\" role=\\"progressbar\\" aria-hidden=\\"true\\" aria-valuemin=\\"0\\" aria-valuemax=\\"100\\">
+            <!---->
+            <div class=\\"v-progress-linear__background\\" style=\\"width: 100%;\\"></div>
+            <transition-stub name=\\"fade-transition\\" appear=\\"false\\" persisted=\\"false\\" css=\\"true\\">
+              <div class=\\"v-progress-linear__indeterminate\\">
+                <div class=\\"v-progress-linear__indeterminate long\\"></div>
+                <div class=\\"v-progress-linear__indeterminate short\\"></div>
+              </div>
+            </transition-stub>
+            <!---->
+          </div>
+        </div>
+        <!---->
+        <!---->
+        <div class=\\"v-card-text\\" align=\\"center\\">
+          <h3>Show more</h3>
+        </div>
+        <!----><span class=\\"v-card__overlay\\"></span><span class=\\"v-card__underlay\\"></span>
+      </a></div>
+  </div>
+  <hr class=\\"v-divider v-theme--light my-4\\" aria-orientation=\\"horizontal\\" role=\\"separator\\">
+  <!-- <h2>Recent Estimates</h2>
+      <v-row>
+        <v-col v-for=\\"invoice in invoices\\" :key=\\"\`invoice-\${invoice.id}\`\\" cols=\\"12\\" sm=\\"6\\" md=\\"3\\">
+          <InvoiceCard v-bind=\\"invoice\\" 
+            :client=\\"{ name }\\"
+            :loading=\\"loading\\"
+            :hideName=\\"true\\"
+          />
+        </v-col>
+        <v-col cols=\\"12\\" md=\\"3\\">
+          <v-card variant=\\"flat\\" class=\\"h-100 d-flex align-center justify-center\\" to=\\"#\\">
+            <h3>View all Estimates</h3>
+          </v-card>
+        </v-col>
+      </v-row> -->
 </div>"
 `;

@@ -8,7 +8,7 @@ import API from '@/api'
 vi.mock('axios')
 
 const mockClientResponse = {
-  _id: 1,
+  id: 1,
   name: 'Test Name',
   email: 'test@example.com',
   phone: '1234567890',
@@ -23,15 +23,16 @@ const mockClientResponse = {
   }
 }
 
-vi.spyOn(API.clients, 'index').mockResolvedValue({ data: mockClientResponse })
-vi.spyOn(API.clients, 'update').mockResolvedValue({ data: mockClientResponse })
+vi.spyOn(API.clients, 'show').mockResolvedValue({ ...mockClientResponse })
+vi.spyOn(API.clients, 'update').mockResolvedValue({ ...mockClientResponse })
 
 describe('Edit.vue', () => {
   const vuetify = createVuetify()
   const $route = { params: { ClientId: 1 }}
   let wrapper
   const $router = {
-    go: vi.fn()
+    go: vi.fn(),
+    push: vi.fn()
   }
 
   beforeEach(() => { 
