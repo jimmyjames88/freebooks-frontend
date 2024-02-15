@@ -1,6 +1,7 @@
 export { default as AutoComplete } from './AutoComplete.vue'
 export { default as Avatar } from './Avatar.vue'
 export { default as Button } from './Button.vue'
+export { default as Checkbox } from './Checkbox.vue'
 export { default as ConfirmDeleteDialog } from './ConfirmDeleteDialog.vue'
 export { default as DataTable } from './DataTable.vue'
 export { default as GradientContainer } from './GradientContainer.vue'

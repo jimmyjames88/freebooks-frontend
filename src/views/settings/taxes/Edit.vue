@@ -67,10 +67,3 @@ export default defineComponent({
     </template>
   </GradientContainer>
 </template>
-
-<style lang="scss" scoped>
-// Todo Checkbox component
-:deep(.v-label) {
-  opacity: 1 !important;
-}
-</style>

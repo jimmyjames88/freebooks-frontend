@@ -1,10 +1,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Button, Select, TextField } from '@/components'
+import { Button, Checkbox, Select, TextField } from '@/components'
+import { _Tax } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Settings/Taxes/_Form',
-  components: { Button, Select, TextField },
+  components: { Button, Checkbox, Select, TextField },
   props: {
     formData: {
       type: Object,
@@ -53,7 +54,7 @@ export default defineComponent({
       :hint="form.type === 'PERCENTAGE' ? 'Enter as a decimal value ex. 0.05 = 5%' : 'Enter as a dollar figure ex. 100.00 = $100'"
     />
     <p>
-        <v-checkbox v-model="form.default" label="Apply this tax by default to all new invoices" hide-details false-icon="mdi-checkbox-blank" true-icon="mdi-checkbox-marked" /> 
+      <Checkbox v-model="form.default" label="Apply this tax by default to all new invoices" />
     </p>
     <div class="d-flex justify-end">
       <Button type="submit" color="primary">
