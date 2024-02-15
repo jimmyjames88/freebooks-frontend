@@ -3,7 +3,7 @@ import { defineComponent, PropType } from 'vue'
 import { _Invoice, _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Button } from '@/components'
-import Invoice from '@/classes/Invoice'
+import { Invoice } from '@/classes'
 import PastDue from './PastDue.vue'
 
 export default defineComponent({

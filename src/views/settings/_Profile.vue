@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue'
 import { mapWritableState, mapActions } from 'pinia'
 import { _Profile } from '@jimmyjames88/freebooks-types'
-import User from '@/classes/User'
+import { User } from '@/classes'
 import API from '@/api'
 import { Button, TextField } from '@/components'
 import { useAuthStore } from '@/stores'

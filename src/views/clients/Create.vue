@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
-import Client from '@/classes/Client'
+import { Client } from '@/classes'
 import { Button, GradientContainer, TextField } from '@/components'
 import API from '@/api'
 

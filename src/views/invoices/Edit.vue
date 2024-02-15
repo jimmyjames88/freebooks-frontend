@@ -5,7 +5,7 @@ import { _Invoice, _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-typ
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 import { Header, Spinner } from '@/components'
-import Invoice from '@/classes/Invoice';
+import { Invoice } from '@/classes';
 import InvoiceComposable from '@/composables/Invoice'
 
 

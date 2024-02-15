@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Invoice } from '@jimmyjames88/freebooks-types'
+import { Invoice } from '@/classes'
 import InvoiceCard from './Card.vue'
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
       default: 3
     },
     invoices: {
-      type: Array as () => _Invoice[],
+      type: Array as () => Invoice[],
       default: () => []
     },
     showMoreText: {

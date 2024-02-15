@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 import API from '@/api'
-import User from '@/classes/User'
+import { User } from '@/classes'
 interface _State {
   loggedIn: boolean
   user: Partial<User>

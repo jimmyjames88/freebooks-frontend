@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { _Collection, _DataTableFilters, _Invoice } from '@jimmyjames88/freebooks-types'
-import Invoice from '@/classes/Invoice'
+import { Invoice } from '@/classes'
 
 const URL = `${import.meta.env.VITE_API}/invoices`
 

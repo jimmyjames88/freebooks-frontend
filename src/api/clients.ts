@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { _Client, _Collection, _DataTableFilters } from '@jimmyjames88/freebooks-types'
-import Client from '@/classes/Client'
+import { Client } from '@/classes'
 
 const URL = `${import.meta.env.VITE_API}/clients`
 

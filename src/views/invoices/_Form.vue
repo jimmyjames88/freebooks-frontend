@@ -9,7 +9,7 @@ import {
 import { Expenses, Totals, LineItems, Payments } from '@/components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
-import Invoice from '@/classes/Invoice'
+import { Invoice } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice';
 
 

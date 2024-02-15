@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import { _Collection } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { AutoComplete } from '@/components'
-import Invoice from '@/classes/Invoice'
+import { Invoice } from '@/classes'
 
 interface _SelectItem {
   value: number

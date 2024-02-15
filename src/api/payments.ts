@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { _Collection, _PaymentType } from '@jimmyjames88/freebooks-types'
-import Payment from '@/classes/Payment'
+import { Payment } from '@/classes'
 
 const url = `${import.meta.env.VITE_API}/payments`
 

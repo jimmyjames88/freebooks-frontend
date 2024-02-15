@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
-import Expense from '@/classes/Expense'
+import { Expense } from '@/classes'
 import { Button } from '@/components'
 
 export default defineComponent({

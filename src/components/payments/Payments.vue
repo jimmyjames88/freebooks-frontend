@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Payment from '@/classes/Payment'
+import { Payment } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice'
 import { ConfirmDeleteDialog } from '@/components'
 

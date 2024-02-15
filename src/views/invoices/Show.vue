@@ -8,8 +8,7 @@ import {
 } from '@/components'
 import { formatDateMMDDYYYY } from '@/utils'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
-import Invoice from '@/classes/Invoice'
-import Payment from '@/classes/Payment'
+import { Invoice, Payment } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({

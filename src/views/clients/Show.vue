@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue';
 import API from '@/api'
 import { Avatar, Button, Header, InvoiceCards, Spinner } from '@/components'
-import Client from '@/classes/Client'
+import { Client } from '@/classes'
 
 
 export default defineComponent({
@@ -14,7 +14,7 @@ export default defineComponent({
   } => ({
     loading: true,
     Client: {
-      id: null,
+      id: -1,
       Invoices: [],
       name: '',
       email: '',
