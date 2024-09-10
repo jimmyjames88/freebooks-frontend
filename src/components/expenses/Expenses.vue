@@ -3,28 +3,27 @@ import { defineComponent, PropType } from 'vue'
 import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
 import { Expense } from '@/classes'
 import { Button } from '@/components'
+import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
-    name: 'Expenses',
-    props: {
-        expenses: {
-            type: Array as PropType<Expense[]>,
-            required: true
+  name: 'Expenses',
+  setup() {
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
+  },
+  methods: {
+    taxTotal(amount: number, taxes?: _Tax[]): number {
+      return taxes?.reduce((acc, tax) => {
+        if (tax.type === _TaxType.PERCENTAGE) {
+          return acc + (amount * tax.rate);
         }
-    },
-    methods: {
-        taxTotal(amount: number, taxes?: _Tax[]): number {
-            return taxes?.reduce((acc, tax) => {
-                if (tax.type === _TaxType.PERCENTAGE) {
-                    return acc + (amount * tax.rate);
-                }
-                else {
-                    return acc + tax.rate;
-                }
-            }, 0) || 0
+        else {
+          return acc + tax.rate;
         }
-    },
-    components: { Button }
+      }, 0) || 0
+    }
+  },
+  components: { Button }
 })
 </script>
 
@@ -50,7 +49,7 @@ export default defineComponent({
         <h3>Total</h3>
       </v-col>
     </v-row>
-    <v-row v-for="(expense, index) in expenses" :key="`expense-${index}`" class="line-item">
+    <v-row v-for="(expense, index) in Invoice.Expenses" :key="`expense-${index}`" class="line-item">
       <v-col>{{ expense.date }}</v-col>
       <v-col>{{ expense.description }}</v-col>
       <v-col>${{ expense.subtotal.toFixed(2) }}</v-col>
