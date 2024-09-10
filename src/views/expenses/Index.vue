@@ -42,7 +42,7 @@ export default defineComponent({
     },
     {
       title: 'Description',
-      sortable: true,
+      sortable: false,
       key: 'description'
     },
     {
@@ -120,12 +120,6 @@ export default defineComponent({
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item>
-                    <v-list-item-title>New Invoice</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title>New Estimate</v-list-item-title>
-                  </v-list-item>
                   <v-list-item :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
                     <v-list-item-title>View</v-list-item-title>
                   </v-list-item>
