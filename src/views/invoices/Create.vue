@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification';
-import { Invoice } from '@/classes'
 import API from '@/api'
 import { Header } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'

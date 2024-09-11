@@ -1,7 +1,6 @@
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
 import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
-import { Expense } from '@/classes'
 import { Button } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'
 
