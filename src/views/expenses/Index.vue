@@ -105,9 +105,11 @@ export default defineComponent({
           :loading="loading"
         >
           <template #item.Invoice.refNo="{ item }">
-            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.Invoice.id }}">
-              #{{ item.Invoice.refNo }}
-            </router-link>
+            <template v-if="item.Invoice?.id">
+              <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.Invoice.id }}">
+                #{{ item.Invoice.refNo }}
+              </router-link>
+            </template>
           </template>
           <template #item.date="{ item }">
             {{ formatDate(item.date) }}
