@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, provide } from 'vue'
+import { defineComponent } from 'vue'
 import {
   _Client, _Invoice, _InvoiceStatus, _LineItem, _Tax, _TaxType, _User
 } from '@jimmyjames88/freebooks-types'
@@ -18,13 +18,12 @@ export default defineComponent({
     const { 
       amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
     } = InvoiceComposable()
-
-    provide('Invoice', Invoice)
     
     return {
       amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
     }
   },
+
   data: (): {
     loading: boolean,
     showPaymentDialog: boolean,

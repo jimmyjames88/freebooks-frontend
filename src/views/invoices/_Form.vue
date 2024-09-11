@@ -39,7 +39,6 @@ export default defineComponent({
     showPaymentDialog: false
   }),
   mounted() {
-    // this.Invoice.refNo = this.Invoice.refNo || ''
     
     this.loadLatestRefNo()
     this.loadTaxOptions()
@@ -70,22 +69,6 @@ export default defineComponent({
     }
   },
   methods: {
-    // applyFormData() {
-    //   if (!this.formData) return
-    //   const { ClientId, refNo, issueDate, dueDate, lineItems, notes, taxes, expenses, payments } = this.formData
-    //   this.ClientId = ClientId
-    //   this.refNo = refNo
-    //   this.issueDate = issueDate
-    //   this.dueDate = dueDate
-    //   this.notes = notes
-    //   this.Taxes.push(...Taxes)
-    //   this.Expenses.push(...Expenses)
-    //   this.Payments.push(...Payments)
-
-    //   if (lineItems.length > 0) {
-    //     this.lineItems = lineItems
-    //   }
-    // },
     applyTax(tax: _Tax) {
       // check if tax exists before applying
       console.log('apply', tax)

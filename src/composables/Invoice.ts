@@ -17,12 +17,12 @@ const initialState: InvoiceClass = {
   total: 0,
   User: {} as User,
   Client: {} as Client
-} 
+}
 
 const Invoice = ref<InvoiceClass>(initialState)
 
 export default function InvoiceComposable() {
-
+  
   const resetInvoice = () => {
     Invoice.value = initialState
   }

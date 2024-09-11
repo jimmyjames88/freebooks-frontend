@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification';
-import { _Invoice } from '@jimmyjames88/freebooks-types'
+import { Invoice } from '@/classes'
 import API from '@/api'
 import { Header } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'
@@ -21,9 +21,8 @@ export default defineComponent({
     async submitForm() {
       try {
         const invoice = await API.invoices.store(this.Invoice)
-        const { id } = invoice
         useToast().success('Invoice created')
-        this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: id }})
+        this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: invoice.id }})
       } catch(e) {
         console.error(e)
       }
