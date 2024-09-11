@@ -8,8 +8,8 @@ import {
 } from '@/components';
 import { Expenses, Totals, LineItems, Payments } from '@/components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
+import ExpenseBrowser from '../expenses/_Browser.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
-import { Invoice } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice';
 
 
@@ -19,7 +19,7 @@ export default defineComponent({
     return { Invoice, expensesTotal, subtotal, tax, total, paymentsTotal, amountDue }
   },
   components: {
-    AutoComplete, Button, ClientSelect, Expenses, ExpenseDialog, Totals, LineItems,
+    AutoComplete, Button, ClientSelect, Expenses, ExpenseBrowser, ExpenseDialog, Totals, LineItems,
     PaymentDialog, Payments, Spinner, TextField, TextArea
   },
   emits: [ 'submitForm' ],
@@ -29,6 +29,7 @@ export default defineComponent({
     dueDatePicker: boolean,
     taxOptions: _Tax[],
     showExpenseDialog: boolean
+    showExpenseBrowser: boolean
     showPaymentDialog: boolean
   } => ({
     latestRefNo: undefined,
@@ -36,6 +37,7 @@ export default defineComponent({
     dueDatePicker: false,
     taxOptions: [],
     showExpenseDialog: false,
+    showExpenseBrowser: false,
     showPaymentDialog: false
   }),
   mounted() {
@@ -159,15 +161,21 @@ export default defineComponent({
           <v-menu>
             <template #activator="{ props }">
               <Button v-bind="props" color="primary">
-                <v-icon>mdi-plus</v-icon> Add Expense
+                <v-icon>mdi-paperclip</v-icon> Attach Expense
               </Button>
             </template>
             <v-list>
-              <v-list-item>
-                <v-list-item-title>Attach existing expense</v-list-item-title>
+              <v-list-item 
+                prepend-icon="mdi-magnify"
+                @click="showExpenseBrowser = true"
+              >
+                <v-list-item-title>Browse expenses</v-list-item-title>
               </v-list-item>
-              <v-list-item @click="showExpenseDialog = true">
-                <v-list-item-title>Create new expense</v-list-item-title>
+              <v-list-item 
+                prepend-icon="mdi-cash-plus"
+                @click="showExpenseDialog = true"
+              >
+                <v-list-item-title>New expense</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -179,13 +187,19 @@ export default defineComponent({
         disableAPI
         @close="showExpenseDialog = false"
       />
+      <ExpenseBrowser v-if="showExpenseBrowser"
+        :ClientId="Invoice.Client?.id"
+        :InvoiceId="Invoice.id"
+        disableAPI
+        @close="showExpenseBrowser = false"
+      />
     </div>
     <div class="document mt-8">
       <Payments v-if="Invoice.Payments?.length" deleteable />
       <v-row class="mt-4">
         <v-col align="end">
           <Button color="primary" @click="showPaymentDialog = true">
-            <v-icon>mdi-plus</v-icon> Add Payment
+            <v-icon>mdi-cash-plus</v-icon> Add Payment
           </Button>
         </v-col>
       </v-row>
