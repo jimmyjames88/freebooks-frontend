@@ -29,7 +29,7 @@ export default defineComponent({
       order: 'asc'
     }],
     headers: [{
-      title: 'Ref #',
+      title: 'Invoice',
       align: 'start',
       sortable: true,
       key: 'Invoice.refNo'
