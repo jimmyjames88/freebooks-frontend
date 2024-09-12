@@ -12,7 +12,6 @@ import ExpenseBrowser from '../expenses/_Browser.vue'
 import PaymentDialog from '../payments/_Dialog.vue'
 import InvoiceComposable from '@/composables/Invoice';
 
-
 export default defineComponent({
   setup() {
     const { Invoice, expensesTotal, subtotal, tax, total, paymentsTotal, amountDue } = InvoiceComposable()

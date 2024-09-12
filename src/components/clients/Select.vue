@@ -31,10 +31,10 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue?.id || 0
+        return this.modelValue?.id
       },
       async set(id: number) {
-        const client = await API.clients.show(id)
+        const client = this.clients.find((client: _ClientListItem) => client.id === id)
         this.$emit('update:modelValue', client)
       }
     },

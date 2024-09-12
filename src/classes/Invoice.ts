@@ -8,10 +8,10 @@ import User from './User'
 
 interface IInvoice extends Omit<
   _Invoice,
-  'Expenses'  | 'Payments' | 'User' | 'Client'
+  'Expenses'  | 'Payments' | 'User' | 'Client' | 'id'
 > {}
 export default class Invoice implements IInvoice {
-  public id!: number
+  public id!: number | null
   public refNo!: string
   public issueDate?: Date
   public dueDate?: Date
