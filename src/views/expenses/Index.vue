@@ -16,8 +16,8 @@ export default defineComponent({
     AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, ExpenseDialog, TextField
    },
   setup(){
-    const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.expenses.index)
-    return { items, itemsLength, sortBy, loadItems, loading }
+    const { items, itemsLength, sortBy, loadItems, loading, currentFilters, currentSearch } = DataTableComposable(API.expenses.index)
+    return { items, itemsLength, sortBy, loadItems, loading, currentFilters, currentSearch }
   },
   data: (): {
     showExpenseDialog: boolean,
@@ -72,7 +72,11 @@ export default defineComponent({
     }
   },
   methods: {
-    formatDate: formatDateMMDDYYYY
+    formatDate: formatDateMMDDYYYY,
+    handleExpenseDialogClose() {
+      this.showExpenseDialog = false
+      this.loadItems(this.currentFilters, this.currentSearch)
+    }
   }
 })
 </script>
@@ -122,13 +126,10 @@ export default defineComponent({
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
-                    <v-list-item-title>View</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: item.id }}">
+                  <v-list-item>
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Delete', params: { ClientId: item.id }}">
+                  <v-list-item>
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -139,5 +140,5 @@ export default defineComponent({
       </v-col>
     </v-row>
   </v-container>
-  <ExpenseDialog v-if="showExpenseDialog" @close="showExpenseDialog = false" />
+  <ExpenseDialog v-if="showExpenseDialog" @close="handleExpenseDialogClose" />
 </template>

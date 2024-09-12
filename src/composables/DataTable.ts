@@ -14,9 +14,13 @@ export default function DataTableComposable(apiEndpoint: Function = apiEndpointW
     order: 'desc'
   }])
   const items = ref([])
+  const currentFilters = ref({})
+  const currentSearch = ref('')
 
   const loadItems = async (filters: any = undefined, search: string = '') => {
     loading.value = true
+    currentFilters.value = filters
+    currentSearch.value = search
     try {
       const response = await apiEndpoint({ ...filters, search })
       itemsLength.value = response.total
@@ -34,6 +38,8 @@ export default function DataTableComposable(apiEndpoint: Function = apiEndpointW
     sortBy,
     items,
     apiEndpoint,
-    loadItems
+    loadItems,
+    currentFilters,
+    currentSearch
   }
 }
