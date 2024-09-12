@@ -1,8 +1,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
-import { Button } from '@/components'
+import { Expense } from '@/classes'
+import { Button, ConfirmDeleteDialog } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'
+
 
 export default defineComponent({
   name: 'Expenses',
@@ -10,7 +12,22 @@ export default defineComponent({
     const { Invoice } = InvoiceComposable()
     return { Invoice }
   },
+  props: {
+    deleteable: {
+      type: Boolean,
+      default: false
+    },
+  },
+  data: (): {
+    showConfirmDelete: number
+  } => ({
+    showConfirmDelete: -1
+  }),
   methods: {
+    handleDelete(expense: Expense) {
+      this.Invoice.Expenses?.splice(this.Invoice.Expenses?.indexOf(expense), 1)
+      this.showConfirmDelete = -1
+    },
     taxTotal(amount: number, taxes?: _Tax[]): number {
       return taxes?.reduce((acc, tax) => {
         if (tax.type === _TaxType.PERCENTAGE) {
@@ -22,7 +39,7 @@ export default defineComponent({
       }, 0) || 0
     }
   },
-  components: { Button }
+  components: { Button, ConfirmDeleteDialog }
 })
 </script>
 
@@ -47,6 +64,7 @@ export default defineComponent({
       <v-col align="end">
         <h3>Total</h3>
       </v-col>
+      <v-col v-if="deleteable"></v-col>
     </v-row>
     <v-row v-for="(expense, index) in Invoice.Expenses" :key="`expense-${index}`" class="line-item">
       <v-col>{{ expense.date }}</v-col>
@@ -56,6 +74,12 @@ export default defineComponent({
       <v-col align="end">
         ${{ Number(taxTotal(expense.subtotal, expense.Taxes) + expense.subtotal).toFixed(2) }}
       </v-col><!-- todo: optimize pattern, don't like calling taxTotal twice per line -->
+      <template v-if="deleteable">
+        <v-col align="end">
+          <v-btn icon="mdi-close" color="primary" size="x-small" @click="showConfirmDelete = index" variant="flat" tabindex="-1"></v-btn>
+        </v-col>
+        <ConfirmDeleteDialog v-if="showConfirmDelete === index" @close="showConfirmDelete = -1" @confirm="handleDelete(expense)" />
+      </template>
     </v-row>
   </div>
 </template>

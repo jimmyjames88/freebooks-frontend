@@ -154,7 +154,7 @@ export default defineComponent({
       </v-row>
     </div>
     <div class="document mt-8">
-      <Expenses v-if="Invoice?.Expenses?.length" :expenses="Invoice.Expenses" />
+      <Expenses v-if="Invoice?.Expenses?.length" :expenses="Invoice.Expenses" deleteable />
       <v-row class="mt-4">
         <v-col align="end">
           <v-menu>
