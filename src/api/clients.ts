@@ -19,8 +19,8 @@ export default {
     return { items, total }
   },
 
-  async show(ClientId: number): Promise<Client> {
-    const response = await axios.get(`${URL}/${ClientId}`)
+  async show(ClientId: number, options?: any): Promise<Client> {
+    const response = await axios.get(`${URL}/${ClientId}`, { params: options })
     return new Client(response.data)
   },
 
