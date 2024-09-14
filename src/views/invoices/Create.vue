@@ -13,17 +13,28 @@ export default defineComponent({
     const { resetInvoice, Invoice } = InvoiceComposable()
     return { resetInvoice, Invoice }
   },
+  data: (): {
+    loading: boolean
+  } => ({
+    loading: true
+  }),
   beforeCreate() {
     this.resetInvoice()
+  },
+  mounted() {
+    this.loading = false
   },
   methods: {
     async submitForm() {
       try {
+        this.loading = true
         const invoice = await API.invoices.store(this.Invoice)
         useToast().success('Invoice created')
         this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: invoice.id }})
       } catch(e) {
         console.error(e)
+      } finally {
+        this.loading = false
       }
     }
   }
