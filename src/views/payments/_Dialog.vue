@@ -74,8 +74,6 @@ export default defineComponent({
     },
     async save() {
       if (this.disableAPI) {
-        // this.form.amount = Number(this.form.amount)
-        // this.Invoice.Payments.push(this.form)
         const payment = new Payment({ ...this.form, ClientId: this.Invoice.Client?.id })
         this.Invoice.Payments?.push(payment)
         this.close()
@@ -113,7 +111,7 @@ export default defineComponent({
         <v-form @submit.prevent>
           <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <ClientSelect v-model="form.ClientId" :disabled="!!ClientId" />
+              <ClientSelect v-model="form.ClientId" :disabled="!!ClientId" :return-object="false" />
             </v-col>
           </v-row>
           <v-row v-show="!ClientId && !InvoiceId">
