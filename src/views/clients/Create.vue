@@ -33,7 +33,7 @@ export default defineComponent({
       try {
         const client = await API.clients.store(this.form)
         useToast().success('Client created successfully')
-        this.$router.push({ name: 'Clients/Show', params: { clientId: client.id } })
+        this.$router.push({ name: 'Clients/Show', params: { ClientId: client.id } })
       } catch (err) {
         useToast().error('An error occurred while creating the client')
         console.warn(err)
@@ -74,12 +74,12 @@ export default defineComponent({
           </v-window-item>
           <v-window-item :value="2">
             <div>
-              <TextField name="line1" v-model="form.address?.line1" label="Line 1" />
-              <TextField name="line2" v-model="form.address?.line2"   label="Line 2" />
-              <TextField name="city" v-model="form.address?.city" label="City" />
-              <TextField name="state" v-model="form.address?.state" label="state" />
-              <TextField name="postal" v-model="form.address?.postal" label="Postal Code" />
-              <TextField name="country" v-model="form.address?.country" label="Country" />
+              <TextField name="line1" v-model="form.address.line1" label="Line 1" />
+              <TextField name="line2" v-model="form.address.line2"   label="Line 2" />
+              <TextField name="city" v-model="form.address.city" label="City" />
+              <TextField name="state" v-model="form.address.state" label="state" />
+              <TextField name="postal" v-model="form.address.postal" label="Postal Code" />
+              <TextField name="country" v-model="form.address.country" label="Country" />
               <Button color="transparent" @click="step--">Previous</Button>
               <Button type="submit" color="secondary">Save</Button>
             </div>

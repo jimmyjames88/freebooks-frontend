@@ -33,27 +33,8 @@ export default defineComponent({
 
   async mounted() {
     this.loading = true
-    this.Client = await API.clients.show(Number(this.$route.params.ClientId))
+    this.Client = await API.clients.show(Number(this.$route.params.ClientId), { include: 'Invoices' })
     this.loading = false
-    // API.clients.show(Number(this.$route.params.ClientId))
-    //   .then((response: AxiosResponse) => {
-    //     const { id, name, email, address, phone, website, invoices } = response.data
-    //     this.id = id
-    //     this.name = name
-    //     this.email = email
-    //     this.address = address
-    //     this.phone = phone
-    //     this.website = website
-    //     this.invoices = invoices.map((invoice: any) => {
-    //       invoice.issueDate = new Date(invoice.issueDate)
-    //       invoice.dueDate = new Date(invoice.dueDate)
-    //       return invoice
-    //     })
-    //   })
-    //   .catch((err: Error) => console.warn(err))
-    //   .finally(() => { 
-    //     this.loading = false
-    //   })
   }
 })
 </script>
