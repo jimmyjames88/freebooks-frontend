@@ -3,32 +3,17 @@ import { _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Client, Expense, Invoice as InvoiceClass, User } from '@/classes'
 
-const initialState: InvoiceClass = {
-  id: 0,
-  refNo: '',
-  notes: '',
-  lineItems: [{ description: '', quantity: undefined, rate: undefined }],
-  status: _InvoiceStatus.DRAFT,
-  issueDate: new Date(),
-  dueDate: new Date(),
-  Taxes: [],
-  Expenses: [],
-  Payments: [],
-  total: 0,
-  User: {} as User,
-  Client: {} as Client
-}
 
-const Invoice = ref<InvoiceClass>(initialState)
+const Invoice = ref<InvoiceClass>(new InvoiceClass({}))
+Invoice.value = new InvoiceClass(initialState)
 
 export default function InvoiceComposable() {
-  
+
   const resetInvoice = () => {
-    Invoice.value = initialState
+    Invoice.value = new InvoiceClass(Object.assign(initialState, []))
   }
 
   const loadInvoice = async (id: number) => {
-    resetInvoice()
     const invoice = await API.invoices.show(id)
     Invoice.value = invoice
   }
