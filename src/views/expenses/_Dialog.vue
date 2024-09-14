@@ -40,7 +40,8 @@ export default defineComponent({
       if (to) {
         const data: _Collection<Invoice> = await API.invoices.index({ ClientId: to })
         if (data.items) {
-          return this.invoices = data.items
+          this.invoices = data.items
+          return 
         }
       }
       return this.invoices = []
@@ -51,7 +52,9 @@ export default defineComponent({
     clientInvoices() {
       if (this.form.ClientId) {
         return this.invoices.map((invoice: Invoice) => {
+          console.log(1)
           if (invoice.Client.id === this.form.ClientId) {
+            console.log(2)
             return {
               title: `#${invoice.refNo} - $${invoice.total}`,
               value: invoice.id
@@ -182,12 +185,17 @@ export default defineComponent({
           <v-divider class="mt-4 mb-8" />
           <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <ClientSelect v-model="form.ClientId" :disabled="!!ClientId" />
+              <ClientSelect
+                v-model="form.ClientId"
+                :disabled="!!ClientId"
+                @update:model-value=""
+                :return-object="false"
+              />
             </v-col>
           </v-row>
           <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <InvoiceSelect v-model="form.InvoiceId" :disabled="!form.ClientId" :ClientId="form.ClientId" />
+              <InvoiceSelect v-model="form.InvoiceId" :disabled="!form.Client" :ClientId="form.ClientId" />
             </v-col>
           </v-row>
         </v-form>
