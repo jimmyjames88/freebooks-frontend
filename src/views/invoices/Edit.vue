@@ -5,7 +5,6 @@ import { _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import InvoiceForm from './_Form.vue'
 import { Header, Spinner } from '@/components'
-import { Invoice } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice'
 
 
@@ -22,7 +21,6 @@ export default defineComponent({
     loading: true
   }),
   async mounted() {
-    this.loading = true
     try {
       await this.loadInvoice(Number(this.$route.params.InvoiceId))
     } catch(err) {
