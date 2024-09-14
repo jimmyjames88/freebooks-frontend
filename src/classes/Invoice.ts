@@ -5,6 +5,7 @@ import Client from './Client'
 import Expense from './Expense'
 import Payment from './Payment'
 import User from './User'
+import API from '@/api'
 
 interface IInvoice extends Omit<
   _Invoice,
@@ -32,6 +33,11 @@ export default class Invoice implements IInvoice {
     if (attrs.issueDate) attrs.issueDate = new Date(attrs.issueDate)
     if (attrs.Client) attrs.Client = new Client(attrs.Client)
     if (attrs.Expenses) attrs.Expenses = attrs.Expenses.map((expense: _Expense) => new Expense(expense))
+    if (attrs.Payments) attrs.Payments = attrs.Payments.map((payment: _Payment) => new Payment(payment))
     Object.assign(this, attrs)
+  }
+
+  async loadClient(id: number) {
+    this.Client = await API.clients.show(id)
   }
 }

@@ -21,6 +21,9 @@ export default class Client implements IClient {
     if (attrs.Invoices) 
       attrs.Invoices = attrs.Invoices.map((invoice: Invoice) => new Invoice(invoice))
     
+    if (attrs.User)
+      attrs.User = new User(attrs.User)
+
     Object.assign(this, attrs)
   }
 }
