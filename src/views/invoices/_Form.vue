@@ -40,15 +40,10 @@ export default defineComponent({
     showPaymentDialog: false
   }),
   mounted() {
-    
     this.loadLatestRefNo()
     this.loadTaxOptions()
   },
   props: {
-    modelValue: {
-      type: Object as PropType<_Invoice>,
-      default: () => ({})
-    },
     editing: {
       type: Boolean,
       default: false
@@ -58,7 +53,15 @@ export default defineComponent({
       default: false
     },
   },
+  watch: {
+    clientId(id: number) {
+      this.Invoice.loadClient(id)
+    }
+  },
   computed: {
+    clientId() {
+      return this.Invoice.Client?.id
+    },
     noEmptyLineItems() {
       return this.Invoice.lineItems.filter((lineItem: _LineItem) => {
         const { description, rate, quantity } = lineItem
@@ -113,7 +116,7 @@ export default defineComponent({
     <div class="document">
       <v-row>
         <v-col cols="12" sm="8" md="6">
-          <ClientSelect v-if="Invoice.Client" v-model="Invoice.Client" />
+          <ClientSelect v-if="Invoice.Client" v-model="Invoice.Client.id" />
           <router-link :to="{ name: 'Clients/Create' }" class="ml-2">
             <v-icon size="xsmall">mdi-account-plus</v-icon> Add Client
           </router-link>
@@ -182,7 +185,7 @@ export default defineComponent({
       </v-row>
       <ExpenseDialog v-if="showExpenseDialog"
         :ClientId="Invoice.Client?.id"
-        :InvoiceId="Invoice.id"
+        :InvoiceId="Invoice.id || undefined"
         disableAPI
         @close="showExpenseDialog = false"
       />
@@ -204,7 +207,7 @@ export default defineComponent({
       </v-row>
       <PaymentDialog v-if="showPaymentDialog"
         :ClientId="Invoice.Client?.id"
-        :InvoiceId="Invoice.id"
+        :InvoiceId="Invoice.id || undefined"
         disableAPI
         @close="showPaymentDialog = false"
       />
