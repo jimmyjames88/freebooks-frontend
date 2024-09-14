@@ -31,11 +31,10 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue?.id
+        return this.modelValue
       },
       async set(id: number) {
-        const client = this.clients.find((client: _ClientListItem) => client.id === id)
-        this.$emit('update:modelValue', client)
+        this.$emit('update:modelValue', id)
       }
     },
     clientList(): _SelectItem[] {
@@ -70,6 +69,6 @@ export default defineComponent({
     label="Client" 
     variant="outlined" 
     prepend-inner-icon="mdi-account" 
-    clearable 
+    clearable
   />
 </template>
