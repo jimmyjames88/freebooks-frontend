@@ -6,7 +6,7 @@ import LineItem from './LineItem.vue'
 export default defineComponent({
   name: 'Invoices.LineItems',
   components: { LineItem, TextField },
-  props: [ 'lineItems' ],
+  props: [ 'LineItems' ],
 
   methods: {
     addItem(item = {
@@ -15,17 +15,27 @@ export default defineComponent({
         rate: null,
         quantity: null
     }) {
-      this.lineItems.push(item)
+      this.LineItems.push(item)
     },
     deleteItem(index: number) {
-      this.lineItems.splice(index, 1)
-      if (!this.lineItems.length) {
+      this.LineItems.splice(index, 1)
+      if (!this.LineItems.length) {
         this.addItem()
       }
     },
+
+    handleBlur() {
+      // If the last line item has a description, rate, or quantity, add a new line item
+      const lastIndex = this.LineItems.length - 1
+      const lastLine = this.LineItems[lastIndex]
+      if (lastLine.description || lastLine.rate || lastLine.quantity) {
+        this.addItem()
+      }
+    },
+    
     handleEndOfLine(index: number) {
-      const lastIndex = this.lineItems.length - 1
-      const lastLine = this.lineItems[lastIndex]
+      const lastIndex = this.LineItems.length - 1
+      const lastLine = this.LineItems[lastIndex]
       if (index === lastIndex && (lastLine.description || lastLine.rate || lastLine.quantity)) {
         this.addItem()
       }
@@ -50,7 +60,7 @@ export default defineComponent({
         <h3>Amount</h3>
       </v-col>
     </v-row>
-    <LineItem v-for="(item, index) in lineItems"
+    <LineItem v-for="(item, index) in LineItems"
       class="line-item"
       :key="`lineitem-${index}`"
       v-model:type="item.type"
@@ -59,6 +69,7 @@ export default defineComponent({
       v-model:quantity="item.quantity"
       @delete="deleteItem(index)"
       @endOfLine="handleEndOfLine(index)"
+      @blur="handleBlur"
     />
   </div>
 </template>

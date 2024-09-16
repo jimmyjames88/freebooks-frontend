@@ -6,6 +6,7 @@ export default defineComponent({
   name: 'Invoices.LineItem',
   components: { Button, Select, TextField },
   emits: [
+    'blur',
     'delete',
     'endOfLine',
     'update:description',
@@ -61,22 +62,29 @@ export default defineComponent({
 <template>
   <v-row class="line-item-row align-center">
     <v-col cols="12" md="6">
-      <TextField :value="description" @update:model-value="$emit('update:description', $event)" variant="outlined" />
+      <TextField
+        :value="description"
+        variant="outlined"
+        @update:model-value="$emit('update:description', $event)"
+        @blur="$emit('blur')"
+      />
     </v-col>
     <v-col cols="6" md="2">
       <TextField
+        prepend-inner-icon="mdi-currency-usd"
         :value="rate"
         variant="outlined"
-        prepend-inner-icon="mdi-currency-usd"
+        @blur="$emit('blur')"
         @update:model-value="$emit('update:rate', $event)"
       />
     </v-col>
     <v-col cols="6" md="1">
       <TextField 
         :value="quantity"
-        @update:modelValue="$emit('update:quantity', $event)"
-        @keydown="handleQuantityKeydown"
         variant="outlined"
+        @blur="$emit('blur')"
+        @keydown="handleQuantityKeydown"
+        @update:modelValue="$emit('update:quantity', $event)"
       />
     </v-col>
     <v-col cols="10" md="2">{{ lineTotal }}</v-col>
