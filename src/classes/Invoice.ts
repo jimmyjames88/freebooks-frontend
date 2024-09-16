@@ -18,7 +18,7 @@ export default class Invoice implements IInvoice {
   public dueDate?: Date
   public status!: _InvoiceStatus
   public notes!: string
-  public lineItems!: _LineItem[]
+  public LineItems!: _LineItem[]
   public total!: number
   public Taxes?: _Tax[]
   public Expenses?: Expense[]
@@ -29,12 +29,14 @@ export default class Invoice implements IInvoice {
   public readonly updatedAt?: Date
 
   constructor(attrs: Partial<Invoice>) {
-    if (attrs.dueDate) attrs.dueDate = new Date(attrs.dueDate)
-    if (attrs.issueDate) attrs.issueDate = new Date(attrs.issueDate)
-    if (attrs.Client) attrs.Client = new Client(attrs.Client)
-    if (attrs.Expenses) attrs.Expenses = attrs.Expenses.map((expense: _Expense) => new Expense(expense))
-    if (attrs.Payments) attrs.Payments = attrs.Payments.map((payment: _Payment) => new Payment(payment))
+    attrs.dueDate = attrs.dueDate ? new Date(attrs.dueDate) : new Date()
+    attrs.issueDate = attrs.issueDate ? new Date(attrs.issueDate) : new Date()
+    attrs.Client = new Client(attrs.Client || {})
+    attrs.Expenses = attrs.Expenses ? attrs.Expenses.map((expense: _Expense) => new Expense(expense)) : []
+    attrs.Payments = attrs.Payments ? attrs.Payments.map((payment: _Payment) => new Payment(payment)) : []
+    attrs.LineItems = attrs.LineItems ? attrs.LineItems : [{ description: '', rate: undefined, quantity: undefined }]
     Object.assign(this, attrs)
+    console.log('INVOICE CONSTRUCTOR', this)
   }
 
   async loadClient(id: number) {
