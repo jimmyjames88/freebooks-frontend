@@ -18,8 +18,9 @@ export default class Client implements IClient {
   public User?: User
 
   constructor(attrs: Partial<Client>) {
-    if (attrs.Invoices) 
-      attrs.Invoices = attrs.Invoices.map((invoice: Invoice) => new Invoice(invoice))
+    attrs.Invoices = attrs.Invoices
+      ? attrs.Invoices.map((invoice: Invoice) => new Invoice(invoice))
+      : []
     
     if (attrs.User)
       attrs.User = new User(attrs.User)
