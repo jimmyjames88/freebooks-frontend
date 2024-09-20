@@ -32,6 +32,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-v8": "^0.34.4",
     "@vue/test-utils": "^2.4.1",
+    "axios-mock-adapter": "^2.0.0",
     "jsdom": "^22.1.0",
     "sass": "^1.65.1",
     "typescript": "^5.0.2",
