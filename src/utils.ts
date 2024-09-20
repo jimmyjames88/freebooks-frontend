@@ -8,7 +8,8 @@ export const decodeJWT = (token: string) => {
   return JSON.parse(jsonPayload);
 }
 
-export const formatDateMMDDYYYY = (date: Date | undefined) => {
+export const formatDateMMDDYYYY = (date?: Date | string) => {
   if (typeof date === 'string') date = new Date(date)
-  return date?.toLocaleDateString('en-US', { timeZone: 'UTC' }) || ''
+  if (!date) date = new Date()
+  return date?.toLocaleDateString('en-US', { timeZone: 'UTC' })
 }
