@@ -10,7 +10,7 @@ export default {
   checkEmail: (email: String) => {
     return axios.post(`${url}/auth/check-email`, { email })
   },
-  register: (user: _User) => {
+  register: (user: Omit<_User, 'id' | 'createdAt' | 'updatedAt'>) => {
     return axios.post(`${url}/auth/register`, user)
   }
 }

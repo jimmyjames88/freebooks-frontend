@@ -13,7 +13,6 @@ describe('utils.ts', () => {
   it('formatDateMMDDYYYY method formats a date to MM/DD/YYYY', () => {
     const date = new Date('2021-01-01')
     const formatted = formatDateMMDDYYYY(date)
-    console.log('------->', date, formatted)
     expect(formatted).toBe('1/1/2021')
   })
 })

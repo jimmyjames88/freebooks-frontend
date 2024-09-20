@@ -1,13 +1,13 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
-import API from '../api'
+import API from '.'
 import Payment from '@/classes/Payment'
 
 const host = `${import.meta.env.VITE_API}/payments`
 
 describe('payments.ts', () => {
-  let mock
+  let mock: MockAdapter
 
   beforeEach(() => {
     // Create a new instance of MockAdapter for each test
@@ -42,24 +42,31 @@ describe('payments.ts', () => {
 
   // test store method
   it('should create a new payment', async () => {
-    mock.onPost(`${host}/`).reply(200, {
-      id: 1,
-      name: 'payment1'
-    })
-    const payment = await API.payments.store({
-      name: 'payment1'
-    })
+    const data = {
+      UserId: 1,
+      paymentTypeId: 2,
+      date: new Date(),
+      description: 'Deposit',
+      amount: 12.34
+    }
+    mock.onPost(`${host}/`).reply(200, { ...data, id: 1 })
+    const payment = await API.payments.store(data)
 
     expect(payment).toBeInstanceOf(Payment)
   })
 
   // test update method
   it('should update a payment', async () => {
-    mock.onPut(`${host}/1`).reply(200, { id: 1, name: 'payment1' })
-    const payment = await API.payments.update({
-      id: 1, 
-      name: 'payment1'
-    })
+    const data = {
+      UserId: 1,
+      paymentTypeId: 2,
+      date: new Date(),
+      description: 'Deposit',
+      amount: 12.34
+    }
+    
+    mock.onPut(`${host}/1`).reply(200, { ...data, id: 1 })
+    const payment = await API.payments.update({ ...data, id: 1 })
 
     expect(payment).toBeInstanceOf(Payment)
   })

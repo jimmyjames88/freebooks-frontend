@@ -9,7 +9,7 @@ interface _ExpensesFilters extends _DataTableFilters {
 }
 
 export default {
-  async index(params: _ExpensesFilters): Promise<_Collection<Expense>> { 
+  async index(params?: _ExpensesFilters): Promise<_Collection<Expense>> { 
     const response = await axios.get(`${url}`, { params })
     return {
       items: response.data.items.map((expense: Expense) => new Expense(expense)),

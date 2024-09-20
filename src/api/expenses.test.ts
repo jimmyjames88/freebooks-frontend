@@ -1,11 +1,12 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
-import API from '../api'
+import API from '.'
 import Expense from '@/classes/Expense'
+import { _TaxType } from '@jimmyjames88/freebooks-types'
 
 const host = `${import.meta.env.VITE_API}/expenses`
-const testExpenses = [
+const testExpenses: Expense[] = [
   {
     id: 5,
     UserId: 1,
@@ -17,7 +18,7 @@ const testExpenses = [
     Taxes: [{
       name: 'GST',
       rate: 5,
-      type: 'percentage'
+      type: _TaxType.PERCENTAGE
     }]
   },
   {
@@ -31,13 +32,13 @@ const testExpenses = [
     Taxes: [{
       name: 'GST',
       rate: 5,
-      type: 'percentage'
+      type: _TaxType.PERCENTAGE
     }]
   }
 ]
 
 describe('expenses.ts', () => {
-  let mock
+  let mock: MockAdapter
 
   beforeEach(() => {
     // Create a new instance of MockAdapter for each test
@@ -62,13 +63,14 @@ describe('expenses.ts', () => {
       UserId: 1,
       InvoiceId: 4,
       paymentTypeId: 3,
-      date: new Date().toString(),
+      date: new Date(),
       description: 'Vitest expenses',
       subtotal: 49.99,
       Taxes: [{
         name: 'GST',
         rate: 5,
-        type: 'percentage'
+        type: _TaxType.PERCENTAGE,
+        default: true
       }]
     }
     mock.onPost(host).reply(201, data)

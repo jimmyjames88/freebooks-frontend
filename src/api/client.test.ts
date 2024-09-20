@@ -2,13 +2,13 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
-import API from '../api'
+import API from '.'
 import Client from '../classes/Client'
 
 const host = import.meta.env.VITE_API
 
 describe('client.ts', () => {
-  let mock
+  let mock: MockAdapter
 
   beforeEach(() => {
     mock = new MockAdapter(axios)
@@ -45,10 +45,10 @@ describe('client.ts', () => {
 
     expect(total).toBe(2)
     expect(items).toBeInstanceOf(Array)
-    expect(items[0]).toStrictEqual(
+    expect(items).toStrictEqual([
       { id: 1, name: 'client1' },
       { id: 2, name: 'client2' }
-    )
+    ])
     expect(items[0].name).toBe('client1')
   })
 
@@ -65,7 +65,7 @@ describe('client.ts', () => {
   // test store
   it('should return a Client object', async () => {
     mock.onPost(`${host}/clients`).reply(200, { id: 1, name: 'client1' })
-    const client = await API.clients.store({ name: 'client1' })
+    const client = await API.clients.store({ name: 'client1', email: 'james@yahoo.com' })
 
     // assert that client is an instance of Client class
     expect(client).toBeInstanceOf(Client)
@@ -75,7 +75,7 @@ describe('client.ts', () => {
   // test update
   it('should return a Client object', async () => {
     mock.onPut(`${host}/clients/1`).reply(200, { id: 1, name: 'client1' })
-    const client = await API.clients.update({ id: 1, name: 'client1' })
+    const client = await API.clients.update({ id: 1, name: 'client1', email: 'james@yahoo.com' })
 
     // assert that client is an instance of Client class
     expect(client).toBeInstanceOf(Client)
@@ -87,6 +87,7 @@ describe('client.ts', () => {
     mock.onDelete(`${host}/clients/1`).reply(204)
     const response = await API.clients.destroy(1)
 
+    // assert that response status is 204
     expect(response.status).toBe(204)
   })
 })

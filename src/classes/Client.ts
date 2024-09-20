@@ -13,7 +13,7 @@ export default class Client implements IClient {
   public email!: string
   public phone?: string
   public website?: string
-  public address!: _Address
+  public address?: _Address
   public Invoices?: Invoice[]
   public User?: User
 

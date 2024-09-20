@@ -9,7 +9,7 @@ interface _InvoiceFilters extends _DataTableFilters {
 }
 
 export default {
-  async index(filters: _InvoiceFilters): Promise<_Collection<Invoice>>{
+  async index(filters?: _InvoiceFilters): Promise<_Collection<Invoice>>{
     const response = await axios.get(`${URL}/`, { params: filters })
     return {
       items: response.data.items.map((invoice: Invoice) => new Invoice(invoice)),
@@ -17,12 +17,12 @@ export default {
     }
   },
 
-  async store(invoice: Invoice): Promise<Invoice> {
+  async store(invoice: Omit<Invoice, 'id' | 'loadClient'>): Promise<Invoice> {
     const response = await axios.post(`${URL}/`, invoice)
     return new Invoice(response.data)
   },
 
-  async update(invoice: Invoice): Promise<Invoice> {
+  async update(invoice: Omit<Invoice, 'loadClient'>): Promise<Invoice> {
     const response = await axios.put(`${URL}/${invoice.id}`, invoice)
     return new Invoice(response.data)
   },

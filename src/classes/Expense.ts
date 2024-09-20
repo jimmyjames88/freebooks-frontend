@@ -12,6 +12,7 @@ export default class Expense implements _Expense {
 
   constructor(attrs: Partial<_Expense>) {
     attrs.Taxes = []  // tempfix todo
+    attrs.date = attrs.date ? new Date(attrs.date) : new Date()
     Object.assign(this, attrs)
   }
 }

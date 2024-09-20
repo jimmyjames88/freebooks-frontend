@@ -5,7 +5,7 @@ import { Client } from '@/classes'
 const URL = `${import.meta.env.VITE_API}/clients`
 
 export default {
-  async index(filters: _DataTableFilters): Promise<_Collection<Client>> {
+  async index(filters?: _DataTableFilters): Promise<_Collection<Client>> {
     const response = await axios.get(`${URL}/`, { params: filters })
     return {
       items: response.data.items.map((client: Client) => new Client(client)),
@@ -24,12 +24,12 @@ export default {
     return new Client(response.data)
   },
 
-  async store(client: Omit<Client, 'id'>): Promise<Client> {
+  async store(client: Omit<Client, 'id' | 'address'>): Promise<Client> {
     const response = await axios.post(`${URL}`, client)
     return new Client(response.data)
   },
 
-  async update(client: _Client): Promise<Client> {
+  async update(client: Omit<Client, 'address'>): Promise<Client> {
     const response = await axios.put(`${URL}/${client.id}`, client)
     return new Client(response.data)
   },

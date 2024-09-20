@@ -1,13 +1,13 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
-import API from '../api'
+import API from '.'
 import User from '@/classes/User'
 
 const host = `${import.meta.env.VITE_API}/users`
 
 describe('user.ts', () => {
-  let mock
+  let mock: MockAdapter
 
   beforeEach(() => {
     // Create a new instance of MockAdapter for each test

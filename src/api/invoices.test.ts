@@ -1,13 +1,15 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
-import API from '../api'
+import API from '.'
 import Invoice from '@/classes/Invoice'
+import Client from '@/classes/Client'
+import { _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 
 const host = `${import.meta.env.VITE_API}/invoices`
 
 describe('invoices.ts', () => {
-  let mock
+  let mock: MockAdapter
 
   beforeEach(() => {
     // Create a new instance of MockAdapter for each test
@@ -18,8 +20,8 @@ describe('invoices.ts', () => {
   it('should return an array of invoices', async () => {
     mock.onGet(`${host}/`).reply(200, {
       items: [
-        { id: 1, ClientId: 1 },
-        { id: 2, ClientId: 1 }
+        { id: 1, Client: { id: 1 }},
+        { id: 2, Client: { id: 1 }}
       ],
       total: 2
     })
@@ -29,7 +31,8 @@ describe('invoices.ts', () => {
     expect(total).toBe(2)
     expect(items).toBeInstanceOf(Array)
     expect(items[0]).toBeInstanceOf(Invoice)
-    expect(items[0].ClientId).toBe(1)
+    expect(items[0].Client).toBeInstanceOf(Client)
+    expect(items[0].Client.id).toBe(1)
   })
 
   // test store method
@@ -39,7 +42,14 @@ describe('invoices.ts', () => {
       name: 'invoice1'
     })
     const invoice = await API.invoices.store({
-      name: 'invoice1'
+      refNo: '123456',
+      issueDate: new Date(),
+      dueDate: new Date(),
+      status: _InvoiceStatus.DRAFT,
+      notes: 'Thanks for your business',
+      LineItems: [],
+      Client: { id: 1 },
+      User: { id: 1 },  
     })
 
     expect(invoice).toBeInstanceOf(Object)
@@ -57,8 +67,15 @@ describe('invoices.ts', () => {
   it('should update an invoice', async () => {
     mock.onPut(`${host}/1`).reply(200, { id: 1, name: 'invoice1' })
     const invoice = await API.invoices.update({
-      id: 1, 
-      name: 'invoice1'
+      id: 1,
+      refNo: '123456',
+      issueDate: new Date(),
+      dueDate: new Date(),
+      status: _InvoiceStatus.DRAFT,
+      notes: 'Thanks for your business',
+      LineItems: [],
+      Client: { id: 1 },
+      User: { id: 1 },  
     })
 
     expect(invoice).toBeInstanceOf(Invoice)

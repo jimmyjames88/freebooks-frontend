@@ -12,19 +12,19 @@ interface IInvoice extends Omit<
   'Expenses'  | 'Payments' | 'User' | 'Client' | 'id'
 > {}
 export default class Invoice implements IInvoice {
-  public id!: number | null
+  public id? : number
   public refNo!: string
   public issueDate?: Date
   public dueDate?: Date
   public status!: _InvoiceStatus
   public notes!: string
   public LineItems!: _LineItem[]
-  public total!: number
+  public total?: number
   public Taxes?: _Tax[]
   public Expenses?: Expense[]
   public Payments?: Payment[]
-  public User!: User
-  public Client!: Client
+  public User!: Partial<User>
+  public Client?: Partial<Client>
   public readonly createdAt?: Date
   public readonly updatedAt?: Date
 
@@ -36,7 +36,6 @@ export default class Invoice implements IInvoice {
     attrs.Payments = attrs.Payments ? attrs.Payments.map((payment: _Payment) => new Payment(payment)) : []
     attrs.LineItems = attrs.LineItems ? attrs.LineItems : []
     Object.assign(this, attrs)
-    console.log('INVOICE CONSTRUCTOR', this)
   }
 
   async loadClient(id: number) {
