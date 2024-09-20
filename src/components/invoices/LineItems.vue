@@ -1,41 +1,45 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { _LineItem } from '@jimmyjames88/freebooks-types'
 import { TextField } from '@/components'
+import InvoiceComposable from '@/composables/Invoice'
 import LineItem from './LineItem.vue'
 
 export default defineComponent({
   name: 'Invoices.LineItems',
   components: { LineItem, TextField },
-  props: [ 'LineItems' ],
-
+  setup() {
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
+  },
+  mounted() {
+    if (this.Invoice.LineItems.length === 0) {
+      this.Invoice.LineItems.push({ description: '', rate: undefined, quantity: undefined })
+    }
+  },
   methods: {
-    addItem(item = {
-        type: '',
-        description: '',
-        rate: null,
-        quantity: null
-    }) {
-      this.LineItems.push(item)
+    addItem(item = { description: '', rate: undefined, quantity: undefined }) {
+      this.Invoice.LineItems.push(item)
     },
     deleteItem(index: number) {
-      this.LineItems.splice(index, 1)
-      if (!this.LineItems.length) {
+      this.Invoice.LineItems.splice(index, 1)
+      if (!this.Invoice.LineItems.length) {
         this.addItem()
       }
     },
 
     handleBlur() {
       // If the last line item has a description, rate, or quantity, add a new line item
-      const lastIndex = this.LineItems.length - 1
-      const lastLine = this.LineItems[lastIndex]
+      const lastIndex = this.Invoice.LineItems.length - 1
+      const lastLine = this.Invoice.LineItems[lastIndex]
       if (lastLine.description || lastLine.rate || lastLine.quantity) {
         this.addItem()
       }
     },
     
     handleEndOfLine(index: number) {
-      const lastIndex = this.LineItems.length - 1
-      const lastLine = this.LineItems[lastIndex]
+      const lastIndex = this.Invoice.LineItems.length - 1
+      const lastLine = this.Invoice.LineItems[lastIndex]
       if (index === lastIndex && (lastLine.description || lastLine.rate || lastLine.quantity)) {
         this.addItem()
       }
@@ -60,10 +64,9 @@ export default defineComponent({
         <h3>Amount</h3>
       </v-col>
     </v-row>
-    <LineItem v-for="(item, index) in LineItems"
+    <LineItem v-for="(item, index) in Invoice.LineItems"
       class="line-item"
       :key="`lineitem-${index}`"
-      v-model:type="item.type"
       v-model:description="item.description"
       v-model:rate="item.rate"
       v-model:quantity="item.quantity"
