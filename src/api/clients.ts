@@ -35,7 +35,6 @@ export default {
   },
 
   async destroy(ClientId: number): Promise<void> {
-    axios.delete(`${URL}/${ClientId}`)
-    return
+    return axios.delete(`${URL}/${ClientId}`)
   }
 }
