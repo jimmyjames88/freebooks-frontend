@@ -19,11 +19,9 @@ describe('auth.ts', () => {
     mock.onPost(url).reply(200, { status: 200 })
 
     const response = await API.auth.login('test', 'test')
-    console.log('#######', response)
     expect(response.status).toBe(200)
     expect(mock.history.post.length).toBe(1)
     expect(mock.history.post[0].url).toBe(url)
-    console.log('#######', mock.history.post)
     expect(JSON.parse(mock.history.post[0].data)).toEqual({
       email: 'test',
       password: 'test'
