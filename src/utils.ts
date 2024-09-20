@@ -10,5 +10,5 @@ export const decodeJWT = (token: string) => {
 
 export const formatDateMMDDYYYY = (date: Date | undefined) => {
   if (typeof date === 'string') date = new Date(date)
-  return date?.toLocaleDateString('en-US') || ''
+  return date?.toLocaleDateString('en-US', { timeZone: 'UTC' }) || ''
 }
