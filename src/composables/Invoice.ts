@@ -3,7 +3,7 @@ import { _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Expense, Invoice as InvoiceClass } from '@/classes'
 
-const Invoice = ref<InvoiceClass>()
+const Invoice = ref<InvoiceClass>(new InvoiceClass({}))
 
 export default function InvoiceComposable() {
 

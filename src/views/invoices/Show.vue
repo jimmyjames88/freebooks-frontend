@@ -8,7 +8,7 @@ import {
 } from '@/components'
 import { formatDateMMDDYYYY } from '@/utils'
 import PaymentDialog from '@/views/payments/_Dialog.vue'
-import { Invoice, Payment } from '@/classes'
+import { Payment } from '@/classes'
 import InvoiceComposable from '@/composables/Invoice'
 
 export default defineComponent({
@@ -191,7 +191,7 @@ export default defineComponent({
           </v-col>
         </v-row>
 
-        <v-row v-for="(item, index) in Invoice.lineItems" :key="`item-${index}`" class="line-item">
+        <v-row v-for="(item, index) in Invoice.LineItems" :key="`item-${index}`" class="line-item">
           <v-col cols="12" sm="6">{{ item.description }}</v-col>
           <v-col cols="4" sm="2" align="center">${{ item.rate }}</v-col>
           <v-col cols="4" sm="2" align="center">{{ item.quantity }}</v-col>

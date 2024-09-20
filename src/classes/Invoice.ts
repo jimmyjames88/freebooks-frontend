@@ -34,7 +34,7 @@ export default class Invoice implements IInvoice {
     attrs.Client = new Client(attrs.Client || {})
     attrs.Expenses = attrs.Expenses ? attrs.Expenses.map((expense: _Expense) => new Expense(expense)) : []
     attrs.Payments = attrs.Payments ? attrs.Payments.map((payment: _Payment) => new Payment(payment)) : []
-    attrs.LineItems = attrs.LineItems ? attrs.LineItems : [{ description: '', rate: undefined, quantity: undefined }]
+    attrs.LineItems = attrs.LineItems ? attrs.LineItems : []
     Object.assign(this, attrs)
     console.log('INVOICE CONSTRUCTOR', this)
   }

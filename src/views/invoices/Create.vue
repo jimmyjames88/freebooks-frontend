@@ -10,17 +10,15 @@ export default defineComponent({
   name: 'Invoices/Create',
   components: { Header, InvoiceForm },
   setup() {
-    const { resetInvoice, Invoice } = InvoiceComposable()
-    return { resetInvoice, Invoice }
+    const { clearInvoice, Invoice } = InvoiceComposable()
+    clearInvoice()
+    return { clearInvoice, Invoice }
   },
   data: (): {
     loading: boolean
   } => ({
     loading: true
   }),
-  beforeCreate() {
-    this.resetInvoice()
-  },
   mounted() {
     this.loading = false
   },

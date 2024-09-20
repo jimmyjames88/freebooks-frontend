@@ -63,7 +63,7 @@ export default defineComponent({
       return this.Invoice.Client?.id
     },
     noEmptyLineItems() {
-      return this.Invoice.lineItems.filter((lineItem: _LineItem) => {
+      return this.Invoice.LineItems.filter((lineItem: _LineItem) => {
         const { description, rate, quantity } = lineItem
         return description || rate || quantity
       })
@@ -152,7 +152,7 @@ export default defineComponent({
     <div class="document mt-8">
       <v-row>
         <v-col>
-          <LineItems v-model:lineItems="Invoice.lineItems" />
+          <LineItems v-model:LineItems="Invoice.LineItems" />
         </v-col>
       </v-row>
     </div>
@@ -162,7 +162,7 @@ export default defineComponent({
         <v-col align="end">
           <v-menu>
             <template #activator="{ props }">
-              <Button v-bind="props" color="primary">
+              <Button v-bind="props" color="primary" :disabled="!Invoice.Client.id">
                 <v-icon>mdi-paperclip</v-icon> Attach Expense
               </Button>
             </template>
@@ -184,7 +184,7 @@ export default defineComponent({
         </v-col>
       </v-row>
       <ExpenseDialog v-if="showExpenseDialog"
-        :ClientId="Invoice.Client?.id"
+        :ClientId="Invoice.Client.id"
         :InvoiceId="Invoice.id || undefined"
         disableAPI
         @close="showExpenseDialog = false"
@@ -200,7 +200,11 @@ export default defineComponent({
       <Payments v-if="Invoice.Payments?.length" deleteable />
       <v-row class="mt-4">
         <v-col align="end">
-          <Button color="primary" @click="showPaymentDialog = true">
+          <Button
+            color="primary"
+            :disabled="!Invoice.Client.id"
+            @click="showPaymentDialog = true"
+          >
             <v-icon>mdi-cash-plus</v-icon> Add Payment
           </Button>
         </v-col>
