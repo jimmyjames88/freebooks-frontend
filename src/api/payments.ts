@@ -6,7 +6,7 @@ const url = `${import.meta.env.VITE_API}/payments`
 
 export default {
   async index(): Promise<_Collection<Payment>> {
-    const response = await axios.get(`${url}`)
+    const response = await axios.get(`${url}/`)
     return {
       items: response.data.items.map((payment: Payment) => new Payment(payment)),
       total: response.data.total
@@ -17,7 +17,7 @@ export default {
     return new Payment(response.data)
   },
   async store(payment: Partial<Payment>): Promise<Payment> {
-    const response = await axios.post(`${url}`, payment)
+    const response = await axios.post(`${url}/`, payment)
     return new Payment(response.data)
   },
   async update(payment: Payment): Promise<Payment> {
@@ -25,8 +25,7 @@ export default {
     return new Payment(response.data)
   },
   async destroy(PaymentId: number): Promise<void> {
-    axios.delete(`${url}/${PaymentId}`)
-    return
+    return axios.delete(`${url}/${PaymentId}`)
   },
   async types(): Promise<_Collection<_PaymentType>> {
     const response = await axios.get(`${url}/types`)
