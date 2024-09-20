@@ -18,7 +18,7 @@ export default {
   },
 
   async store(invoice: Invoice): Promise<Invoice> {
-    const response = await axios.post(`${URL}`, invoice)
+    const response = await axios.post(`${URL}/`, invoice)
     return new Invoice(response.data)
   },
 
@@ -38,6 +38,6 @@ export default {
 
   async latestRefNo(): Promise<string> {
     const response = await axios.get(`${URL}/latest-ref-no`)
-    return response.data.refNo
+    return response.data
   }
 }

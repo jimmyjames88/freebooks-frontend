@@ -36,7 +36,7 @@ const testExpenses = [
   }
 ]
 
-describe('auth.ts', () => {
+describe('expenses.ts', () => {
   let mock
 
   beforeEach(() => {
