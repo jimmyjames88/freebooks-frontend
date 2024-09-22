@@ -67,7 +67,7 @@ export default defineComponent({
     submittable() {
       return this.form.date
         && this.form.subtotal
-        && this.form.paymentTypeId
+        && this.form.PaymentTypeId
     },
     formattedPaymentTypes() {
       return this.paymentTypes?.map((type: _PaymentType) => ({
@@ -84,7 +84,7 @@ export default defineComponent({
         ClientId: undefined,
         InvoiceId: undefined,
         subtotal: 0,
-        paymentTypeId: undefined,
+        PaymentTypeId: undefined,
         description: ''
       }
       this.$emit('close')
@@ -94,7 +94,7 @@ export default defineComponent({
         const expense = new Expense({
           date: this.form.date,
           subtotal: Number(this.form.subtotal),
-          paymentTypeId: this.form.paymentTypeId,
+          PaymentTypeId: this.form.PaymentTypeId,
           description: this.form.description,
           InvoiceId: this.Invoice.id,
           UserId: this.Invoice.User?.id
@@ -105,11 +105,11 @@ export default defineComponent({
       }
 
       try {
-        const { InvoiceId, subtotal, paymentTypeId, description, date } = this.form
+        const { InvoiceId, subtotal, PaymentTypeId, description, date } = this.form
         const expense = await API.expenses.store({
           InvoiceId,
           subtotal: Number(subtotal),
-          paymentTypeId,
+          PaymentTypeId,
           description: description || '',
           date: date || new Date()
         })
@@ -137,7 +137,7 @@ export default defineComponent({
       ClientId: undefined,
       InvoiceId: undefined,
       subtotal: 0,
-      paymentTypeId: undefined,
+      PaymentTypeId: undefined,
       description: ''
     },
     paymentTypes: [
@@ -179,7 +179,7 @@ export default defineComponent({
           </v-row>
           <v-row>
             <v-col>
-              <PaymentTypeSelect v-model="form.paymentTypeId" />
+              <PaymentTypeSelect v-model="form.PaymentTypeId" />
             </v-col>
           </v-row>
           <v-divider class="mt-4 mb-8" />

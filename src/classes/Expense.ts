@@ -6,7 +6,7 @@ export default class Expense implements _Expense {
   public UserId!: number
   public InvoiceId!: number
   public PaymentType!: PaymentType
-  public paymentTypeId!: number
+  public PaymentTypeId!: number
   public date!: Date
   public description!: string
   public subtotal!: number

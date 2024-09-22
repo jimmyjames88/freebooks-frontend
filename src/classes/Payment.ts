@@ -8,7 +8,7 @@ export default class Payment implements _Payment {
   public UserId!: number
   public ClientId!: number
   public InvoiceId!: number
-  public paymentTypeId!: number
+  public PaymentTypeId!: number
   public PaymentType!: PaymentType
   public date!: Date
   public description!: string

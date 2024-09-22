@@ -46,7 +46,7 @@ describe('payments.ts', () => {
       UserId: 1,
       ClientId: 1,
       InvoiceId: 1,
-      paymentTypeId: 2,
+      PaymentTypeId: 2,
       date: new Date(),
       description: 'Deposit',
       amount: 12.34
@@ -63,7 +63,7 @@ describe('payments.ts', () => {
       UserId: 1,
       ClientId: 1,
       InvoiceId: 1,
-      paymentTypeId: 2,
+      PaymentTypeId: 2,
       date: new Date(),
       description: 'Deposit',
       amount: 12.34

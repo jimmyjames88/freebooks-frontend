@@ -42,7 +42,7 @@ export default defineComponent({
       date: new Date(),
       ClientId: undefined,
       InvoiceId: undefined,
-      paymentTypeId: undefined,
+      PaymentTypeId: undefined,
       amount: 0,
       description: ''
     }
@@ -57,7 +57,7 @@ export default defineComponent({
       return this.form.ClientId
         && (this.form.InvoiceId || this.disableAPI)
         && this.form.amount
-        && this.form.paymentTypeId
+        && this.form.PaymentTypeId
     }
   },
   methods: {
@@ -67,7 +67,7 @@ export default defineComponent({
         ClientId: undefined,
         InvoiceId: undefined,
         amount: 0,
-        paymentTypeId: undefined,
+        PaymentTypeId: undefined,
         description: ''
       }
       this.$emit('close')
@@ -81,11 +81,11 @@ export default defineComponent({
       }
 
       try {
-        const { ClientId, InvoiceId, paymentTypeId, amount, description, date } = this.form
+        const { ClientId, InvoiceId, PaymentTypeId, amount, description, date } = this.form
         const payment = await API.payments.store({
           ClientId,
           InvoiceId,
-          paymentTypeId,
+          PaymentTypeId,
           amount: Number(amount),
           description,
           date  
@@ -146,7 +146,7 @@ export default defineComponent({
           </v-row>
           <v-row>
             <v-col>
-              <PaymentTypeSelect v-model="form.paymentTypeId" />
+              <PaymentTypeSelect v-model="form.PaymentTypeId" />
             </v-col>
           </v-row>
         </v-form>

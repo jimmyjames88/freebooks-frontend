@@ -53,7 +53,7 @@ export default defineComponent({
       <v-col>{{ payment.date }}</v-col>
       <v-col>{{ payment.description }}</v-col>
       <!-- <v-col>{{ payment.PaymentType?.name }}</v-col> -->
-      <v-col>{{ payment.paymentTypeId }}</v-col>
+      <v-col>{{ payment.PaymentTypeId }}</v-col>
       <v-col align="end">${{ payment.amount }}</v-col>
       <template v-if="deleteable">
         <v-col align="end">

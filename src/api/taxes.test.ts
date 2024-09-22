@@ -2,7 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
 import API from '../api'
-import { _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
+import { _Tax, _TaxInputUpdate, _TaxType } from '@jimmyjames88/freebooks-types'
 
 const host = `${import.meta.env.VITE_API}/taxes`
 
@@ -92,7 +92,7 @@ describe('taxes.ts', () => {
 
   // test update method
   it('should update a tax', async () => {
-    const tax: _Tax = {
+    const tax: _TaxInputUpdate = {
       id: 1,
       name: 'GST',
       rate: 5,
