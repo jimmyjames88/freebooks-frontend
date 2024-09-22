@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { User } from '@/classes'
 import { _UserInputUpdate } from '@jimmyjames88/freebooks-types'
 
 const url = `${import.meta.env.VITE_API}/users`
