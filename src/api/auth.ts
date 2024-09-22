@@ -1,18 +1,35 @@
 import axios from 'axios'
 import { _UserInputCreate } from '@jimmyjames88/freebooks-types'
-import { User } from '@/classes'
 
 const url = import.meta.env.VITE_AUTH_API
 
+const handleError = (error: any) => {
+  console.error('Auth API Error:', error)
+  throw error
+}
+
 export default {
-  login: (email: String, password: String) => {
-    return axios.post(`${url}/auth/login`, { email, password })
+  async login(email: String, password: String) {
+    try {
+      return axios.post(`${url}/auth/login`, { email, password })
+    } catch (error) {
+      handleError(error)
+    }
   },
-  checkEmail: (email: String) => {
-    return axios.post(`${url}/auth/check-email`, { email })
+
+  checkEmail(email: String) {
+    try {
+      return axios.post(`${url}/auth/check-email`, { email })
+    } catch (error) {
+      return handleError(error)
+    }
   },
+
   async register (user: _UserInputCreate) {
-    const response = await axios.post(`${url}/auth/register`, user)
-    return new User(response.data)
+    try {
+      return await axios.post(`${url}/auth/register`, user)
+    } catch (error) {
+      handleError(error)
+    }
   }
 }

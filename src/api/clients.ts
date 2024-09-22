@@ -2,41 +2,60 @@ import axios from 'axios'
 import {
   _Client, _ClientInputCreate, _ClientInputUpdate, _Collection, _DataTableFilters
 } from '@jimmyjames88/freebooks-types'
-import { Client } from '@/classes'
 
 const URL = `${import.meta.env.VITE_API}/clients`
 
+const handleError = (error: any) => {
+  console.error('Clients API Error:', error)
+  throw error
+}
+
 export default {
-  async index(filters?: _DataTableFilters): Promise<_Collection<Client>> {
-    const response = await axios.get(`${URL}/`, { params: filters })
-    return {
-      items: response.data.items.map((client: Client) => new Client(client)),
-      total: response.data.total
+  async index(filters?: _DataTableFilters) {
+    try {
+      return await axios.get(`${URL}/`, { params: filters })
+    } catch (error) {
+      handleError(error)
     }
   },
 
-  async list(): Promise<_Collection<{ id: number, name: string }>> {
-    const response = await axios.get(`${URL}/list`)
-    const { items, total } = response.data
-    return { items, total }
+  async list() {
+    try {
+      return await axios.get(`${URL}/list`)
+    } catch (error) {
+      handleError(error)
+    }
   },
 
-  async show(ClientId: number, options?: any): Promise<Client> {
-    const response = await axios.get(`${URL}/${ClientId}`, { params: options })
-    return new Client(response.data)
+  async show(ClientId: number, options?: any) {
+    try {
+      return await axios.get(`${URL}/${ClientId}`, { params: options })
+    } catch (error) {
+      handleError(error)
+    }
   },
 
-  async store(client: _ClientInputCreate): Promise<Client> {
-    const response = await axios.post(`${URL}`, client)
-    return new Client(response.data)
+  async store(client: _ClientInputCreate) {
+    try {
+      return await axios.post(`${URL}`, client)
+    } catch (error) {
+      handleError(error)
+    }
   },
 
-  async update(client: _ClientInputUpdate): Promise<Client> {
-    const response = await axios.put(`${URL}/${client.id}`, client)
-    return new Client(response.data)
+  async update(client: _ClientInputUpdate) {
+    try {
+      return await axios.put(`${URL}/${client.id}`, client)
+    } catch (error) {
+      handleError(error)
+    }
   },
 
-  async destroy(ClientId: number): Promise<void> {
-    return axios.delete(`${URL}/${ClientId}`)
+  async destroy(ClientId: number) {
+    try {
+      return await axios.delete(`${URL}/${ClientId}`)
+    } catch (error) {
+      handleError(error)
+    }
   }
 }

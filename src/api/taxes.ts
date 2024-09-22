@@ -1,26 +1,48 @@
 import axios from 'axios'
 import { _Collection, _Tax, _TaxInputCreate, _TaxInputUpdate } from '@jimmyjames88/freebooks-types'
+import { c } from 'vitest/dist/reporters-5f784f42'
 
 const url = `${import.meta.env.VITE_API}/taxes`
 
+const handleError = (error: any) => {
+  console.error('Taxes API Error:', error)
+  throw error
+}
+
 export default {
-  async index(): Promise<_Collection<_Tax>> {
-    const response = await axios.get(`${url}/`) 
-    return response.data
+  async index() {
+    try {
+      return await axios.get(`${url}/`)
+    } catch (error) {
+      handleError(error)
+    }
   },
-  async show(taxId: number): Promise<_Tax> { 
-    const response = await axios.get(`${url}/${taxId}`)
-    return response.data
+  async show(taxId: number) { 
+    try {
+      return await axios.get(`${url}/${taxId}`)
+    } catch (error) {
+      handleError(error)
+    }
   },
-  async store(tax: _TaxInputCreate): Promise<_Tax> { 
-    const response = await axios.post(`${url}/`, tax)
-    return response.data
+  async store(tax: _TaxInputCreate) { 
+    try {
+      return await axios.post(`${url}/`, tax)
+    } catch (error) {
+      handleError(error)
+    }
   },
-  async update(tax: _TaxInputUpdate): Promise<_Tax> { 
-    const response = await axios.put(`${url}/${tax.id}`, tax)
-    return response.data
+  async update(tax: _TaxInputUpdate) { 
+    try {
+      return await axios.put(`${url}/${tax.id}`, tax)
+    } catch (error) {
+      handleError(error)
+    }
   },
-  async destroy(taxId: number) { 
-    return axios.delete(`${url}/${taxId}`)
+  async destroy(taxId: number) {
+    try {
+      return await axios.delete(`${url}/${taxId}`)
+    } catch (error) {
+      handleError(error)
+    }
   },
 }

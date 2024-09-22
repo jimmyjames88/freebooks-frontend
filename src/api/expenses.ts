@@ -1,23 +1,32 @@
 import axios from 'axios'
-import { _Collection, _DataTableFilters, _Expense, _ExpenseInputCreate } from '@jimmyjames88/freebooks-types'
-import { Expense } from '@/classes'
+import {
+  _Collection, _DataTableFilters, _Expense, _ExpenseInputCreate
+} from '@jimmyjames88/freebooks-types'
 
 const url = `${import.meta.env.VITE_API}/expenses`
+
+const handleError = (error: any) => {
+  console.error('Expenses API Error:', error)
+  throw error
+}
 
 interface _ExpensesFilters extends _DataTableFilters {
   unattached?: boolean
 }
 
 export default {
-  async index(params?: _ExpensesFilters): Promise<_Collection<Expense>> { 
-    const response = await axios.get(`${url}`, { params })
-    return {
-      items: response.data.items.map((expense: Expense) => new Expense(expense)),
-      total: response.data.total
+  async index(params?: _ExpensesFilters) { 
+    try {
+      return await axios.get(`${url}`, { params })
+    } catch (error) {
+      handleError(error)
     }
   },
-  async store(expense: _ExpenseInputCreate): Promise<Expense> {
-    const response = await axios.post(`${url}`, expense)
-    return new Expense(response.data)
+  async store(expense: _ExpenseInputCreate) {
+    try {
+      return await axios.post(`${url}`, expense)
+    } catch (error) {
+      handleError(error)
+    }
   }
 }
