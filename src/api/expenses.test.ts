@@ -3,11 +3,11 @@ import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
 import API from '.'
 import { Expense, Tax } from '@/classes'
-import { _TaxType } from '@jimmyjames88/freebooks-types'
+import { _ExpenseInputCreate, _TaxType } from '@jimmyjames88/freebooks-types'
 
 const host = `${import.meta.env.VITE_API}/expenses`
 const testExpenses: Expense[] = [
-  {
+  new Expense({
     id: 5,
     UserId: 1,
     InvoiceId: 2,
@@ -20,9 +20,9 @@ const testExpenses: Expense[] = [
       rate: 5,
       type: _TaxType.PERCENTAGE,
       default: true
-    })]
-  },
-  {
+    })],
+  }),
+  new Expense({
     id: 3,
     UserId: 4,
     InvoiceId: 5,
@@ -30,12 +30,13 @@ const testExpenses: Expense[] = [
     date: new Date(),
     description: 'Gas',
     subtotal: 96.50,
-    Taxes: [{
+    Taxes: [new Tax({
       name: 'GST',
       rate: 5,
-      type: _TaxType.PERCENTAGE
-    }]
-  }
+      type: _TaxType.PERCENTAGE,
+      default: true
+    })]
+  })
 ]
 
 describe('expenses.ts', () => {
@@ -60,19 +61,20 @@ describe('expenses.ts', () => {
 
   // Test store method
   it('should create a new expense', async () => {
-    const data = {
+    const data: _ExpenseInputCreate = {
       UserId: 1,
       InvoiceId: 4,
       PaymentTypeId: 3,
       date: new Date(),
       description: 'Vitest expenses',
       subtotal: 49.99,
-      Taxes: [{
+      Taxes: [new Tax({
+        id: 1,
         name: 'GST',
         rate: 5,
         type: _TaxType.PERCENTAGE,
         default: true
-      }]
+      })]
     }
     mock.onPost(host).reply(201, data)
     const expense = await API.expenses.store(data)
