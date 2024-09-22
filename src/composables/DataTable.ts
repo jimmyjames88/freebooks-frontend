@@ -23,10 +23,10 @@ export default function DataTableComposable(apiEndpoint: Function = apiEndpointW
     currentSearch.value = search
     try {
       const response = await apiEndpoint({ ...filters, search })
-      itemsLength.value = response.total
-      items.value = response.items
-    } catch(err: any) {
-      console.warn(err)
+      itemsLength.value = response.data.total
+      items.value = response.data.items
+    } catch(error: any) {
+      console.warn('DataTable Composable API Error:', error)
     } finally {
       loading.value = false
     }
