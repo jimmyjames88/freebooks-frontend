@@ -2,6 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
 import API from '.'
+import { User } from '@/classes'
 
 const host = import.meta.env.VITE_AUTH_API
 
@@ -43,27 +44,17 @@ describe('auth.ts', () => {
 
   // Test register method handles successful response
   it('register method handles successful response', async () => {
-    // Mock the axios POST request to return a 200 status
     const url = `${host}/auth/register`
-    mock.onPost(url).reply(200, {
-      status: 200,
-      message: 'Registration successful'
-    })
+    const user = {
+      id: 1,
+      email: 'james@yahoo.com',
+      password: 'password',
+      name: 'Jimbo'
+    }
+    mock.onPost(url).reply(200, new User(user))
 
-    const response = await API.auth.register({
-      email: 'valid-email@example.com',
-      password: 'validpassword',
-      name: 'James Allen'
-    })
-
-    expect(response.status).toBe(200)
-    expect(response.data.message).toBe('Registration successful')
-    expect(mock.history.post.length).toBe(1)
-    expect(mock.history.post[0].url).toBe(url)
-    expect(JSON.parse(mock.history.post[0].data)).toEqual({
-      email: 'valid-email@example.com',
-      password: 'validpassword',
-      name: 'James Allen'
-    })
+    const newUser = await API.auth.register(user)
+    expect(newUser).toBeInstanceOf(User)
+    expect(newUser.id).toBe(1)
   })
 })

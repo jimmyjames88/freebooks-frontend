@@ -26,8 +26,8 @@ describe('utils.ts', () => {
   // test formatDateMMDDYYYY with no input
   it('formatDateMMDDYYYY method returns a formatted date for today if no string or date object is provided', () => {
     const formatted = formatDateMMDDYYYY()
-    const today = new Date()
-    const expected = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`
+    const expected = new Date().toLocaleDateString('en-US', { timeZone: 'UTC' })
+    // const expected = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`
     expect(formatted).toBe(expected)
     expect(formatted).toBeTypeOf('string')
   })

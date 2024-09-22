@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { _Collection, _DataTableFilters, _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Collection, _DataTableFilters, _Invoice, _InvoiceInputCreate, _InvoiceInputUpdate } from '@jimmyjames88/freebooks-types'
 import { Invoice } from '@/classes'
 
 const URL = `${import.meta.env.VITE_API}/invoices`
@@ -17,12 +17,12 @@ export default {
     }
   },
 
-  async store(invoice: Omit<Invoice, 'id' | 'loadClient'>): Promise<Invoice> {
+  async store(invoice: _InvoiceInputCreate): Promise<Invoice> {
     const response = await axios.post(`${URL}/`, invoice)
     return new Invoice(response.data)
   },
 
-  async update(invoice: Omit<Invoice, 'loadClient'>): Promise<Invoice> {
+  async update(invoice: _InvoiceInputUpdate): Promise<Invoice> {
     const response = await axios.put(`${URL}/${invoice.id}`, invoice)
     return new Invoice(response.data)
   },

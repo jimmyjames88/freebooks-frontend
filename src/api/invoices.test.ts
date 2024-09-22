@@ -48,8 +48,8 @@ describe('invoices.ts', () => {
       status: _InvoiceStatus.DRAFT,
       notes: 'Thanks for your business',
       LineItems: [],
-      Client: { id: 1 },
-      User: { id: 1 },  
+      ClientId: 1,
+      UserId: 1,  
     })
 
     expect(invoice).toBeInstanceOf(Object)
@@ -74,8 +74,8 @@ describe('invoices.ts', () => {
       status: _InvoiceStatus.DRAFT,
       notes: 'Thanks for your business',
       LineItems: [],
-      Client: { id: 1 },
-      User: { id: 1 },  
+      ClientId: 1,
+      UserId: 1
     })
 
     expect(invoice).toBeInstanceOf(Invoice)

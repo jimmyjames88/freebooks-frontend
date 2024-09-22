@@ -1,5 +1,7 @@
 import axios from 'axios'
-import { _Client, _Collection, _DataTableFilters } from '@jimmyjames88/freebooks-types'
+import {
+  _Client, _ClientInputCreate, _ClientInputUpdate, _Collection, _DataTableFilters
+} from '@jimmyjames88/freebooks-types'
 import { Client } from '@/classes'
 
 const URL = `${import.meta.env.VITE_API}/clients`
@@ -24,12 +26,12 @@ export default {
     return new Client(response.data)
   },
 
-  async store(client: Omit<Client, 'id' | 'address'>): Promise<Client> {
+  async store(client: _ClientInputCreate): Promise<Client> {
     const response = await axios.post(`${URL}`, client)
     return new Client(response.data)
   },
 
-  async update(client: Omit<Client, 'address'>): Promise<Client> {
+  async update(client: _ClientInputUpdate): Promise<Client> {
     const response = await axios.put(`${URL}/${client.id}`, client)
     return new Client(response.data)
   },

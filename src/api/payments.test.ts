@@ -44,6 +44,8 @@ describe('payments.ts', () => {
   it('should create a new payment', async () => {
     const data = {
       UserId: 1,
+      ClientId: 1,
+      InvoiceId: 1,
       paymentTypeId: 2,
       date: new Date(),
       description: 'Deposit',
@@ -59,6 +61,8 @@ describe('payments.ts', () => {
   it('should update a payment', async () => {
     const data = {
       UserId: 1,
+      ClientId: 1,
+      InvoiceId: 1,
       paymentTypeId: 2,
       date: new Date(),
       description: 'Deposit',

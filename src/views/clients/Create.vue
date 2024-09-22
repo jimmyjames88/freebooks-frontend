@@ -1,16 +1,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
-import { Client } from '@/classes'
 import { Button, GradientContainer, TextField } from '@/components'
 import API from '@/api'
+import { _ClientInputCreate } from '@jimmyjames88/freebooks-types'
 
 export default defineComponent({
   name: 'Clients/Create',
   components: { Button, GradientContainer, TextField },
   data: (): {
     step: number,
-    form: Omit<Client, 'id'>
+    form: Omit<_ClientInputCreate, 'UserId'>
   } => ({
     step: 1,
     form: {
@@ -73,7 +73,7 @@ export default defineComponent({
             </div>
           </v-window-item>
           <v-window-item :value="2">
-            <div>
+            <div v-if="form.address">
               <TextField name="line1" v-model="form.address.line1" label="Line 1" />
               <TextField name="line2" v-model="form.address.line2"   label="Line 2" />
               <TextField name="city" v-model="form.address.city" label="City" />

@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import { createVuetify } from "vuetify";
 import { beforeEach, expect, vi } from 'vitest'
 import Index from './Index.vue'
@@ -43,8 +43,11 @@ describe('Index.vue', () => {
     wrapper = mount(Index, {
       global: {
         plugins: [vuetify],
+        stubs: {
+          RouterLink: RouterLinkStub
+        }
         // mocks: { $route, $router }
-      },
+      }
     })
   })
 

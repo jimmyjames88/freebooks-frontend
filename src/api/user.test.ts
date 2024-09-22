@@ -27,7 +27,8 @@ describe('user.ts', () => {
     mock.onPut(`${host}/1`).reply(200, { id: 1, name: 'user1' })
     const user = await API.users.update({
       id: 1, 
-      name: 'user1'
+      name: 'user1',
+      email: 'user@yahoo.com'
     })
 
     expect(user).toBeInstanceOf(User)

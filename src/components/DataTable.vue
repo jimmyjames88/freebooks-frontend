@@ -16,7 +16,7 @@ export default defineComponent({
   props: {
     itemsLength: {
       type: Number,
-      required: true
+      default: 0
     }
   },
 

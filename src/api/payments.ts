@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { _Collection, _PaymentType } from '@jimmyjames88/freebooks-types'
+import { _Collection, _PaymentInputCreate, _PaymentInputUpdate, _PaymentType } from '@jimmyjames88/freebooks-types'
 import { Payment } from '@/classes'
 
 const url = `${import.meta.env.VITE_API}/payments`
@@ -16,11 +16,11 @@ export default {
     const response = await axios.get(`${url}/${PaymentId}`)
     return new Payment(response.data)
   },
-  async store(payment: Partial<Payment>): Promise<Payment> {
+  async store(payment: _PaymentInputCreate): Promise<Payment> {
     const response = await axios.post(`${url}/`, payment)
     return new Payment(response.data)
   },
-  async update(payment: Payment): Promise<Payment> {
+  async update(payment: _PaymentInputUpdate): Promise<Payment> {
     const response = await axios.put(`${url}/${payment.id}`, payment)
     return new Payment(response.data)
   },

@@ -2,7 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { describe, it, expect, beforeEach } from 'vitest'
 import API from '.'
-import Expense from '@/classes/Expense'
+import { Expense, Tax } from '@/classes'
 import { _TaxType } from '@jimmyjames88/freebooks-types'
 
 const host = `${import.meta.env.VITE_API}/expenses`
@@ -15,11 +15,12 @@ const testExpenses: Expense[] = [
     date: new Date(),
     description: 'Vitest expenses',
     subtotal: 49.99,
-    Taxes: [{
+    Taxes: [new Tax({
       name: 'GST',
       rate: 5,
-      type: _TaxType.PERCENTAGE
-    }]
+      type: _TaxType.PERCENTAGE,
+      default: true
+    })]
   },
   {
     id: 3,
