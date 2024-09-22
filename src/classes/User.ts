@@ -1,17 +1,18 @@
-import { _Profile, _User } from '@jimmyjames88/freebooks-types'
+import { 
+  _User, _UserInputCreate, _UserInputUpdate, Optional
+} from '@jimmyjames88/freebooks-types'
+import Profile from './Profile'
 
-interface IUser extends _User {}
-
-export default class User implements IUser {
+export default class User implements Optional<_User, 'password'> {
   public id!: number
+  public password?: string
   public name!: string
   public email!: string
-  public password!: string
-  public Profile!: _Profile
+  public Profile!: Profile
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 
-  constructor(attrs: Partial<User>) {
+  constructor(attrs: _UserInputCreate | _UserInputUpdate) {
     Object.assign(this, attrs)
   }
 }

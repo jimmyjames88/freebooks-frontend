@@ -3,7 +3,6 @@ import { defineComponent } from 'vue'
 import { SubmitEventPromise } from 'vuetify'
 import { useToast } from 'vue-toastification'
 import { mapActions } from 'pinia'
-import API from '@/api'
 import { useAuthStore } from '@/stores'
 import { Button, GradientContainer, TextField } from '@/components'
 
@@ -58,7 +57,9 @@ export default defineComponent({
       this.loading = false
       console.log('RESULTS', results)
       if (results.valid) {
-        const registration = await this.register({ name: this.name, email: this.email, password: this.password })
+        const registration = await this.register({
+          name: this.name, email: this.email, password: this.password
+        })
         if (!registration) {
           useToast().error('There was a problem creating your account')
           throw new Error('There was a problem creating your account')

@@ -1,18 +1,22 @@
-import { _Payment } from '@jimmyjames88/freebooks-types'
+import { 
+  _Payment, _PaymentInputCreate, _PaymentInputUpdate
+} from '@jimmyjames88/freebooks-types'
+import { PaymentType } from './'
 
-export default class Payment implements Partial<_Payment> {
+export default class Payment implements _Payment {
   public id!: number
   public UserId!: number
-  public ClientId?: number
+  public ClientId!: number
   public InvoiceId!: number
   public paymentTypeId!: number
+  public PaymentType!: PaymentType
   public date!: Date
   public description!: string
   public amount!: number
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 
-  constructor(payment: Partial<_Payment>) {
-    Object.assign(this, payment)
+  constructor(attrs: _PaymentInputCreate | _PaymentInputUpdate) {
+    Object.assign(this, attrs)
   }
 }

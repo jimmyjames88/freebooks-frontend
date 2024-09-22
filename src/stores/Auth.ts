@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 import API from '@/api'
-import { User } from '@/classes'
+import { Profile, User } from '@/classes'
+import { _UserInputCreate } from '@jimmyjames88/freebooks-types'
 interface _State {
   loggedIn: boolean
   user: Partial<User>
@@ -14,7 +15,7 @@ const useAuthStore = defineStore('auth', {
       id: undefined,
       email: '',
       name: '',
-      Profile: {
+      Profile: new Profile({
         displayName: '',
         displayEmail: '',
         phone: '',
@@ -26,7 +27,7 @@ const useAuthStore = defineStore('auth', {
           postal: '',
           country: ''
         }
-      }
+      })
     }
   }),
   actions: {
@@ -62,16 +63,13 @@ const useAuthStore = defineStore('auth', {
       return true
     },
 
-    async register(user: User) {
+    async register(user: _UserInputCreate) {
       try {
-        const response = await API.auth.register(user)
-        if (response.status === 201) {
-          return true
-        }
+        await API.auth.register(user)
+        return true
       } catch {
         return false
       }
-      return false
     },
 
     async checkEmail(email: string) {

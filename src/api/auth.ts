@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { _User } from '@jimmyjames88/freebooks-types'
+import { _UserInputCreate } from '@jimmyjames88/freebooks-types'
+import { User } from '@/classes'
 
 const url = import.meta.env.VITE_AUTH_API
 
@@ -10,7 +11,8 @@ export default {
   checkEmail: (email: String) => {
     return axios.post(`${url}/auth/check-email`, { email })
   },
-  register: (user: Omit<_User, 'id' | 'createdAt' | 'updatedAt'>) => {
-    return axios.post(`${url}/auth/register`, user)
+  async register (user: _UserInputCreate) {
+    const response = await axios.post(`${url}/auth/register`, user)
+    return new User(response.data)
   }
 }
