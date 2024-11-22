@@ -19,7 +19,7 @@ export default defineComponent({
   methods: {
     loadTaxes() {
       API.taxes.index().then((response) => {
-        this.Taxes = response.data
+        this.Taxes = response.data.items
       })
     },
     destroy(taxId: number) {

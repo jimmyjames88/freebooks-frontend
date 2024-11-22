@@ -32,7 +32,7 @@ export default defineComponent({
     }
   }),
   methods: {
-    ...mapActions(useAuthStore, ['login']),
+    ...mapActions(useAuthStore, ['login']), 
 
     async submit(event: SubmitEventPromise) {
       this.loading = true

@@ -122,7 +122,7 @@ export default defineComponent({
           </template>
           <template #item.Client.name="{ item }">
             <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.id }}">
-              <Avatar :name="item.Client?.name || undefined" class="mr-4 d-none d-sm-inline-flex" />
+              <Avatar :name="item.Client?.name" class="mr-4 d-none d-sm-inline-flex" />
               <span v-if="item.Client?.name">{{ item.Client.name }}</span>
               <em v-else>- Unassigned -</em>
             </router-link>

@@ -4,6 +4,7 @@ import { _LineItem } from '@jimmyjames88/freebooks-types'
 import { TextField } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'
 import LineItem from './LineItem.vue'
+import { LineItem as LineItemClass } from '@/classes'
 
 export default defineComponent({
   name: 'Invoices.LineItems',
@@ -14,11 +15,11 @@ export default defineComponent({
   },
   mounted() {
     if (this.Invoice.LineItems.length === 0) {
-      this.Invoice.LineItems.push({ description: '', rate: undefined, quantity: undefined })
+      this.Invoice.LineItems.push(new LineItemClass())
     }
   },
   methods: {
-    addItem(item = { description: '', rate: undefined, quantity: undefined }) {
+    addItem(item: LineItemClass = new LineItemClass()) {
       this.Invoice.LineItems.push(item)
     },
     deleteItem(index: number) {
@@ -32,7 +33,8 @@ export default defineComponent({
       // If the last line item has a description, rate, or quantity, add a new line item
       const lastIndex = this.Invoice.LineItems.length - 1
       const lastLine = this.Invoice.LineItems[lastIndex]
-      if (lastLine.description || lastLine.rate || lastLine.quantity) {
+      console.log(lastLine)
+      if (lastLine.description || lastLine.rate) {
         this.addItem()
       }
     },

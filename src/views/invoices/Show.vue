@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import {
-  _Client, _Invoice, _InvoiceStatus, _LineItem, _Tax, _TaxType, _User
+  _Client, _Invoice, _InvoiceStatus, _LineItem, _User
 } from '@jimmyjames88/freebooks-types'
 import {
   Avatar, Button, Expenses, Header, InvoiceStatus, Totals, Payments, Spinner
@@ -15,13 +15,8 @@ export default defineComponent({
   name: 'Invoices/Show',
   components: { Avatar, Button, Expenses, Header, InvoiceStatus, Totals, PaymentDialog, Payments, Spinner },
   setup() {
-    const { 
-      amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
-    } = InvoiceComposable()
-    
-    return {
-      amountDue, expensesTotal, Invoice, isSent, loadInvoice, pastDue, paymentsTotal, subtotal, tax, total
-    }
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
   },
 
   data: (): {
@@ -42,7 +37,7 @@ export default defineComponent({
   async mounted() {
     this.loading = true
     try {
-      await this.loadInvoice(Number(this.$route.params.InvoiceId))
+      await this.Invoice.get(Number(this.$route.params.InvoiceId))
     } catch (err) {
       console.error(err)
     } finally {
@@ -78,7 +73,7 @@ export default defineComponent({
           <v-icon>mdi-cash-multiple</v-icon> Add payment
         </Button> -->
         <Button color="primary" :disabled="!Invoice.Client?.id">
-          <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
+          <v-icon>mdi-email</v-icon> {{ Invoice.isSent() ? 'Resend' : 'Send' }}
         </Button>
         <Button color="primary" :to="{ name: 'Invoices/Edit', params: { InvoiceId: Invoice.id } }">
           <v-icon>mdi-receipt-text-edit</v-icon> Edit
@@ -108,7 +103,7 @@ export default defineComponent({
             <v-icon>mdi-receipt-text-edit</v-icon> Edit
           </v-list-item>
           <v-list-item>
-            <v-icon>mdi-email</v-icon> {{ isSent ? 'Send' : 'Resend' }}
+            <v-icon>mdi-email</v-icon> {{ Invoice.isSent() ? 'Resend' : 'Send' }}
           </v-list-item>
           <v-list-item @click="print">
             <v-icon>mdi-printer</v-icon> Print
@@ -131,7 +126,7 @@ export default defineComponent({
               <InvoiceStatus v-if="Invoice.status && Invoice.id"
                 v-model="Invoice.status"
                 :InvoiceId="Invoice.id"
-                :dueDate="Invoice.dueDate || undefined"
+                :dueDate="Invoice.dueDate"
                 class="d-print-none"
               />
             </h1>

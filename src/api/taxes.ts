@@ -13,7 +13,7 @@ export default {
     try {
       return await axios.get(`${url}/`)
     } catch (error) {
-      handleError(error)
+      return handleError(error)
     }
   },
   async show(taxId: number) { 

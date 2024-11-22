@@ -46,7 +46,7 @@ export default defineComponent({
     formattedDate: () => formatDateMMDDYYYY,
   },
   methods: {
-    attach(_e: MouseEvent, row: any) {
+    attach(_e: PointerEvent, row: any) {
       if (!this.Invoice.Expenses?.find(expense => expense.id === row.item.id)) {
         this.Invoice.Expenses?.push(new Expense({ 
           ...row.item,
@@ -65,11 +65,6 @@ export default defineComponent({
 <template>
   <v-dialog :model-value="true" v-bind="$attrs" persistent width="1100">
     <v-card>
-      <!-- <v-card-text>
-        <v-list>
-          <v-list-item v-for="expense in expenses">{{ expense.description }} - {{expense.subtotal }}</v-list-item>
-        </v-list>
-      </v-card-text> -->
       <DataTable
         class="pa-4"
         :headers="headers"

@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Client, _Collection } from '@jimmyjames88/freebooks-types'
+import { _Client, _ClientInputUpdate, _Collection } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
+import { Client } from '@/classes'
 import { AutoComplete } from '@/components'
 
 interface _SelectItem {
@@ -18,7 +19,12 @@ export default defineComponent({
   name: 'Clients.Select',
   inheritAttrs: false,
   components: { AutoComplete },
-  props: ['modelValue'],
+  props: {
+    modelValue: {
+      type: Number,
+      default: null
+    }
+  },
   emits: ['update:modelValue'],
   data: (): {
     clients: _ClientListItem[]
@@ -31,7 +37,7 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue
+        return Number(this.modelValue)
       },
       async set(id: number) {
         this.$emit('update:modelValue', id)
@@ -51,10 +57,14 @@ export default defineComponent({
   methods: {
     async loadClients() {
       try {
-        const data: _Collection<{ id: number, name: string }> = await API.clients.list()
-        this.clients = data.items
+        const response = await API.clients.list()
+        if (response?.status === 200) {
+          this.clients = response.data.items
+        }
+        
       } catch (err: any) {
         console.warn(err)
+        return
       }
     },
   }

@@ -1,30 +1,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Invoice } from '@jimmyjames88/freebooks-types'
+import { _Invoice, _Expense } from '@jimmyjames88/freebooks-types'
 import DataTableComposable from '@/composables/DataTable'
 import API from '@/api'
 import { 
   AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, TextField
 } from '@/components'
-import ExpenseDialog from './_Dialog.vue'
 import { formatDateMMDDYYYY } from '@/utils'
 
 
 export default defineComponent({
   name: 'Expenses/Index',
   components: { 
-    AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, ExpenseDialog, TextField
+    AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, TextField
    },
   setup(){
     const { items, itemsLength, sortBy, loadItems, loading, currentFilters, currentSearch } = DataTableComposable(API.expenses.index)
     return { items, itemsLength, sortBy, loadItems, loading, currentFilters, currentSearch }
   },
   data: (): {
-    showExpenseDialog: boolean,
     sortBy: any[],
     headers: any[]
   } => ({
-    showExpenseDialog: false,
     sortBy: [{
       key: 'updatedAt',
       order: 'asc'
@@ -73,9 +70,9 @@ export default defineComponent({
   },
   methods: {
     formatDate: formatDateMMDDYYYY,
-    handleExpenseDialogClose() {
-      this.showExpenseDialog = false
-      this.loadItems(this.currentFilters, this.currentSearch)
+    rowClick(_e: Event, row: any) {
+      console.log('rowClick', row.item)
+      this.$router.push({ name: 'Expenses/Show', params: { ExpenseId: row.item.id }})
     }
   }
 })
@@ -84,13 +81,13 @@ export default defineComponent({
 <template>
   <Header title="Expenses">
     <template #desktop>
-      <Button color="primary" @click="showExpenseDialog = true">
+      <Button color="primary" :to="{ name: 'Expenses/Create' }">
         <v-icon>mdi-cash-minus</v-icon> Add Expense
       </Button>
     </template>
     <template #mobile>
       <v-list>
-        <v-list-item prepend-icon="mdi-cash-plus" @click="showExpenseDialog = true">
+        <v-list-item prepend-icon="mdi-cash-plus">
           Add Expense
         </v-list-item>
       </v-list>
@@ -107,6 +104,7 @@ export default defineComponent({
           :items-length="itemsLength"
           @load-items="loadItems"
           :loading="loading"
+          @click:row="rowClick"
         >
           <template #item.Invoice.refNo="{ item }">
             <template v-if="item.Invoice?.id">
@@ -129,7 +127,7 @@ export default defineComponent({
                   <v-list-item>
                     <v-list-item-title>Edit</v-list-item-title>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item :to="{ name: 'Expenses/Delete', params: { ExpenseId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -140,5 +138,4 @@ export default defineComponent({
       </v-col>
     </v-row>
   </v-container>
-  <ExpenseDialog v-if="showExpenseDialog" @close="handleExpenseDialogClose" />
 </template>

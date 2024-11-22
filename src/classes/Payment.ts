@@ -16,7 +16,8 @@ export default class Payment implements _Payment {
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 
-  constructor(attrs: _PaymentInputCreate | _PaymentInputUpdate) {
+  constructor(attrs?: _PaymentInputCreate | _PaymentInputUpdate) {
+    attrs = attrs || {} as _PaymentInputCreate | _PaymentInputUpdate
     Object.assign(this, attrs)
   }
 }

@@ -27,15 +27,15 @@ export default defineComponent({
     },
     modelValue: {
       type: Number,
-      default: undefined
+      required: true
     }
   },
   watch: {
     async 'ClientId'(to) {
       if (to) {
         try {
-          const data: _Collection<Invoice> = await API.invoices.index({ ClientId: to })
-          this.invoices = data.items
+          const response = await API.invoices.index({ ClientId: to })
+          this.invoices = response?.data.items
           if (this.$route.query.InvoiceId)
             this.value = Number(this.$route.query.InvoiceId)
         } catch(err: any) {
@@ -48,8 +48,8 @@ export default defineComponent({
   },
   computed: {
     value: {
-      get(): number | undefined {
-        return this.modelValue || undefined
+      get(): number {
+        return this.modelValue
       },
       set(value: number) {
         this.$emit('update:modelValue', value)

@@ -13,7 +13,7 @@ export default defineComponent({
       default: false
     },
     id: Number,
-    client: Object,
+    Client: Object,
     refNo: String,
     status: {
       type: String as PropType<_InvoiceStatus>,
@@ -23,6 +23,16 @@ export default defineComponent({
       type: Date
     },
     total: Number
+  },
+  computed: {
+    statusModel: {
+      get() {
+        return this.status
+      },
+      set(value: _InvoiceStatus) {
+        this.$emit('update:status', value)
+      }
+    }
   },
   methods: {
     formatDate: formatDateMMDDYYYY
@@ -36,12 +46,23 @@ export default defineComponent({
     class="mx-auto"
     type="heading, divider, paragraph"
   />
-  <v-card v-else variant="flat" color="gray" :to="{ name: 'Invoices/Show', params: { InvoiceId: id }}">
+  <v-card v-else variant="flat" color="gray">
     <v-card-text>
       <v-row>
         <v-col>
-          <h3 v-if="client">{{ client.name }}</h3>
-          <h4 class="on-surface"># {{ refNo || '---' }}</h4>
+          <h3 v-if="Client">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: id }}">
+              {{ Client.name }}
+            </router-link>
+          </h3>
+          <h4 class="on-surface">
+            <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: id }}">
+              # {{ refNo || '---' }}
+            </router-link>
+          </h4>
+        </v-col>
+        <v-col v-if="$slots.topright" align="end">
+          <slot name="topright" />
         </v-col>
       </v-row>
       <v-row>
@@ -51,9 +72,12 @@ export default defineComponent({
       <v-divider class="my-4" />
       <v-row>
         <v-col class="on-surface">
-          <InvoiceStatus v-model="status" :InvoiceId="id" :dueDate="dueDate" smallPD /> <!-- todo type-->
+          <InvoiceStatus v-model="statusModel" :InvoiceId="id" :dueDate="dueDate" smallPD /> <!-- todo type-->
         </v-col>
-        <v-col align="end">
+        <v-col v-if="$slots.bottomright" align="end">
+          <slot name="bottomright" />
+        </v-col>
+        <v-col v-else align="end">
           <h2 class="text-tertiary">${{ total || ' ---' }}</h2>
         </v-col>
       </v-row>

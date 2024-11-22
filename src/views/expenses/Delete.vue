@@ -2,10 +2,10 @@
 import { defineComponent } from 'vue';
 import { useToast } from 'vue-toastification';
 import { Button, GradientContainer, TextField } from '@/components'
-import { Invoice } from '@/classes'
+import { Expense } from '@/classes'
 
 export default defineComponent({
-  name: 'Invoices/Delete',
+  name: 'Expense/Delete',
   components: { Button, GradientContainer, TextField },
   data: () => ({
     submitting: false
@@ -13,11 +13,11 @@ export default defineComponent({
   methods: {
     async destroy() {
       this.submitting = true
-      const id = Number(this.$route.params.InvoiceId)
+      const id = Number(this.$route.params.ExpenseId)
       try {
-        await new Invoice({ id }).destroy() 
-        useToast().success('Invoice deleted')
-        return this.$router.push({ name: 'Invoices/Index' })
+        await new Expense({ id }).destroy() 
+        useToast().success('Expense deleted')
+        return this.$router.push({ name: 'Expenses/Index' })
       } catch (err) {
         useToast().error('Something went wrong')
         console.warn(err)
@@ -35,12 +35,12 @@ export default defineComponent({
 <template>
   <GradientContainer bgColor="black">
     <template #left>
-      <h1>Delete Invoice</h1>
+      <h1>Delete Expense?</h1>
     </template>
     <template #right>
       <div>
         <h3><span class="text-primary">Warning:</span> This action cannot be undone.</h3>
-        <p class="mb-8">Are you sure you want to delete this invoice?</p>
+        <p class="mb-8">Are you sure you want to delete this expense?</p>
         <Button @click="cancel" color="transparent" :disabled="submitting">
           Cancel
         </Button>

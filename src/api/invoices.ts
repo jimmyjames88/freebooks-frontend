@@ -38,6 +38,14 @@ export default {
       handleError(error)
     }
   },
+
+  async updateStatus(ClientId: number, status: string) {
+    try {
+      return await axios.put(`${URL}/${ClientId}/status`, { status })
+    } catch (error) {
+      handleError(error)
+    }
+  },
   
   async show(InvoiceId: number) {
     try {

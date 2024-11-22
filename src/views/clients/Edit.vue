@@ -1,31 +1,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { _Client } from '@jimmyjames88/freebooks-types'
+import { Client } from '@/classes'
 import { Button, GradientContainer, TextField } from '@/components'
-import API from '@/api'
 
 export default defineComponent({
   name: 'Clients/Edit',
   components: { Button, GradientContainer, TextField },
   data: (): {
     step: number,
-    form: Omit<_Client, 'id'>
+    form: Client
   } => ({
     step: 1,
-    form: {
-      name: '',
-      email: '',
-      phone: '',
-      website: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        state: '',
-        postal: '',
-        country: ''
-      }
-    }
+    form: new Client()
   }),
   computed: {
     ClientId(): number {
@@ -33,13 +19,12 @@ export default defineComponent({
     }
   },
   async mounted() {
-    const client = await API.clients.show(this.ClientId)
-    this.form = client
+    this.form.get(this.ClientId)
   },
   methods: {
     async save() {
       try {
-        const client = await API.clients.update({ id: this.ClientId, ...this.form })
+        const client = await this.form.save()
         this.$router.push({ name: 'Clients/Show', params: { ClientId: client.id } })
       } catch (err) {
         console.warn(err)

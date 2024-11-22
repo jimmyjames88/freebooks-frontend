@@ -2,36 +2,23 @@
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 import { Button, GradientContainer, TextField } from '@/components'
-import API from '@/api'
 import { _ClientInputCreate } from '@jimmyjames88/freebooks-types'
+import { Client } from '@/classes'
 
 export default defineComponent({
   name: 'Clients/Create',
   components: { Button, GradientContainer, TextField },
   data: (): {
     step: number,
-    form: Omit<_ClientInputCreate, 'UserId'>
+    form: Client
   } => ({
     step: 1,
-    form: {
-      name: '',
-      email: '',
-      phone: '',
-      website: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        state: '',
-        postal: '',
-        country: ''
-      }
-    }
+    form: new Client()
   }),
   methods: {
     async save() {
       try {
-        const client = await API.clients.store(this.form)
+        const client = await this.form.save()
         useToast().success('Client created successfully')
         this.$router.push({ name: 'Clients/Show', params: { ClientId: client.id } })
       } catch (err) {

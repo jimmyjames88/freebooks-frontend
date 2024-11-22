@@ -13,7 +13,12 @@ export default defineComponent({
   name: 'Payments.Select',
   inheritAttrs: false,
   components: { AutoComplete },
-  props: ['modelValue'],
+  props: {
+    modelValue: {
+      type: Number,
+      default: null
+    }
+  },
   emits: ['update:modelValue'],
   data: (): {
     paymentTypes: _PaymentType[]
@@ -26,7 +31,7 @@ export default defineComponent({
   computed: {
     value: {
       get(): number {
-        return this.modelValue || undefined
+        return this.modelValue
       },
       set(value: number) {
         this.$emit('update:modelValue', value)
@@ -46,9 +51,8 @@ export default defineComponent({
   methods: {
     async loadPaymentTypes() {
       try {
-        const data = await API.payments.types()
-        console.log('data', data)
-        this.paymentTypes = data.items
+        const response = await API.payments.types()
+        this.paymentTypes = response?.data.items
       } catch(err: any) {
         console.warn(err)
       }

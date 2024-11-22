@@ -1,12 +1,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import InvoiceComposable from '@/composables/Invoice'
+import { formatCurrency } from '@/utils';
 
 export default defineComponent({
   name: 'Invoices.Totals',
   setup() {
-    const { amountDue, expensesTotal, Invoice, paymentsTotal, subtotal, tax, total } = InvoiceComposable()
-    return { amountDue, expensesTotal, Invoice, paymentsTotal, subtotal, tax, total }
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
+  },
+  computed: {
+    formatCurrency: () => formatCurrency,
+    subtotal() {
+      return this.Invoice.subtotal()
+    }
   }
 })
 </script>
@@ -14,16 +21,14 @@ export default defineComponent({
 <template>
   <v-row>
     <v-col>Subtotal</v-col>
-    <v-col align="end">${{ subtotal.toFixed(2) }}</v-col>
+    <v-col align="end">{{ formatCurrency(subtotal) }}</v-col>
   </v-row>
   <v-row v-for="tax in Invoice.Taxes">
     <v-col cols="6">
       {{ tax.name }}
-      <span v-if="tax.type === 'PERCENTAGE'">({{ tax.rate * 100 }}%)</span>
     </v-col>
     <v-col cols="6" align="end">
-      {{ tax.type === 'PERCENTAGE' ? '$' + (subtotal * tax.rate).toFixed(2) : '$' +
-        tax.rate.toFixed(2) }}
+      {{ tax.type === 'PERCENTAGE' ? formatCurrency(subtotal * tax.rate) : formatCurrency(tax.rate) }}
     </v-col>
   </v-row>
   <template v-if="Invoice.Payments?.length">
@@ -33,13 +38,13 @@ export default defineComponent({
         <h4>Total</h4>
       </v-col>
       <v-col align="end">
-        <h4>${{ total.toFixed(2) }}</h4>
+        <h4>{{ formatCurrency(subtotal) }}</h4>
       </v-col>
     </v-row>
     <v-row>
       <v-col>Expenses (tax inc)</v-col>
       <v-col align="end">
-        ${{ expensesTotal.toFixed(2) }}
+        {{ formatCurrency(Invoice.expensesTotal()) }}
       </v-col>
     </v-row>
     <v-row>
@@ -47,7 +52,7 @@ export default defineComponent({
         Less amount paid
       </v-col>
       <v-col align="end">
-        <h4 class="text-secondary">(${{ paymentsTotal.toFixed(2) }})</h4>
+        <h4 class="text-secondary">({{ formatCurrency(Invoice.paymentsTotal()) }})</h4>
       </v-col>
     </v-row>
   </template>
@@ -57,7 +62,7 @@ export default defineComponent({
       <h2>Amount due</h2>
     </v-col>
     <v-col align="end">
-      <h2 class="text-tertiary">${{ amountDue.toFixed(2) }}</h2>
+      <h2 class="text-tertiary">{{ formatCurrency(Invoice.grandTotal()) }}</h2>
     </v-col>
   </v-row>
 </template>

@@ -13,13 +13,13 @@ export default defineComponent({
 <template>
   <Header title="Dashboard" />
   <v-container>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <h2>Outstanding revenue</h2>
         <OutstandingRevenue />
       </v-col>
     </v-row>
-    <v-divider class="my-8" />
+    <v-divider class="my-8" /> -->
     <v-row>
       <v-col>
         <PastDueInvoices />

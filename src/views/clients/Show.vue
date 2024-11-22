@@ -1,6 +1,5 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import API from '@/api'
 import { Avatar, Button, Header, InvoiceCards, Spinner } from '@/components'
 import { Client } from '@/classes'
 
@@ -10,30 +9,16 @@ export default defineComponent({
   components: { Avatar, Button, Header, InvoiceCards, Spinner },
   data: (): {
     loading: boolean
-    Client: Client
+    client: Client
   } => ({
     loading: true,
-    Client: {
-      id: -1,
-      Invoices: [],
-      name: '',
-      email: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        state: '',
-        postal: '',
-        country: ''
-      },
-      phone: '',
-      website: ''
-    }
+    client: new Client()
   }),
 
   async mounted() {
     this.loading = true
-    this.Client = await API.clients.show(Number(this.$route.params.ClientId), { include: 'Invoices' })
+    const id = Number(this.$route.params.ClientId)
+    await this.client.get(id, { include: 'Invoices' })
     this.loading = false
   }
 })
@@ -45,18 +30,18 @@ export default defineComponent({
     <Header title="Client">
       <template #title>
         <h1>
-          <span>{{ Client.name }}</span>
-          <Avatar :name="Client.name" class="ml-4" />
+          <span>{{ client.name }}</span>
+          <Avatar :name="client.name" class="ml-4" />
         </h1>
       </template>
       <template #desktop>
-        <Button color="primary" :to="{ name: 'Clients/Edit', params: { ClientId: Client.id }}">
+        <Button color="primary" :to="{ name: 'Clients/Edit', params: { ClientId: client.id }}">
           <v-icon>mdi-account-edit</v-icon> Edit Client
         </Button>
       </template>
       <template #mobile>
         <v-list>
-          <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: Client.id }}" prepend-icon="mdi-account-edit">
+          <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: client.id }}" prepend-icon="mdi-account-edit">
             Edit Client
           </v-list-item>
         </v-list>
@@ -65,8 +50,8 @@ export default defineComponent({
     <v-container>
       <v-row class="d-md-none">
         <v-col class="d-flex align-center flex-column">
-          <Avatar :name="Client.name" jumbo />
-          <h2 class="mt-4">{{ Client.name }}</h2>
+          <Avatar :name="client.name" jumbo />
+          <h2 class="mt-4">{{ client.name }}</h2>
         </v-col>
       </v-row>
       <v-divider class="my-4" />
@@ -74,35 +59,35 @@ export default defineComponent({
         <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Contact</h3>
           <v-list bgColor="transparent" class="ml-n4">
-            <v-list-item :href="`mailto:${Client.email}`">
+            <v-list-item :href="`mailto:${client.email}`">
               <v-icon>mdi-email</v-icon>
-              {{ Client.email }}
+              {{ client.email }}
             </v-list-item>
-            <v-list-item :href="`tel:${Client.phone}`">
+            <v-list-item :href="`tel:${client.phone}`">
               <v-icon>mdi-phone</v-icon>
-              {{ Client.phone }}
+              {{ client.phone }}
             </v-list-item>
-            <v-list-item :href="Client.website" target="_blank">
+            <v-list-item :href="client.website" target="_blank">
               <v-icon>mdi-link</v-icon>
-              {{ Client.website }}
+              {{ client.website }}
             </v-list-item>
           </v-list>
         </v-col>
         <v-col cols="12" md="6" lg="4" xl="3" class="text-center text-md-left">
           <h3>Address</h3>
           <v-list bgColor="transparent" class="ml-n4">
-            <v-list-item v-if="Client.address">
-              <p>{{ Client.address.line1 }}</p>
-              <p>{{ Client.address.line2 }}</p>
-              <p>{{ Client.address.city }}, {{ Client.address.state }}, {{ Client.address.country }}</p>
-              <p>{{ Client.address.postal }}</p>
+            <v-list-item v-if="client.address">
+              <p>{{ client.address.line1 }}</p>
+              <p>{{ client.address.line2 }}</p>
+              <p>{{ client.address.city }}, {{ client.address.state }}, {{ client.address.country }}</p>
+              <p>{{ client.address.postal }}</p>
             </v-list-item>
           </v-list>
         </v-col>
       </v-row>
       <v-divider class="my-4" />
       <h2>Recent Invoices</h2>
-      <InvoiceCards :invoices="Client.Invoices" />
+      <InvoiceCards :invoices="client.Invoices" />
       <v-divider class="my-4" />
       <!-- <h2>Recent Estimates</h2>
       <v-row>

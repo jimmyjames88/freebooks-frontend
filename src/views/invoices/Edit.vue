@@ -2,7 +2,6 @@
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 import { _LineItem, _Payment, _Tax } from '@jimmyjames88/freebooks-types'
-import API from '@/api'
 import InvoiceForm from './_Form.vue'
 import { Header, Spinner } from '@/components'
 import InvoiceComposable from '@/composables/Invoice'
@@ -12,8 +11,8 @@ export default defineComponent({
   name: 'Invoices/Edit',
   components: { Header, InvoiceForm, Spinner },
   setup() {
-    const { loadInvoice, Invoice } = InvoiceComposable()
-    return { loadInvoice, Invoice }
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
   },
   data: (): {
     loading: boolean
@@ -22,7 +21,7 @@ export default defineComponent({
   }),
   async mounted() {
     try {
-      await this.loadInvoice(Number(this.$route.params.InvoiceId))
+      await this.Invoice.get(Number(this.$route.params.InvoiceId))
     } catch(err) {
       console.error(err)
     } finally {
@@ -33,9 +32,9 @@ export default defineComponent({
     async submitForm() {
       try {
         this.loading = true
-        const invoice = await API.invoices.update(this.Invoice)    
+        await this.Invoice.save()   
         useToast().success('Invoice saved')
-        this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: invoice.id }})
+        this.$router.push({ name: 'Invoices/Show', params: { InvoiceId: this.Invoice.id }})
       } catch(e) {
         console.error(e)
       } finally {
@@ -48,7 +47,7 @@ export default defineComponent({
 
 <template>
   <Spinner v-if="loading" />
-  <div v-if="!loading">
+  <div v-else>
     <Header title="Edit Invoice" />
     <v-container>
       <InvoiceForm

@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue';
 import { useToast } from 'vue-toastification';
 import { Button, GradientContainer, TextField } from '@/components'
-import API from '@/api'
+import { Client } from '@/classes'
 
 export default defineComponent({
   name: 'Clients/Delete',
@@ -13,9 +13,9 @@ export default defineComponent({
   methods: {
     async destroy() {
       this.submitting = true
-      const id = this.$route.params.ClientId
+      const id = Number(this.$route.params.ClientId)
       try {
-        await API.clients.destroy(Number(id))
+        await new Client({ id }).destroy()
         useToast().success('Client deleted')
         return this.$router.push({ name: 'Clients/Index' })
       } catch (err) {

@@ -5,14 +5,13 @@ import { Profile, User } from '@/classes'
 import { _UserInputCreate } from '@jimmyjames88/freebooks-types'
 interface _State {
   loggedIn: boolean
-  user: Partial<User>
+  user: User
 }
 
 const useAuthStore = defineStore('auth', {
   state: (): _State => ({
     loggedIn: false,
-    user: {
-      id: undefined,
+    user: new User({
       email: '',
       name: '',
       Profile: new Profile({
@@ -28,23 +27,19 @@ const useAuthStore = defineStore('auth', {
           country: ''
         }
       })
-    }
+    })
   }),
   actions: {
     // Is this necessary? - todo (probably not)
     
-    setUser(user: User) {
-      this.user = user
-    },
     async loadUser(UserId: number) {
-      const user = await API.users.show(UserId)
-      this.setUser(user)
-
+      const response = await API.users.show(UserId)
+      this.user = new User(response?.data)
     },
     async login(email: string, password: string) {
       try {
         const response = await API.auth.login(email, password)
-        if (response.status === 200) {
+        if (response?.status === 200) {
           const { token, user } = response.data
           Cookies.set('token', token)
           this.loggedIn = true

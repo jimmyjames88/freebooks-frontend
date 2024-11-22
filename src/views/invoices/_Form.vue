@@ -1,10 +1,9 @@
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { AxiosError, AxiosResponse } from 'axios'
+import { defineComponent } from 'vue'
 import { _Client, _Invoice, _LineItem, _Payment, _Tax, _User } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import {
-  AutoComplete, Button, ClientSelect, Spinner, TextField, TextArea
+  AutoComplete, Button, ClientSelect, DatePicker, Spinner, TaxSelect, TextField, TextArea
 } from '@/components';
 import { Expenses, Totals, LineItems, Payments } from '@/components'
 import ExpenseDialog from '../expenses/_Dialog.vue'
@@ -14,34 +13,29 @@ import InvoiceComposable from '@/composables/Invoice';
 
 export default defineComponent({
   setup() {
-    const { Invoice, expensesTotal, subtotal, tax, total, paymentsTotal, amountDue } = InvoiceComposable()
-    return { Invoice, expensesTotal, subtotal, tax, total, paymentsTotal, amountDue }
+    const { Invoice } = InvoiceComposable()
+    return { Invoice }
   },
   components: {
-    AutoComplete, Button, ClientSelect, Expenses, ExpenseBrowser, ExpenseDialog, Totals, LineItems,
-    PaymentDialog, Payments, Spinner, TextField, TextArea
+    AutoComplete, Button, ClientSelect, DatePicker, Expenses, ExpenseBrowser, ExpenseDialog, Totals, LineItems,
+    PaymentDialog, Payments, Spinner, TextField, TextArea, TaxSelect
   },
   emits: [ 'submitForm' ],
   data: (): {
-    latestRefNo?: string,
-    issueDatePicker: boolean,
-    dueDatePicker: boolean,
-    taxOptions: _Tax[],
+    latestRefNo?: string
     showExpenseDialog: boolean
     showExpenseBrowser: boolean
     showPaymentDialog: boolean
+    taxSelected: number[]
   } => ({
     latestRefNo: undefined,
-    issueDatePicker: false,
-    dueDatePicker: false,
-    taxOptions: [],
     showExpenseDialog: false,
     showExpenseBrowser: false,
-    showPaymentDialog: false
+    showPaymentDialog: false,
+    taxSelected: []
   }),
   mounted() {
     this.loadLatestRefNo()
-    this.loadTaxOptions()
   },
   props: {
     editing: {
@@ -54,8 +48,8 @@ export default defineComponent({
     },
   },
   watch: {
-    clientId(id: number) {
-      this.Invoice.loadClient(id)
+    async clientId(id: number) {
+      this.Invoice.Client.get(id)
     }
   },
   computed: {
@@ -67,35 +61,14 @@ export default defineComponent({
         const { description, rate, quantity } = lineItem
         return description || rate || quantity
       })
-    },
-    inactiveTaxOptions() {
-      return this.taxOptions.filter((tax: _Tax) => !this.Invoice.Taxes?.find((t: _Tax) => t.id === tax.id))
     }
   },
   methods: {
-    applyTax(tax: _Tax) {
-      // check if tax exists before applying
-      console.log('apply', tax)
-      if (this.Invoice.Taxes?.find((t: _Tax) => t.id === tax.id)) return
-      this.Invoice.Taxes?.push(tax)
-    },
-    removeTax(id: number) {
-      this.Invoice.Taxes = this.Invoice.Taxes?.filter((tax: _Tax) => tax.id !== id)
-    },
     async loadLatestRefNo() {
-      this.latestRefNo = await API.invoices.latestRefNo()
+      const response = await API.invoices.latestRefNo()
+      this.latestRefNo = response?.data.refNo
     },
-    loadTaxOptions() {
-      API.taxes.index().then((response: AxiosResponse) => {
-        this.taxOptions = response.data
-        // If not in edit mode, apply default taxes
-        if (!this.editing)
-          this.Invoice.Taxes = response.data.filter((tax: _Tax) => tax.default)
-      }).catch((err: AxiosError) => {
-        console.warn(err)
-      })
-    },
-    formatDate(str: string | Date | undefined): string {
+    formatDate(str: string | Date): string {
       if (!str) return ''
       const date = new Date(str)
       return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
@@ -129,23 +102,16 @@ export default defineComponent({
       <v-divider class="my-4" />
       <v-row>
         <v-col cols="12" sm="6" md="4" class="datepicker-col">
-          <v-menu v-model="issueDatePicker" location="end" scrim="true">
-            <template v-slot:activator="{ props }">
-              <TextField :value="formatDate(Invoice.issueDate)" v-bind="props" id="issueDate" label="Issue Date"
-                prepend-inner-icon="mdi-calendar-month" variant="outlined" messages="MM/DD/YYYY" />
-            </template>
-            <v-date-picker color="tertiary" v-model="Invoice.issueDate" theme="light"
-              @update:model-value="issueDatePicker = false" />
-          </v-menu>
+          <DatePicker
+            v-model="Invoice.issueDate"
+            color="tertiary"
+            theme="light" />
         </v-col>
         <v-col cols="12" sm="6" md="4" class="datepicker-col">
-          <v-menu v-model="dueDatePicker" :close-on-content-click="false" location="end" scrim="true">
-            <template v-slot:activator="{ props }">
-              <TextField :value="formatDate(Invoice.dueDate)" v-bind="props" id="dueDate" label="Due Date"
-                prepend-inner-icon="mdi-calendar" variant="outlined" messages="MM/DD/YYYY" />
-            </template>
-            <v-date-picker color="tertiary" v-model="Invoice.dueDate" theme="light" @update:model-value="dueDatePicker = false" />
-          </v-menu>
+          <DatePicker
+            v-model="Invoice.dueDate"
+            color="tertiary"
+            theme="light" />
         </v-col>
       </v-row>
     </div>
@@ -162,7 +128,7 @@ export default defineComponent({
         <v-col align="end">
           <v-menu>
             <template #activator="{ props }">
-              <Button v-bind="props" color="primary" :disabled="!Invoice.Client.id">
+              <Button v-bind="props" color="primary">
                 <v-icon>mdi-paperclip</v-icon> Attach Expense
               </Button>
             </template>
@@ -185,7 +151,7 @@ export default defineComponent({
       </v-row>
       <ExpenseDialog v-if="showExpenseDialog"
         :ClientId="Invoice.Client.id"
-        :InvoiceId="Invoice.id || undefined"
+        :InvoiceId="Invoice.id"
         disableAPI
         @close="showExpenseDialog = false"
       />
@@ -202,7 +168,6 @@ export default defineComponent({
         <v-col align="end">
           <Button
             color="primary"
-            :disabled="!Invoice.Client.id"
             @click="showPaymentDialog = true"
           >
             <v-icon>mdi-cash-plus</v-icon> Add Payment
@@ -211,10 +176,13 @@ export default defineComponent({
       </v-row>
       <PaymentDialog v-if="showPaymentDialog"
         :ClientId="Invoice.Client?.id"
-        :InvoiceId="Invoice.id || undefined"
+        :InvoiceId="Invoice.id"
         disableAPI
         @close="showPaymentDialog = false"
       />
+    </div>
+    <div class="document mt-8">
+      <TaxSelect v-model="taxSelected" />
     </div>
     <div class="document mt-8">
       <v-row>

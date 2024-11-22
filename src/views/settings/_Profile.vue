@@ -1,8 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapWritableState, mapActions } from 'pinia'
-import { _Profile } from '@jimmyjames88/freebooks-types'
-import { User } from '@/classes'
+import { mapWritableState } from 'pinia'
+import { _ProfileInputUpdate, _UserInputUpdate } from '@jimmyjames88/freebooks-types'
+import { Profile } from '@/classes'
 import API from '@/api'
 import { Button, TextField } from '@/components'
 import { useAuthStore } from '@/stores'
@@ -12,40 +12,29 @@ export default defineComponent({
   name: 'Settings/Profile',
   components: { Button, TextField },
   data: (): {
-    form: _Profile
+    form: Profile
   } => ({
-    form: {
-      displayName: '',
-      displayEmail: '',
-      phone: '',
-      address: {
-        line1: '',
-        line2: '',
-        city: '',
-        state: '',
-        postal: '',
-        country: ''
-      }
-    }
+    form: new Profile()
   }),
   computed: {
     ...mapWritableState(useAuthStore, ['user'])
   },
   mounted() {
     // Clone the user profile
-    this.form = JSON.parse(JSON.stringify(this.user.Profile))
+    this.form = new Profile(JSON.parse(JSON.stringify(this.user.Profile)))
   },
   methods: {
-    ...mapActions(useAuthStore, ['setUser']),
     async save() {
-      const data: Partial<User> = {
-        id: Number(this.user?.id),
-        Profile: this.form
+      const data: _UserInputUpdate = {
+        ...this.user,
+        Profile: {
+          ...this.form
+        }
       }
 
       try {
-        const user = await API.users.update(data)
-        this.setUser(user)
+        const response = await API.users.update(data)
+        this.user = response?.data
         useToast().success('Profile updated')
       } catch (e) {
         useToast().error('Error updating profile')

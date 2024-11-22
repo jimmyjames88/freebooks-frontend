@@ -1,7 +1,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { _Collection, _Invoice, _PaymentType } from '@jimmyjames88/freebooks-types'
-import { Button, ClientSelect, InvoiceSelect, PaymentTypeSelect, Select, TextField } from '@/components'
+import { _Collection, _ExpenseInputCreate, _Invoice, _PaymentType } from '@jimmyjames88/freebooks-types'
+import { 
+  Button, ClientSelect, DatePicker, InvoiceSelect, PaymentTypeSelect, Select, TextField
+} from '@/components'
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import { useToast } from 'vue-toastification'
@@ -11,7 +13,9 @@ import InvoiceComposable from '@/composables/Invoice'
 export default defineComponent({
   name: 'Expenses/_Dialog',
   inheritAttrs: false,
-  components: { Button, ClientSelect, InvoiceSelect, PaymentTypeSelect, Select, TextField },
+  components: {
+    Button, ClientSelect, DatePicker, InvoiceSelect, PaymentTypeSelect, Select, TextField
+  },
   emits: ['close', 'saved'],
   setup() {
     const { Invoice } = InvoiceComposable()
@@ -31,39 +35,44 @@ export default defineComponent({
       default: undefined
     }
   },
+  data: (): {
+    form: Expense
+    invoices: Invoice[]
+    paymentTypes?: _PaymentType[]
+  } => ({
+    invoices: [],
+    form: new Expense(),
+    paymentTypes: []
+  }),
   mounted() {
-    this.form.ClientId = this.ClientId
-    this.form.InvoiceId = this.InvoiceId
+    if (this.InvoiceId) this.form.InvoiceId = this.InvoiceId
   },
   watch: {
-    async 'form.ClientId'(to) {
+    async 'ClientId'(to) {
       if (to) {
-        const data: _Collection<Invoice> = await API.invoices.index({ ClientId: to })
-        if (data.items) {
-          this.invoices = data.items
-          return 
-        }
+        const response = await API.invoices.index({ ClientId: to })
+        this.invoices = response?.data.items
       }
       return this.invoices = []
     }
   },
   computed: {
     formattedDate: () => formatDateMMDDYYYY,
-    clientInvoices() {
-      if (this.form.ClientId) {
-        return this.invoices.map((invoice: Invoice) => {
-          console.log(1)
-          if (invoice.Client.id === this.form.ClientId) {
-            console.log(2)
-            return {
-              title: `#${invoice.refNo} - $${invoice.total}`,
-              value: invoice.id
-            }
-          }
-        })
-      }
-      return []
-    },
+    // clientInvoices() {
+    //   if (this.ClientId) {
+    //     return this.invoices.map((invoice: Invoice) => {
+    //       console.log(1)
+    //       if (invoice.Client.id === this.ClientId) {
+    //         console.log(2)
+    //         return {
+    //           title: `#${invoice.refNo} - $${invoice.total}`,
+    //           value: invoice.id
+    //         }
+    //       }
+    //     })
+    //   }
+    //   return []
+    // },
     submittable() {
       return this.form.date
         && this.form.subtotal
@@ -79,42 +88,28 @@ export default defineComponent({
   },
   methods: {
     close() {
-      this.form = {
-        date: new Date(),
-        ClientId: undefined,
-        InvoiceId: undefined,
-        subtotal: 0,
-        PaymentTypeId: undefined,
-        description: ''
-      }
+      this.form = new Expense()
       this.$emit('close')
     },
     async save() {
       if (this.disableAPI) {
-        const expense = new Expense({
-          date: this.form.date,
-          subtotal: Number(this.form.subtotal),
-          PaymentTypeId: this.form.PaymentTypeId,
-          description: this.form.description,
-          InvoiceId: this.Invoice.id,
-          UserId: this.Invoice.User?.id
-        })
-        this.Invoice.Expenses?.push(expense)
+        this.Invoice.Expenses?.push(this.form)
         this.close()
         return
       }
 
       try {
-        const { InvoiceId, subtotal, PaymentTypeId, description, date } = this.form
-        const expense = await API.expenses.store({
-          InvoiceId,
-          subtotal: Number(subtotal),
-          PaymentTypeId,
-          description: description || '',
-          date: date || new Date()
-        })
-        if (expense.id) {
-          this.$emit('saved', expense)
+        // const { InvoiceId, subtotal, PaymentTypeId, description, date } = this.form
+        // const response = await API.expenses.store({
+        //   InvoiceId,
+        //   subtotal: Number(subtotal),
+        //   PaymentTypeId,
+        //   description: description || '',
+        //   date: date || new Date()
+        // })
+        await this.form.save()
+        if (this.form.id) {
+          this.$emit('saved', this.form)
           useToast().success('Expense saved')
           this.close()
         }
@@ -123,30 +118,7 @@ export default defineComponent({
         console.error(err)
       }
     }
-  },
-  data: (): {
-    showDatePicker: boolean
-    form: Partial<Expense> & Record<string, any>
-    invoices: Invoice[]
-    paymentTypes?: _PaymentType[]
-  } => ({
-    showDatePicker: false,
-    invoices: [],
-    form: {
-      date: new Date(),
-      ClientId: undefined,
-      InvoiceId: undefined,
-      subtotal: 0,
-      PaymentTypeId: undefined,
-      description: ''
-    },
-    paymentTypes: [
-      { id: 1, name: 'Cash', icon: 'mdi-cash' },
-      { id: 2, name: 'Check', icon: 'mdi-check' },
-      { id: 3, name: 'Credit Card', icon: 'mdi-credit-card' },
-      { id: 4, name: 'PayPal', icon: 'mdi-paypal' }
-    ]
-  })
+  }
 })
 </script>
 
@@ -157,14 +129,7 @@ export default defineComponent({
         <v-form @submit.prevent="">
           <v-row>
             <v-col>
-              <v-menu v-model="showDatePicker" location="end" scrim="true">
-                <template v-slot:activator="{ props }">
-                  <TextField :value="formattedDate(form.date)" v-bind="props" id="issueDate" label="Date"
-                    prepend-inner-icon="mdi-calendar-month" variant="outlined" messages="MM/DD/YYYY" />
-                </template>
-                <v-date-picker color="tertiary" v-model="form.date" theme="light"
-                  @update:model-value="showDatePicker = false" />
-              </v-menu>
+              <DatePicker v-model="form.date" />
             </v-col>
           </v-row>
           <v-row>
@@ -186,16 +151,15 @@ export default defineComponent({
           <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
               <ClientSelect
-                v-model="form.ClientId"
+                v-model="ClientId"
                 :disabled="!!ClientId"
-                @update:model-value=""
                 :return-object="false"
               />
             </v-col>
           </v-row>
           <v-row v-show="!ClientId && !InvoiceId">
             <v-col>
-              <InvoiceSelect v-model="form.InvoiceId" :disabled="!form.Client" :ClientId="form.ClientId" />
+              <InvoiceSelect v-if="form.InvoiceId" v-model="form.InvoiceId" :disabled="!ClientId" :ClientId="ClientId" />
             </v-col>
           </v-row>
         </v-form>

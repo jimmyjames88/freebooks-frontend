@@ -18,7 +18,7 @@ export default defineComponent({
   },
   computed: {
     value: {
-      get(): number | undefined {
+      get(): number {
         return this.modelValue
       },
       set(value: number) {

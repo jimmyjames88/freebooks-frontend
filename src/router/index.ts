@@ -115,6 +115,30 @@ const routes = [
     name: 'Expenses/Index',
     component: () => import('../views/expenses/Index.vue'),
     meta: { title: 'Expenses' }
+  },
+  {
+    path: '/expenses/create',
+    name: 'Expenses/Create',
+    component: () => import('../views/expenses/Create.vue'),
+    meta: { title: 'Create Expense' }
+  },
+  {
+    path: '/expenses/:ExpenseId/edit',
+    name: 'Expenses/Edit',
+    component: () => import('../views/expenses/Edit.vue'),
+    meta: { title: 'Edit Expense' }
+  },
+  {
+    path: '/expenses/:ExpenseId/delete',
+    name: 'Expenses/Delete',
+    component: () => import('../views/expenses/Delete.vue'),
+    meta: { title: 'Delete Expense' }
+  },
+  {
+    path: '/expenses/:ExpenseId',
+    name: 'Expenses/Show',
+    component: () => import('../views/expenses/Show.vue'),
+    meta: { title: 'Expense Details' }
   }
 ]
 const router = createRouter({

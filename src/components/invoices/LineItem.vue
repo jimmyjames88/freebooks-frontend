@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Button, Select, TextField } from '@/components'
+import { formatCurrency } from '@/utils';
 
 export default defineComponent({
   name: 'Invoices.LineItem',
@@ -29,15 +30,7 @@ export default defineComponent({
   computed: {
     lineTotal(): string {
       const value = Number((this.rate)) * Number((this.quantity))
-      if (isNaN(value))
-        return '$0.00'
-
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      })
-
-      return formatter.format(value)
+      return formatCurrency(value)
     }
   },
   methods: {

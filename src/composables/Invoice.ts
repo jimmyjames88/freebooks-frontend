@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import { _InvoiceStatus, _Tax, _TaxType } from '@jimmyjames88/freebooks-types'
-import API from '@/api'
 import { Expense, Invoice as InvoiceClass } from '@/classes'
 
 const Invoice = ref<InvoiceClass>(new InvoiceClass({}))
@@ -9,13 +8,7 @@ export default function InvoiceComposable() {
 
   // Replaces instance of Invoice with a new, empty instance
   const clearInvoice = () => {
-    Invoice.value = new InvoiceClass({})
-  }
-
-  // Load an invoice from the API and set it to the Invoice ref
-  const loadInvoice = async (id: number) => {
-    const invoice = await API.invoices.show(id)
-    Invoice.value = invoice
+    Invoice.value = new InvoiceClass()
   }
 
   const expensesTotal = computed(() => {
@@ -69,7 +62,6 @@ export default function InvoiceComposable() {
     expensesTotal,
     Invoice,
     isSent,
-    loadInvoice,
     pastDue,
     paymentsTotal,
     clearInvoice,

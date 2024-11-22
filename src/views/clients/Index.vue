@@ -11,7 +11,12 @@ export default defineComponent({
     const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.clients.index)
     return { items, itemsLength, sortBy, loadItems, loading }
   },
-  data: () => ({
+  data: (): {
+    empty: boolean,
+    sortBy: { key: string, order: string }[],
+    headers: { title?: string, align?: string, sortable?: boolean, key: string }[]
+  } => ({
+    empty: false,
     sortBy: [{
       key: 'updatedAt',
       order: 'asc'

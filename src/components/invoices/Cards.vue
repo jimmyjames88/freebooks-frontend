@@ -13,11 +13,11 @@ export default defineComponent({
     },
     sm: {
       type: Number,
-      default: 4
+      default: 6
     },
     md: {
       type: Number,
-      default: 3
+      default: 4
     },
     lg: {
       type: Number,

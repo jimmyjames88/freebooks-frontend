@@ -3,8 +3,8 @@ import { defineComponent, PropType } from 'vue'
 import { _Invoice, _InvoiceStatus } from '@jimmyjames88/freebooks-types'
 import API from '@/api'
 import { Button } from '@/components'
-import { Invoice } from '@/classes'
 import PastDue from './PastDue.vue'
+import { Invoice } from '@/classes'
 
 export default defineComponent({
   name: 'Invoices.Status',
@@ -63,10 +63,7 @@ export default defineComponent({
     },
     async save() {
       try {
-        await API.invoices.update(new Invoice({
-          id: this.InvoiceId,
-          status: this.newStatus
-        }))
+        await new Invoice({ id: this.InvoiceId }).updateStatus(this.newStatus)
         this.$emit('update:model-value', this.newStatus)
       } catch (error) {
         console.error(error)

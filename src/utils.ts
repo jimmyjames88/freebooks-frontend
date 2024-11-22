@@ -13,3 +13,15 @@ export const formatDateMMDDYYYY = (date?: Date | string) => {
   if (!date) date = new Date()
   return date?.toLocaleDateString('en-US', { timeZone: 'UTC' })
 }
+
+export const formatCurrency = (amount: number) => {
+  if (isNaN(amount))
+    return '$0.00'
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  })
+
+  return formatter.format(amount)
+}

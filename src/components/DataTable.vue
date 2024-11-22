@@ -37,7 +37,6 @@ export default defineComponent({
     @update:options="$emit('loadItems', $event, search)"
   >
     <template v-for="(_, slot) of $slots" v-slot:[slot]="scope"><slot :name="slot" v-bind="scope"/></template>
-
     <template #top>
       <v-container>
         <v-row>
