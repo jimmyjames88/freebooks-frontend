@@ -1,24 +1,30 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
-import { Button, GradientContainer, TextField } from '@/components'
+import { Header, Spinner, TextField } from '@/components'
 import { _ClientInputCreate } from '@jimmyjames88/freebooks-types'
 import { Client } from '@/classes'
+import ClientForm from './_Form.vue'
 
 export default defineComponent({
   name: 'Clients/Create',
-  components: { Button, GradientContainer, TextField },
+  components: { ClientForm, Header, Spinner, TextField },
   data: (): {
-    step: number,
-    form: Client
+    loading: boolean
+    step: number
+    client: Client
   } => ({
+    loading: true,
     step: 1,
-    form: new Client()
+    client: new Client()
   }),
+  mounted() {
+    this.loading = false
+  },
   methods: {
-    async save() {
+    async save(form: Client) {
       try {
-        const client = await this.form.save()
+        const client = await form.save()
         useToast().success('Client created successfully')
         this.$router.push({ name: 'Clients/Show', params: { ClientId: client.id } })
       } catch (err) {
@@ -34,45 +40,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <GradientContainer>
-    <template #left>
-      <h1>New Client</h1>
-    </template>
-    <template #right>
-      <v-form @submit.prevent="save">
-        <v-window v-model="step"
-          height="auto"
-          direction="vertical"
-          hide-delimiters
-          :show-arrows="false">
-          <v-window-item :value="1">
-            <div>
-              <TextField name="name" label="Name" v-model="form.name" />
-              <TextField name="email" label="Email" v-model="form.email" />
-              <TextField name="phone" label="Phone" v-model="form.phone" />
-              <TextField name="website" label="Website" v-model="form.website" placeholder="https://" />
-              <Button @click="cancel" color="transparent">
-                Cancel
-              </Button>
-              <Button @click="step++" color="secondary">
-                Next
-              </Button>
-            </div>
-          </v-window-item>
-          <v-window-item :value="2">
-            <div v-if="form.address">
-              <TextField name="line1" v-model="form.address.line1" label="Line 1" />
-              <TextField name="line2" v-model="form.address.line2"   label="Line 2" />
-              <TextField name="city" v-model="form.address.city" label="City" />
-              <TextField name="state" v-model="form.address.state" label="state" />
-              <TextField name="postal" v-model="form.address.postal" label="Postal Code" />
-              <TextField name="country" v-model="form.address.country" label="Country" />
-              <Button color="transparent" @click="step--">Previous</Button>
-              <Button type="submit" color="secondary">Save</Button>
-            </div>
-          </v-window-item>
-        </v-window>
-      </v-form>
-    </template>
-  </GradientContainer>
+  <Spinner v-if="loading" />
+  <div v-else>
+    <Header title="New Client" />
+    <v-container>
+      <ClientForm :client="client" @submitForm="save" />
+    </v-container>
+  </div>
 </template>
