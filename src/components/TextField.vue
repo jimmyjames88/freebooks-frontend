@@ -43,6 +43,10 @@ export default defineComponent({
     background-color: white;
     border-radius: 0;
   }
+  
+  :deep(.v-input__control) {
+    background-color: #FFFFFF;
+  }
 
   :deep(.v-field__input) {
     background-color: #FFFFFF;

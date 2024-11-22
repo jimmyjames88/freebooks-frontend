@@ -42,8 +42,13 @@ export default defineComponent({
     font-size: 1.125rem;
   }
 
-  :deep(.v-field) .v-field__outline {
-    border-radius: 0;
+  :deep(.v-field), :deep(.v-input) {
+    .v-field__outline {
+      border-radius: 0;
+    }
+    .v-input__control {
+      background-color: #FFFFFF;
+    }
   }
   
   :deep(.v-field:not(.v-field--variant-underlined, .v-field--variant-outlined) .v-field__outline) {
@@ -56,7 +61,7 @@ export default defineComponent({
   }
 
   :deep(.v-field__input) {
-    color: #9A8F99; 
+    color: #9A8F99;
     font-weight: 600;
     border-radius: 0;
 
