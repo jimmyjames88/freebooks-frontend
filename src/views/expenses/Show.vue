@@ -107,6 +107,12 @@ export default defineComponent({
       </template>
       <template #mobile>
         <v-list>
+          <v-list-item
+            :to="{ name: 'Expenses/Edit', params: { ExpenseId: expense.id } }"
+            prepend-icon="mdi-pencil"  
+          >
+            Edit
+          </v-list-item>
           <v-list-item @click="print" prepend-icon="mdi-printer">
             Print
           </v-list-item>
@@ -140,9 +146,8 @@ export default defineComponent({
               <h2 class="text-primary">{{ displayTotal }}</h2>
             </v-col>
             <v-col cols="12" sm="3" order-sm="first">
-              <v-card variant="flat" color="grey-lighten-5">
+              <v-card variant="flat" color="tertiary">
                 <v-card-text align="center">
-                  
                   <h3>
                     <v-icon size="xx-large">{{ expense.PaymentType.icon }}</v-icon>
                     {{ expense.PaymentType.name }}

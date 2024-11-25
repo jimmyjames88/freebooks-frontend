@@ -64,3 +64,12 @@ export default defineComponent({
 
   </v-data-table-server>  
 </template>
+
+<style lang="scss" scoped>
+.v-data-table :deep(.v-data-table__tr--clickable) {
+  transition: background-color 0.1s ease-in;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+</style>

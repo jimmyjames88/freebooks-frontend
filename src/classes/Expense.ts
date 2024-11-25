@@ -44,7 +44,7 @@ export default class Expense implements _Expense {
       ? await API.expenses.update(this)
       : await API.expenses.store(this)
 
-    if (response) Object.assign(this, response.data)
+    Object.assign(this, new Expense(response?.data))
     return this
   }
 

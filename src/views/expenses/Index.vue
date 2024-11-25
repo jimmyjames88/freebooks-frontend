@@ -87,7 +87,7 @@ export default defineComponent({
     </template>
     <template #mobile>
       <v-list>
-        <v-list-item prepend-icon="mdi-cash-plus">
+        <v-list-item prepend-icon="mdi-cash-plus" :to="{ name: 'Expenses/Create' }">
           Add Expense
         </v-list-item>
       </v-list>
@@ -108,9 +108,7 @@ export default defineComponent({
         >
           <template #item.Invoice.refNo="{ item }">
             <template v-if="item.Invoice?.id">
-              <router-link :to="{ name: 'Invoices/Show', params: { InvoiceId: item.Invoice.id }}">
-                #{{ item.Invoice.refNo }}
-              </router-link>
+              #{{ item.Invoice.refNo }}
             </template>
           </template>
           <template #item.date="{ item }">
@@ -124,8 +122,10 @@ export default defineComponent({
               <v-icon>mdi-dots-vertical</v-icon>
               <v-menu activator="parent">
                 <v-list>
-                  <v-list-item>
-                    <v-list-item-title>Edit</v-list-item-title>
+                  <v-list-item :to="{ name: 'Expenses/Edit', params: { ExpenseId: item.id }}">
+                    <v-list-item-title>
+                      Edit
+                    </v-list-item-title>
                   </v-list-item>
                   <v-list-item :to="{ name: 'Expenses/Delete', params: { ExpenseId: item.id }}">
                     <v-list-item-title>Delete</v-list-item-title>

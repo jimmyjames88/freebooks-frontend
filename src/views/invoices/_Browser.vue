@@ -4,6 +4,7 @@ import { Button, DataTable } from '@/components'
 import { formatCurrency, formatDateMMDDYYYY } from '@/utils'
 import DataTableComposable from '@/composables/DataTable'
 import API from '@/api'
+import { Invoice } from '@/classes'
 
 export default defineComponent({
   name: 'Invoices/_Browser',
@@ -47,7 +48,7 @@ export default defineComponent({
   },
   methods: {
     attach(_e: PointerEvent, row: any){
-      this.$emit('attach', row.item)
+      this.$emit('attach', new Invoice(row.item))
       this.close()
     },
     close() {
