@@ -16,12 +16,8 @@ export default defineComponent({
   },
   data: (): {
     form: Expense
-    taxList: Tax[]
-    taxSelected: number[]
   } => ({
-    form: new Expense(),
-    taxList: [],
-    taxSelected: [] as number[]
+    form: new Expense()
   }),
   computed: {
     formatCurrency: () => formatCurrency,
@@ -33,12 +29,8 @@ export default defineComponent({
         && this.form.subtotal
     },
     taxTotal() {
-      return this.taxSelected.reduce((acc, taxId) => {
-        const tax = this.taxList.find(tax => tax.id === taxId)
-        if (!tax) return acc
-        return tax.type === _TaxType.PERCENTAGE
-          ? acc + (this.form.subtotal * tax.rate)
-          : acc + tax.rate
+      return this.form.Taxes.reduce((acc, tax) => {
+        return acc + this.tabulateTax(tax)
       }, 0)
     },
     total() {
@@ -51,7 +43,6 @@ export default defineComponent({
   },
   methods: {
     async submitForm() {
-      this.form.Taxes = this.taxSelected.map(taxId => this.taxList.find(tax => tax.id === taxId)) as Tax[]
       this.$emit('submitForm', this.form)
     },
     goBack() {
@@ -60,7 +51,18 @@ export default defineComponent({
     },
     handleDateChange(value: Date) {
       this.form.date = value
-    }
+    },
+    // todo - duplicated in TaxSelect.vue
+    taxLabel(tax: Tax) {
+      return tax.type === _TaxType.PERCENTAGE
+        ? `${tax.name} (${tax.rate}%)`
+        : `${tax.name} ($${tax.rate})`
+    },
+    tabulateTax(tax: Tax) {
+      return tax.type === _TaxType.PERCENTAGE
+        ? (Number(this.form.subtotal) * Number(tax.rate))
+        : Number(tax.rate)
+    },
   }
 })
 </script>
@@ -87,17 +89,20 @@ export default defineComponent({
     </v-row>
     <v-row>
       <v-col>
-        <TaxSelect v-model="taxSelected" />
+        <TaxSelect v-model="form.Taxes" />
       </v-col>
     </v-row>
     <v-divider class="my-4" />
-    <v-row align="center">
+    <v-row align="center" >
       <v-col>
         <h3>Subtotal: {{ formatCurrency(form.subtotal) }}</h3>
       </v-col>
 
-      <v-col align="center">
+      <v-col align="left">
         <h3>Tax: {{ formatCurrency(taxTotal) }}</h3>
+        <p v-for="tax in form.Taxes">
+          {{ taxLabel(tax) }} - {{ formatCurrency(tabulateTax(tax)) }}
+        </p>
       </v-col>
 
       <v-col align="end">
