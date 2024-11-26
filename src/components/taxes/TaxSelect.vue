@@ -74,7 +74,7 @@ export default defineComponent({
         :label="taxLabel(tax)"
         :value="tax.id"
         hide-details /> -->
-      <v-combobox
+      <v-select
         v-model="taxSelected"
         :items="taxItems"
         multiple
@@ -83,7 +83,7 @@ export default defineComponent({
         closable-chips
         @update:model-value="stringMatchTaxes"      
       >
-      </v-combobox>
+      </v-select>
     </v-col>
   </v-row>
 </template>

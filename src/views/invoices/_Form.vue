@@ -26,13 +26,11 @@ export default defineComponent({
     showExpenseDialog: boolean
     showExpenseBrowser: boolean
     showPaymentDialog: boolean
-    taxSelected: number[]
   } => ({
     latestRefNo: undefined,
     showExpenseDialog: false,
     showExpenseBrowser: false,
     showPaymentDialog: false,
-    taxSelected: []
   }),
   mounted() {
     this.loadLatestRefNo()
@@ -182,7 +180,7 @@ export default defineComponent({
       />
     </div>
     <div class="document mt-8">
-      <TaxSelect v-model="taxSelected" />
+      <TaxSelect v-model="Invoice.Taxes" />
     </div>
     <div class="document mt-8">
       <v-row>
