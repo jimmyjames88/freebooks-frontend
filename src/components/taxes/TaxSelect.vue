@@ -66,26 +66,16 @@ export default defineComponent({
 </script>
 
 <template>
-  <h2>Taxes</h2>
-  <v-row>
-    <v-col cols="12" md="6">
-      <!-- <v-checkbox
-        v-model="value"
-        :label="taxLabel(tax)"
-        :value="tax.id"
-        hide-details /> -->
-      <v-select
-        v-model="taxSelected"
-        :items="taxItems"
-        multiple
-        variant="outlined"
-        chips
-        closable-chips
-        @update:model-value="stringMatchTaxes"      
-      >
-      </v-select>
-    </v-col>
-  </v-row>
+  <v-select
+    v-model="taxSelected"
+    :items="taxItems"
+    multiple
+    variant="outlined"
+    chips
+    closable-chips
+    @update:model-value="stringMatchTaxes"      
+  >
+  </v-select>
 </template>
 
 <style lang="scss" scoped>

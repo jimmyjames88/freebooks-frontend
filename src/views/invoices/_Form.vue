@@ -179,7 +179,8 @@ export default defineComponent({
         @close="showPaymentDialog = false"
       />
     </div>
-    <div class="document mt-8">
+    <div class="document mt-8 w-50 ml-auto">
+      <h2>Taxes</h2>
       <TaxSelect v-model="Invoice.Taxes" />
     </div>
     <div class="document mt-8">
