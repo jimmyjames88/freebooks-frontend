@@ -31,5 +31,13 @@ export default {
     } catch (error) {
       handleError(error)
     }
+  },
+
+  async refresh (refreshToken: String) {
+    try {
+      return await axios.post(`${url}/auth/refresh`, { refreshToken })
+    } catch (error) {
+      handleError(error)
+    }
   }
 }

@@ -40,8 +40,9 @@ const useAuthStore = defineStore('auth', {
       try {
         const response = await API.auth.login(email, password)
         if (response?.status === 200) {
-          const { token, user } = response.data
+          const { token, refreshToken, user } = response.data
           Cookies.set('token', token)
+          Cookies.set('refreshToken', refreshToken)
           this.loggedIn = true
           this.user = user
           return true
@@ -54,6 +55,7 @@ const useAuthStore = defineStore('auth', {
 
     async logout() {
       Cookies.remove('token')
+      Cookies.remove('refreshToken')
       this.loggedIn = false
       return true
     },

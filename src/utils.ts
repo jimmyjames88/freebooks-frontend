@@ -1,3 +1,10 @@
+import axios, { AxiosRequestConfig } from 'axios'
+import Cookies from 'js-cookie'
+import { useAuthStore } from '@/stores'
+import { pinia } from '@/main'
+import router from '@/router'
+import API from '@/api'
+
 export const decodeJWT = (token: string) => {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -24,4 +31,44 @@ export const formatCurrency = (amount: number) => {
   })
 
   return formatter.format(amount)
+}
+
+const expiredLogout = () => {
+  Cookies.remove('token')
+  Cookies.remove('refreshToken')
+  useAuthStore(pinia).loggedIn = false
+  router.push({ name: 'Auth/Login' })
+}
+
+export const axiosInterceptors = () => {
+  axios.interceptors.request.use(
+    config => {
+      const token = Cookies.get('token')
+      if (token) { 
+        config.headers['Authorization'] = token
+      }
+      return config
+    },
+    err => Promise.reject(err)
+  )
+  
+  axios.interceptors.response.use(
+    response => response,
+    async err => {
+      const token = Cookies.get('token')
+      const refreshToken = Cookies.get('refreshToken')
+      if (token && err.response?.status === 401 && refreshToken) {
+        try {
+          const response = await API.auth.refresh(refreshToken)
+          if (response?.status === 200) {
+            Cookies.set('token', response.data.token)
+            return axios(err.config)
+          }
+          expiredLogout()
+        } catch {
+          expiredLogout()
+      }
+      return Promise.reject(err)
+    }
+  })
 }

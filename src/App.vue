@@ -17,7 +17,7 @@ export default defineComponent({
       get(): boolean {
         return this.$vuetify.display.mdAndUp || this.navOpen
       },
-      set(value: boolean) {
+      set(value: boolean): void {
         this.open = value
       }
     }

@@ -1,43 +1,31 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import router from './router'
-import axios from 'axios'
-import Cookies from 'js-cookie'
-import Toast from 'vue-toastification';
 import App from './App.vue'
+import { createPinia } from 'pinia'
+import Cookies from 'js-cookie'
+import Toast from 'vue-toastification'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import router from './router'
 import { useAuthStore } from './stores'
-import { decodeJWT } from './utils'
-// Import the CSS or use your own!
-import "vue-toastification/dist/index.css";
+import { decodeJWT, axiosInterceptors } from './utils'
+import 'vue-toastification/dist/index.css'
 
-loadFonts()
-
+// Create the pinia store
 export const pinia = createPinia()
 
-axios.interceptors.request.use(
-  config => {
-    const token = Cookies.get('token')
-    if (token) {
-      config.headers['Authorization'] = token
-    }
-    return config
-  },
-  err => Promise.reject(err)
-)
+// Load webfonts
+loadFonts()
 
-axios.interceptors.response.use(
-  response => response,
-  async err => {
-    const token = Cookies.get('token')
-    if (token && err.response?.status === 401) {
-      useAuthStore().logout()
-      router.push({ name: 'Auth/Login', query: { ref: location.href }})
-    }
-    return Promise.reject(err)
-  }
-)
+// Create the app
+createApp(App)
+  .use(vuetify)
+  .use(pinia)
+  .use(router)
+  .use(Toast, { position: 'bottom-right' })
+  .mount('#app')
+
+// Set up axios interceptors
+axiosInterceptors()
 
 // If token exists, attempt to load the user
 const token = Cookies.get('token')
@@ -46,10 +34,3 @@ if (token) {
   const { UserId } = decodeJWT(token)
   await useAuthStore(pinia).loadUser(UserId)
 }
-
-createApp(App)
-  .use(vuetify)
-  .use(pinia)
-  .use(router)
-  .use(Toast, { position: 'bottom-right' })
-  .mount('#app')
