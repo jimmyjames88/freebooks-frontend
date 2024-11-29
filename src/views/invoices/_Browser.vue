@@ -47,8 +47,8 @@ export default defineComponent({
   mounted() {
   },
   methods: {
-    attach(_e: PointerEvent, row: any){
-      this.$emit('attach', new Invoice(row.item))
+    handleClick(_e: PointerEvent, row: any){
+      this.$emit('select', new Invoice(row.item))
       this.close()
     },
     close() {
@@ -69,7 +69,7 @@ export default defineComponent({
         :items-length="itemsLength"
         @load-items="loadItems"
         :loading="loading"
-        @click:row="attach"
+        @click:row="handleClick"
       >
         <template #item.date="{ item }">
           {{ formattedDate(item.date) }}

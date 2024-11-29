@@ -4,26 +4,37 @@ import { _Invoice, _Payment, _PaymentType } from '@jimmyjames88/freebooks-types'
 import DataTableComposable from '@/composables/DataTable'
 import API from '@/api'
 import { 
-  AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, TextField
+  AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, TextField,
+  ConfirmDeleteDialog
 } from '@/components'
 import PaymentDialog from './_Dialog.vue'
+import InvoiceBrowser from '@/views/invoices/_Browser.vue'
+import { Invoice, Payment } from '@/classes'
+import { useToast } from 'vue-toastification'
 
 
 export default defineComponent({
   name: 'Payments/Index',
   components: { 
-    AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, Select, PaymentDialog, TextField
+    AutoComplete, Avatar, Button, ClientSelect, DataTable, Header, InvoiceBrowser, Select,
+    PaymentDialog, TextField, ConfirmDeleteDialog
    },
   setup(){
     const { items, itemsLength, sortBy, loadItems, loading } = DataTableComposable(API.payments.index)
     return { items, itemsLength, sortBy, loadItems, loading }
   },
   data: (): {
-    showPaymentDialog: boolean,
-    sortBy: any[],
+    showConfirmDelete: number
+    showInvoiceBrowser: boolean
+    showPaymentDialog: boolean
+    sortBy: any[]
     headers: any[]
+    targetInvoice: Invoice
   } => ({
+    showConfirmDelete: 0,
+    showInvoiceBrowser: false,
     showPaymentDialog: false,
+    targetInvoice: new Invoice(),
     sortBy: [{
       key: 'updatedAt',
       order: 'asc'
@@ -74,6 +85,28 @@ export default defineComponent({
       }
       return this.headers
     }
+  },
+  methods: {
+    handleSelect(invoice: Invoice) {
+      this.targetInvoice = invoice
+      this.showInvoiceBrowser = false
+      this.showPaymentDialog = true
+    },
+    async handleDelete(item: _Payment) {
+      this.showConfirmDelete = 0
+      const payment = new Payment(item)
+      try {
+        const response = await payment.destroy()
+        if (response?.status === 200) {
+          useToast().success('Payment deleted')
+          this.loadItems()
+        } else {
+          useToast().error('Error deleting payment')
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
   }
 })
 </script>
@@ -81,13 +114,13 @@ export default defineComponent({
 <template>
   <Header title="Payments">
     <template #desktop>
-      <Button color="primary" @click="showPaymentDialog = true">
+      <Button color="primary" @click="showInvoiceBrowser = true">
         <v-icon>mdi-cash-plus</v-icon> Add Payment
       </Button>
     </template>
     <template #mobile>
       <v-list>
-        <v-list-item prepend-icon="mdi-cash-plus" @click="showPaymentDialog = true">
+        <v-list-item prepend-icon="mdi-cash-plus" @click="showInvoiceBrowser = true">
           Add Payment
         </v-list-item>
       </v-list>
@@ -126,27 +159,33 @@ export default defineComponent({
               <v-menu activator="parent">
                 <v-list>
                   <v-list-item>
-                    <v-list-item-title>New Invoice</v-list-item-title>
+                    <v-list-item-title>View Invoice</v-list-item-title>
                   </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title>New Estimate</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Show', params: { ClientId: item.id }}">
-                    <v-list-item-title>View</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Edit', params: { ClientId: item.id }}">
-                    <v-list-item-title>Edit</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item :to="{ name: 'Clients/Delete', params: { ClientId: item.id }}">
+                  <v-list-item @click="showConfirmDelete = item.id">
                     <v-list-item-title>Delete</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
             </v-btn>
+            <ConfirmDeleteDialog 
+              v-if="showConfirmDelete === item.id"
+              @close="showConfirmDelete = 0"
+              @confirm="handleDelete(item)"
+            />
           </template>  
         </DataTable>
       </v-col>
     </v-row>
   </v-container>
-  <PaymentDialog v-if="showPaymentDialog" @close="showPaymentDialog = false" />
+  <InvoiceBrowser
+    v-if="showInvoiceBrowser"
+    @select="handleSelect"
+    @close="showInvoiceBrowser=false"
+  />
+  <PaymentDialog
+    v-if="showPaymentDialog"
+    :Invoice="targetInvoice"
+    @close="showPaymentDialog=false"
+    @saved="loadItems"
+  />
 </template>

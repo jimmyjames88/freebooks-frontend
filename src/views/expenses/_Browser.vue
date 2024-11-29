@@ -46,7 +46,7 @@ export default defineComponent({
     formattedDate: () => formatDateMMDDYYYY,
   },
   methods: {
-    attach(_e: PointerEvent, row: any) {
+    rowClick(_e: PointerEvent, row: any) {
       if (!this.Invoice.Expenses?.find(expense => expense.id === row.item.id)) {
         this.Invoice.Expenses?.push(new Expense({ 
           ...row.item,
@@ -73,7 +73,7 @@ export default defineComponent({
         :items-length="itemsLength"
         @load-items="loadItems({ unattached: true })"
         :loading="loading"
-        @click:row="attach"
+        @click:row="rowClick"
       >
         <template #item.date="{ item }">
           {{ formattedDate(item.date) }}

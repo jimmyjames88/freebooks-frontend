@@ -190,7 +190,7 @@ export default defineComponent({
         :title="`Are you sure you want to detatch this expense from Invoice: #${expense.Invoice.refNo}?`"
         @close="showConfirmDetatch = false"
         @confirm="handleDetatch" />
-      <InvoiceBrowser v-if="showInvoiceBrowser" @attach="handleAttach" />
+      <InvoiceBrowser v-if="showInvoiceBrowser" @select="handleAttach" />
     </v-container>
   </template>
 </template>

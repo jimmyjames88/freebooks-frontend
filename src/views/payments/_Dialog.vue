@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { _Invoice, _Payment, _PaymentType } from '@jimmyjames88/freebooks-types'
 import { 
   Button, ClientSelect, DatePicker, InvoiceSelect, PaymentTypeSelect, Select, TextField
@@ -7,8 +7,7 @@ import {
 import { formatDateMMDDYYYY } from '@/utils'
 import API from '@/api'
 import { useToast } from 'vue-toastification'
-import { Payment } from '@/classes'
-import InvoiceComposable from '@/composables/Invoice'
+import { Invoice, Payment } from '@/classes'
 
 export default defineComponent({
   name: 'Payments/_Dialog',
@@ -17,22 +16,14 @@ export default defineComponent({
     Button, ClientSelect, DatePicker, InvoiceSelect, PaymentTypeSelect, Select, TextField
   },
   emits: ['close', 'saved'],
-  setup() {
-    const { Invoice } = InvoiceComposable()
-    return { Invoice }
-  },
   props: {
-    ClientId: {
-      type: Number,
-      default: -1
-    },
     disableAPI: {
       type: Boolean,
       default: false
     },
-    InvoiceId: {
-      type: Number,
-      default: -1
+    Invoice: {
+      type: Object as PropType<Invoice>,
+      default: () => new Invoice()
     },
   },
   data: (): {
@@ -52,8 +43,8 @@ export default defineComponent({
     })
   }),
   async mounted() {
-    this.form.InvoiceId = this.InvoiceId
-    this.form.ClientId = this.ClientId
+    this.form.InvoiceId = this.Invoice.id
+    this.form.ClientId = this.Invoice.Client.id
   },
   computed: {
     formattedDate: () => formatDateMMDDYYYY,
@@ -111,17 +102,31 @@ export default defineComponent({
 </script>
 
 <template>
-  <v-dialog :model-value="true" v-bind="$attrs" persistent width="500">
+  <v-dialog :model-value="true" v-bind="$attrs" persistent width="1100">
     <v-card>
       <v-card-text>
         <v-form @submit.prevent>
-          <v-row v-show="!ClientId && !InvoiceId">
-            <v-col>
-              <ClientSelect v-model="form.ClientId" :disabled="!!ClientId" :return-object="false" />
+          <v-row>
+            <v-col cols="12" md="6">
+              <DatePicker v-model="form.date" />
             </v-col>
           </v-row>
-          <v-row v-show="!ClientId && !InvoiceId">
-            <v-col>
+          <v-row>
+            <v-col cols="12" md="6">
+              <TextField
+                v-model="form.amount"
+                variant="outlined"
+                label="Amount"
+                prepend-inner-icon="mdi-currency-usd"
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <PaymentTypeSelect v-model="form.PaymentTypeId" />
+            </v-col>
+            <v-col cols="12" md="6">
+              <ClientSelect v-model="form.ClientId" :return-object="false" />
+            </v-col>
+            <v-col cols="12" md="6">
               <InvoiceSelect v-model="form.InvoiceId"
                 :disabled="!form.ClientId"
                 :ClientId="form.ClientId"
@@ -130,22 +135,7 @@ export default defineComponent({
           </v-row>
           <v-row>
             <v-col>
-              <DatePicker v-model="form.date" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <TextField v-model="form.amount" variant="outlined" label="Amount" prepend-inner-icon="mdi-currency-usd" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
               <TextField v-model="form.description" variant="outlined" label="Description" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <PaymentTypeSelect v-model="form.PaymentTypeId" />
             </v-col>
           </v-row>
         </v-form>
